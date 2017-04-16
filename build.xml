@@ -1,0 +1,26 @@
+<project name = "Greyvar-client">
+    <import file = "../../jwrCommonsIndep/build.xml" />
+    <target name = "package" depends = "package-zip" />
+    
+    <target name = "package-zip">  
+           <zip destfile = "pkg/Greyvar-client-${version}.zip"> 
+            <zipfileset dir = "./">  
+                 <include name = "src/*.py"/>   
+            	 <include name = "res/**" /> 
+            </zipfileset>
+           	     
+           	<zipfileset dir = "var/python-bundle-windows/">
+           	    <include name = "*" /> 
+            </zipfileset>
+           	  
+           	<zipfileset dir = "./var/">
+           		<include name = "test.py" />
+           		<include name = "greyvar.bat" />
+           	</zipfileset>
+           	
+           	<zipfileset dir = "./">
+           	    <include name = "etc/" />
+           	</zipfileset>
+           </zip>
+    </target> 
+</project>
