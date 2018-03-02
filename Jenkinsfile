@@ -34,7 +34,7 @@ def buildRpm(dist) {
 }
 
 
-node {
+node("fedora") {
 	stage("Prep") {
 		checkout scm
 		sh "buildid -n"
