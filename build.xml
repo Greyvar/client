@@ -12,8 +12,10 @@
 			<zipfileset dir = "./" prefix = "greyvar-${version}">
             	 <include name = "res/**" /> 
             </zipfileset>
-           	     
+           	
+			<!--     
            	<zipfileset dir = "./var/" prefix = "greyvar-${version}" />
+			!-->
            	
            	<zipfileset dir = "./" prefix = "greyvar-${version}">
            	    <include name = "etc/" />
