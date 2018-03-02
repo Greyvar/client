@@ -49,7 +49,7 @@ node {
 
 	stage("Build-win") {
 		sh "rm -rf build CMakeFiles CMakeCache.txt "
-		sh 'cmake -DCMAKE_TOOLCHAIN_FILE=windows.cmake .'
+		sh 'cmake -DCMAKE_TOOLCHAIN_FILE=windows.toolchain .'
 		sh 'make'
 	}
 
