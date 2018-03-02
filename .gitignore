@@ -1,1 +1,7 @@
 **/*.pyc
+CMakeFiles
+CMakeCache.txt
+pkg
+bin
+Makefile
+cmake_install.cmake

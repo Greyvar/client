@@ -1,0 +1,17 @@
+buildhost.hostname=mindstorm.teratan.lan
+buildhost.platform=Linux-4.14.14-200.fc26.x86_64-x86_64-with-fedora-26-Twenty_Six
+buildhost.release=4.14.14-200.fc26.x86_64
+buildhost.system=Linux
+buildhost.version=#1 SMP Fri Jan 19 13:27:06 UTC 2018
+git.branch=master
+git.revision=5a03c7cf1b84df3539052d745ad59f0618560168
+git.revision.short=5a03c7c
+tag=1.0.0-1520014299
+timestamp=1520014299
+version.formatted.gnu=1.0.0
+version.formatted.short=1.0.0
+version.formatted.win=1.0.0.0
+version.major=1
+version.minor=0
+version.release=
+version.revision=0
