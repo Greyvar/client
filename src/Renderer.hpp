@@ -13,8 +13,13 @@ class Renderer {
 			return instance;
 		}
 
-		static void set(SDL_Renderer* renderer) {
+		static void set(SDL_Window* win, SDL_Renderer* renderer) {
 			get().sdlRen = renderer;
+			get().win = win;
+		}
+
+		SDL_Window* getWindow() {
+			return this->win;
 		}
 
 		TextureCache* textureCache = new TextureCache();
@@ -25,8 +30,13 @@ class Renderer {
 
 		void renderFrame();
 
+		int window_w = 0;
+		int window_h = 0;
+
 	private:
 		Renderer() {}
+
+		SDL_Window* win;
 
 };
 

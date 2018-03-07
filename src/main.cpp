@@ -3,38 +3,7 @@
 #include "Renderer.hpp"
 #include "GameState.hpp"
 
-Entity* getPlayer(int p) {
-	return GameState::get().world->entityGrid->entities.at(p);
-}
-
-void handleKeypress(SDL_KeyboardEvent key) {
-	const int speed = 4;
-
-	switch (key.keysym.sym) {
-		case SDLK_ESCAPE:
-			std::cout << "escapppppe" << std::endl;
-
-			SDL_Event quitEvent;
-			quitEvent.type = SDL_QUIT;
-
-			SDL_PushEvent(&quitEvent);
-			break;
-		case SDLK_w:
-			getPlayer(0)->pos->y -= speed;
-			break;
-		case SDLK_s:
-			getPlayer(0)->pos->y += speed;
-			break;
-		case SDLK_a:
-			getPlayer(0)->pos->x -= speed;
-			break;
-		case SDLK_d:
-			getPlayer(0)->pos->x += speed;
-			break;
-		default:
-			std::cout << key.keysym.sym << std::endl;
-	}
-}
+void handleKeypress(SDL_KeyboardEvent key);
 
 void handleControllerAxis(SDL_ControllerAxisEvent e) {
 	switch (e.which) {
@@ -63,25 +32,18 @@ void initControllers() {
 	}
 }
 
-int main(int argc, char* argv[]) {
-	SDL_Init(SDL_INIT_EVERYTHING);
-
-	initControllers();
-
-	SDL_Window *win = SDL_CreateWindow("Greyvar", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
-	Renderer::set(SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
-
-	GameState::get().loadWorld("default");
-
+void mainLoop() {
 	SDL_Event e;
 
 	while (true) {
-		std::cout << "loop" << std::endl;
-
 		while (SDL_PollEvent(&e) != 0) {
 			switch (e.type) {
+				case SDL_WINDOWEVENT:
+					SDL_GetWindowSize(Renderer::get().getWindow(), &Renderer::get().window_w, &Renderer::get().window_h);
+					cout << "window changed" << endl;
+					break;
 				case SDL_QUIT:
-					goto completedMainLoop;
+					return;
 				case SDL_CONTROLLERAXISMOTION:
 					//handleControllerAxis(e.value);
 					break;
@@ -97,8 +59,23 @@ int main(int argc, char* argv[]) {
 
 		SDL_Delay(100);
 	}
+}
 
-	completedMainLoop: SDL_Quit();
+int main(int argc, char* argv[]) {
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	initControllers();
+
+	SDL_Window *win = SDL_CreateWindow("Greyvar", 100, 100, 640, 512, SDL_WINDOW_SHOWN);
+	SDL_SetWindowResizable(win, SDL_TRUE);
+
+	Renderer::set(win, SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
+
+	GameState::get().loadWorld("default");
+
+	mainLoop();
+
+	SDL_Quit();
 
 	return 0;
 }

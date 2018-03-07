@@ -3,16 +3,25 @@
 #include <SDL2/SDL_image.h>
 
 void renderBackground(World* world) {
+	std::cout << Renderer::get().window_h << endl;
+
+	const int TILE_SIZE = 64;
+
+	int w = world->tileGrid->w * TILE_SIZE;
+	int h = world->tileGrid->h * TILE_SIZE;
+
+	int padx = (Renderer::get().window_w - w) / 2;
+	int pady = (Renderer::get().window_h - h) / 2;
+
 	for (int row = 0; row < world->tileGrid->h; row++) {
 		for (int col = 0; col < world->tileGrid->w; col++) {
 			Tile* tile = world->tileGrid->get(row, col);
 
 			SDL_Rect pos;
 
-			const int TILE_SIZE = 64;
 
-			pos.x = col * TILE_SIZE;
-			pos.y = row * TILE_SIZE;
+			pos.x = padx + (col * TILE_SIZE);
+			pos.y = pady + (row * TILE_SIZE);
 			pos.w = TILE_SIZE;
 			pos.h = TILE_SIZE;
 

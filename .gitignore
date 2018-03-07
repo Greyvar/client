@@ -5,3 +5,5 @@ pkg
 bin
 Makefile
 cmake_install.cmake
+**/*.swp
+**/*.swo

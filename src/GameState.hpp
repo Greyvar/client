@@ -8,6 +8,10 @@ class GameState {
 			return instance;
 		}
 
+		Entity* getPlayer(int p) {
+			return GameState::get().world->entityGrid->entities.at(p);
+		}
+
 		void loadWorld(string worldName);
 		World* world;
 
