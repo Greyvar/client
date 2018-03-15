@@ -10,6 +10,7 @@ pkg_search_module(SDL2 REQUIRED sdl2)
 pkg_search_module(MINGW64 required mingw64)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(/usr/include/freetype2)
 
 file(GLOB SOURCE_FILES src/*.cpp src/*.hpp)
 add_executable(greyvar ${SOURCE_FILES})
@@ -32,7 +33,7 @@ else()
 	message("Linux Build")
 
 	set_target_properties(greyvar PROPERTIES OUTPUT_NAME "greyvar_linux")
-	target_link_libraries(greyvar ${SDL2_LIBRARIES} SDL2_image)
+	target_link_libraries(greyvar ${SDL2_LIBRARIES} SDL2_image freetype)
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++11")

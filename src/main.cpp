@@ -2,35 +2,7 @@
 
 #include "Renderer.hpp"
 #include "GameState.hpp"
-
-void handleKeypress(SDL_KeyboardEvent key);
-
-void handleControllerAxis(SDL_ControllerAxisEvent e) {
-	switch (e.which) {
-		case SDL_CONTROLLER_BUTTON_LEFTSTICK:
-		case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
-			cout << "controller " << e.axis << ":" << e.value << endl;
-	}
-}
-
-void handleControllerButton(SDL_ControllerButtonEvent e) {
-	switch (e.button) {
-	}
-}
-
-void initControllers() {
-	for (int i = 0; i < SDL_NumJoysticks(); i++) {
-		if (SDL_IsGameController(i)) {
-			SDL_GameController *controller = SDL_GameControllerOpen(i);
-
-			if (!controller) {
-				std::cout << "Could not open controller: " << i << std::endl;
-			} else {
-				std::cout << "Found controller: " << i << std::endl;
-			}
-		}
-	}
-}
+#include "startup.hpp"
 
 void mainLoop() {
 	SDL_Event e;
@@ -50,6 +22,9 @@ void mainLoop() {
 				case SDL_KEYDOWN:
 					handleKeypress(e.key);
 					break;
+				case SDL_AUDIODEVICEADDED:
+					std::cout << "Audio device found" << std::endl;
+					break;
 				default: 
 					std::cout << "Unknown event: " << e.type << std::endl;
 			}
@@ -61,15 +36,22 @@ void mainLoop() {
 	}
 }
 
-int main(int argc, char* argv[]) {
+void initLibraries() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	initControllers();
+	initControllerJoysticks();
 
-	SDL_Window *win = SDL_CreateWindow("Greyvar", 100, 100, 640, 512, SDL_WINDOW_SHOWN);
+	initFreetype();
+}
+
+int main(int argc, char* argv[]) {
+	initLibraries();
+
+	SDL_Window *win = SDL_CreateWindow("Greyvar", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 512, SDL_WINDOW_SHOWN);
 	SDL_SetWindowResizable(win, SDL_TRUE);
 
 	Renderer::set(win, SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
+//	Renderer::get().resCache->loadStartup();
 
 	GameState::get().loadWorld("default");
 

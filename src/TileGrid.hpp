@@ -11,7 +11,7 @@ class TileGrid : public Grid {
 		TileGrid() : Grid(10, 8) {
 			for (int col = 0; col < this->w; col++) {
 				for (int row = 0; row < this->h; row++) {
-					this->tiles[row][col] = new Tile(string("construct.png"), false);
+					this->tiles[row][col] = new Tile(string("grass.png"), false);
 				}
 			}
 		}

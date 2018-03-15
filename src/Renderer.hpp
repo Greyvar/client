@@ -2,7 +2,7 @@
 #define RENDERER
 
 #include <SDL2/SDL.h>
-#include "TextureCache.hpp"
+#include "ResCache.hpp"
 #include "World.hpp"
 
 class Renderer {	
@@ -22,7 +22,7 @@ class Renderer {
 			return this->win;
 		}
 
-		TextureCache* textureCache = new TextureCache();
+		ResCache* resCache = new ResCache();
 		SDL_Renderer* sdlRen;
 
 		Renderer(Renderer const&) = delete;
@@ -32,6 +32,8 @@ class Renderer {
 
 		int window_w = 0;
 		int window_h = 0;
+
+		FT_Library* freetypeLib = new FT_Library;
 
 	private:
 		Renderer() {}

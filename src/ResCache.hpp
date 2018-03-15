@@ -1,0 +1,28 @@
+#ifndef TEXTURE_CACHE
+#define TEXTURE_CACHE
+
+#include <map>
+#include <SDL2/SDL.h>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+using namespace std;
+
+class ResCache {
+	public:
+		SDL_Texture* loadTexture(string filename);
+		SDL_Texture* loadEntity(string filename);
+		SDL_Texture* loadTile(string filename);
+
+		FT_Face* loadFont(string filename);
+
+		void loadStartup();
+
+	private:
+		map<string, SDL_Texture*> textureCache;
+
+		map<string, FT_Face*> fontCache;
+};
+
+#endif
