@@ -1,40 +1,37 @@
 #include <iostream>
-#include <sys/socket.h>
 #include <stdio.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <cstring>
-#include <unistd.h>
+#include <SDL2/SDL_net.h>
 
 #include "NetworkManager.hpp"
 
 using namespace std;
 
 void NetworkManager::connectToServer() {
-	char* buffer[1024];
+	IPaddress ip;
+	TCPsocket socket;
+	char buffer[512];
 
-	int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	struct sockaddr_in server;
-	short int port = 1337;
-
-	memset(&server, 0, sizeof(server));
-
-	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = inet_addr("127.0.0.1");
-	server.sin_port = htons(port);
-
-	int connectResult = connect(sock, (struct sockaddr *) &server, sizeof(server));
-
-	if (connectResult) {
-		cout << "Connected" << endl;
-	} else {
-		cerr << "Connection failed" << errno << endl; 
-//		close(sock);
+	if (SDLNet_Init() < 0) {
+		cout << "SDL Net init failed: " << SDLNet_GetError() << endl;
 		return;
 	}
 
-	recv(sock, buffer, sizeof(buffer), 0);
+	if (SDLNet_ResolveHost(&ip, "localhost", 1337) < 0) {
+		cout << "Failed to resolve host: " << SDLNet_GetError() << endl;
+		return;
+	}
 
-	cout << "recv: " << buffer << endl;
-	close(sock);
+	if (!(socket = SDLNet_TCP_Open(&ip))) {
+		cout << "Failed to open socket: " << SDLNet_GetError() << endl;
+	}
+
+	int result = SDLNet_TCP_Recv(socket, buffer, sizeof(buffer));
+
+	if (!result) {
+		cout << "Failed to recv: " << SDLNet_GetError() << endl;
+	} else {
+		cout << buffer << endl;
+	}
+
+	SDLNet_TCP_Close(socket); SDLNet_Quit();
 }

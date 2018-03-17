@@ -56,8 +56,6 @@ FT_Face* ResCache::loadFont(string filename) {
 		}
 	}
 
-	cout << "Loading from cache: " << filename << endl;
-
 	return this->fontCache[filename];
 }
 

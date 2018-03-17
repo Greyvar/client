@@ -1,6 +1,8 @@
 #ifndef H_NETWORK_MANAGER
 #define H_NETWORK_MANAGER
 
+#define ETB 0x17
+
 class NetworkManager {
 	public:
 		static NetworkManager& get() {

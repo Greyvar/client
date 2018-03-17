@@ -45,8 +45,6 @@ void renderText(World* world, std::string text, int x, int y, SDL_Color color, b
 
 	bool changeColor = false;
 
-	std::cout << "Font: " << (face) << endl;
-
 	for (char currentCharacter : text) {
 		if (changeColor) {
 			if (canChangeColor) {
@@ -91,7 +89,7 @@ void renderTextShadow(World* world, std::string text, int x, int y) {
 }
 
 void Renderer::renderFrame() {
-	std::cout << "render frame ----------------------" << std::endl;
+	//std::cout << "render frame ----------------------" << std::endl;
 
 	SDL_Renderer* ren = Renderer::get().sdlRen;
 	SDL_RenderClear(ren);
