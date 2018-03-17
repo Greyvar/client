@@ -19,7 +19,9 @@
            	
            	<zipfileset dir = "./" prefix = "greyvar-${version}">
            	    <include name = "etc/" />
+           	    <include name = "doc/" />
            	</zipfileset>
+
            </zip>
     </target> 
 </project>
