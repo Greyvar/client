@@ -35,28 +35,29 @@ SDL_Texture* ResCache::loadTile(string filename) {
 	return this->loadTexture(string("tiles/" + filename));
 }
 
-FT_Face* ResCache::loadFont(string filename) {
+FT_Face* ResCache::loadFont(string filename, int size) {
 	filename = "res/ttf/" + filename;
+	std::string tag = filename + ":" + std::to_string(size);
 
-	if (this->fontCache.count(filename) == 0) {
-		this->fontCache[filename] = new FT_Face;
+	if (this->fontCache.count(tag) == 0) {
+		this->fontCache[tag] = new FT_Face;
 
 		cout << "Loading font " << filename << endl;
 
-		auto loadFontResult = FT_New_Face(*Renderer::get().freetypeLib, filename.c_str(), 0, this->fontCache[filename]);
+		auto loadFontResult = FT_New_Face(*Renderer::get().freetypeLib, filename.c_str(), 0, this->fontCache[tag]);
 
 		cout << "Load font result: " << loadFontResult << endl;
 
-		FT_Set_Pixel_Sizes(*this->fontCache[filename], 0, 48);
+		FT_Set_Pixel_Sizes(*this->fontCache[tag], 0, size);
 
-		if (this->fontCache[filename] == nullptr) {
+		if (this->fontCache[tag] == nullptr) {
 			cout << "Failed to load font: " << filename << endl;
 		} else {
 			cout << "Cached font: " << filename << endl;
 		}
 	}
 
-	return this->fontCache[filename];
+	return this->fontCache[tag];
 }
 
 void ResCache::loadStartup() {

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 ./cmakeClean.sh
-cmake . 
+cmake -DCMAKE_BUILD_TYPE=Debug . 

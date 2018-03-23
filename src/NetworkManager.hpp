@@ -1,7 +1,11 @@
 #ifndef H_NETWORK_MANAGER
 #define H_NETWORK_MANAGER
 
-#define ETB 0x17
+#include <SDL2/SDL_net.h>
+
+#include "YamlNode.hpp"
+
+#define ETB '\x17'
 
 class NetworkManager {
 	public:
@@ -16,8 +20,20 @@ class NetworkManager {
 
 		void connectToServer();
 
+		void sendHelo();
+
+		void send(YamlNode* node, string command);
+
+		void recvAll();
+
+		void disconnect();
+
+		bool isConnected();
+
 	private:
 		NetworkManager() {}
+
+		TCPsocket socket;
 };
 
 #endif

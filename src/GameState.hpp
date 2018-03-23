@@ -1,7 +1,11 @@
 #include "World.hpp"
+#include "Ui.hpp"
 
 class GameState {
 	public:
+		GameState(GameState const&) = delete;
+		void operator=(GameState const&) = delete;
+
 		static GameState& get() {
 			static GameState instance;
 
@@ -15,8 +19,9 @@ class GameState {
 		void loadWorld(string worldName);
 		World* world;
 
-		GameState(GameState const&) = delete;
-		void operator=(GameState const&) = delete;
+		std::string serverName = "the construct";
+
+		UserInterface* ui = new UserInterface();
 
 	private:
 		GameState() {}

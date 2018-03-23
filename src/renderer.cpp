@@ -1,5 +1,6 @@
 #include "GameState.hpp"
 #include "Renderer.hpp"
+#include "Ui.hpp"
 
 #include <SDL2/SDL_image.h>
 
@@ -8,7 +9,8 @@
 
 SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* ren, const FT_Bitmap& bitmap, const SDL_Color& color);
 
-void renderBackground(World* world) {
+
+void renderWorldTiles(World* world) {
 	const int TILE_SIZE = 64;
 
 	int w = world->tileGrid->w * TILE_SIZE;
@@ -40,19 +42,28 @@ void renderEntities(World* world) {
 	}
 }
 
-void renderText(World* world, std::string text, int x, int y, SDL_Color color, bool canChangeColor) {
-	const FT_Face face = *Renderer::get().resCache->loadFont("DejaVuSansMono.ttf");
-
+void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize) {
+	const FT_Face face = *Renderer::get().resCache->loadFont("DejaVuSansMono.ttf", fontSize);
 	bool changeColor = false;
+
+	if (align == CENTER) { // lazy center alignment with monospace text for now
+		x -= (text.length() * 30) / 2;
+	}
 
 	for (char currentCharacter : text) {
 		if (changeColor) {
 			if (canChangeColor) {
 				switch (currentCharacter) {
-					case '1': color = {255, 000, 000}; break;
-					case '2': color = {000, 255, 000}; break;
-					case '3': color = {000, 000, 255}; break;
-					case '7': color = {255, 255, 255}; break;
+					case '0': color = {000, 000, 000}; break; // black
+					case '1': color = {255, 000, 000}; break; // red
+					case '2': color = {000, 255, 000}; break; // green
+					case '3': color = {255, 255, 000}; break; // yellow
+					case '4': color = {000, 000, 255}; break; // blue
+					case '5': color = {000, 255, 255}; break; // cyan
+					case '6': color = {255, 000, 255}; break; // magenta
+					case '7': color = {255, 255, 255}; break; // white
+					case '8': color = {255, 150, 000}; break; // orange
+					case '9': color = {100, 100, 100}; break; // darkgrey
 				}
 			}
 
@@ -83,10 +94,72 @@ void renderText(World* world, std::string text, int x, int y, SDL_Color color, b
 	}
 }
 
-void renderTextShadow(World* world, std::string text, int x, int y) {
-	renderText(world, text, x + 2, y + 2, {0, 0, 0}, false);
-	renderText(world, text, x, y, {255, 255, 255}, true);
+void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, int size) {
+	renderText(text, x, y, color, LEFT, size);
 }
+
+void renderTextShadow(std::string text, int x, int y, TextAlignment alignment, int size) {
+	int shadowOffset;
+
+	if (size < 25) {
+		shadowOffset = 1;
+	} else {
+		shadowOffset = 2;
+	}
+
+	renderText(text, x + shadowOffset, y + shadowOffset, {0, 0, 0}, false, alignment, size);
+	renderText(text, x, y, {255, 255, 255}, true, alignment, size);
+}
+
+void renderTextShadow(std::string text, int x, int y, int size) {
+	renderTextShadow(text, x, y, LEFT, size);
+}
+
+void renderBackgroundSolidColor(SDL_Color color) {
+	SDL_SetRenderDrawColor(Renderer::get().sdlRen, color.r, color.g, color.b, color.a);
+
+	SDL_Rect bg;
+	bg.x = 0;
+	bg.y = 0;
+	bg.w = Renderer::get().window_w;
+	bg.h = Renderer::get().window_h;
+
+	SDL_RenderFillRect(Renderer::get().sdlRen, &bg);
+}
+
+void renderMenu() {
+	renderBackgroundSolidColor({130, 130, 130});
+	renderTextShadow("^9Greyvar 2.0", 15, 50, 36);
+	renderTextShadow("^7" + GameState::get().ui->subtitle, 20, 80, 16);
+
+	for (unsigned int i = 0; i < GameState::get().ui->currentMenu->size(); i++) {
+		std::string itemText = GameState::get().ui->currentMenu->at(i)->text;
+
+		if (i == GameState::get().ui->currentlySelectedMenuItem) {
+			itemText.insert(0, "^5");
+		}
+
+		renderTextShadow(itemText, 20, 160 + (i * 60), LEFT, 24);
+	}
+	
+	SDL_Rect pos;
+	pos.w = pos.h = 64;
+	pos.x = Renderer::get().window_w - pos.w - 20;
+	pos.y = Renderer::get().window_h - pos.h + 4;
+
+	SDL_RenderCopy(Renderer::get().sdlRen, Renderer::get().resCache->loadEntity("playerRed.png"), NULL, &pos);
+}
+
+void renderConsole() {
+	renderBackgroundSolidColor({66, 66, 66});
+	renderTextShadow("^9Greyvar console", 15, 50, 36);
+	renderTextShadow("This is the console.", 15, 80, 16);
+
+	for (unsigned int i = 0; i < GameState::get().ui->consoleHistory.size(); i++) {
+		renderTextShadow(GameState::get().ui->consoleHistory.at(i), 50, 50 + (i * 20), 24);
+	}
+}
+
 
 void Renderer::renderFrame() {
 	//std::cout << "render frame ----------------------" << std::endl;
@@ -96,10 +169,20 @@ void Renderer::renderFrame() {
 
 	World* world = GameState::get().world;
 
-	renderBackground(world);
-	renderEntities(world);
-	renderTextShadow(world, "^1Greyvar 2.0", 100, 50);
-	renderTextShadow(world, "^3My name is ^7James", 100, 100);
+	switch (GameState::get().ui->state) {
+		case MENU:
+			renderMenu();
+			break;
+		case CONSOLE:
+			renderConsole();
+			break;
+		case PLAY:
+			renderWorldTiles(world);
+			renderEntities(world);
+			renderTextShadow("Connected to ^8" + GameState::get().serverName, 20, 440, 24);
+			renderTextShadow("^1James ^7joined the game", 20, 480, 24);
+			break;
+	}
 
 	SDL_RenderPresent(ren);
 }
