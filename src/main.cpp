@@ -2,6 +2,7 @@
 #include <time.h>
 #include <iostream>
 
+#include "common.hpp"
 #include "Renderer.hpp"
 #include "GameState.hpp"
 #include "startup.hpp"
@@ -68,45 +69,27 @@ void initLibraries() {
 	initControllerJoysticks();
 
 	initFreetype();
+
+	initSound();
+}
+
+void quitLibraries() {
+	quitSound();
 }
 
 int main(int argc, char* argv[]) {
 	initLibraries();
 
-	auto world = new YamlNode();
-	world->attr("shape", "flat");
-
-	auto people = world->child("people");
-	people->attr("type", "peopleList");
-
-	auto james = people->child("James");
-	james->attr("age", "30");
-	james->attr("color", "Blue");
-	
-	auto jamessStatus = james->child("status");
-	jamessStatus->attr("health", 100);
-	jamessStatus->attr("energy", 3);
-
-//	auto jamessItems = james->item();
-	//jamessItems->add("type", "sword");
-//	jamessItems->add("type", "axe");
-
-	auto evie = people->child("Evie");
-	evie->attr("age", "28");
-	evie->attr("color", "Pink");
-
-	std::cout << world->toString() << endl;
-
 	SDL_Window *win = SDL_CreateWindow("Greyvar", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 512, SDL_WINDOW_SHOWN);
 	SDL_SetWindowResizable(win, SDL_TRUE);
 
 	Renderer::set(win, SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
-//	Renderer::get().resCache->loadStartup();
 
 	GameState::get().loadWorld("default");
 
 	mainLoop();
 
+	quitLibraries();
 	SDL_Quit();
 
 	return 0;

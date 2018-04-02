@@ -1,11 +1,10 @@
-#ifndef H_NETWORK_MANAGER
-#define H_NETWORK_MANAGER
+#pragma once
 
 #include <SDL2/SDL_net.h>
 
 #include "YamlNode.hpp"
 
-#define ETB '\x17'
+#define ETB "---\n"
 
 class NetworkManager {
 	public:
@@ -31,9 +30,12 @@ class NetworkManager {
 		bool isConnected();
 
 	private:
-		NetworkManager() {}
+		NetworkManager() {
+			this->set = SDLNet_AllocSocketSet(1);	
+		}
+
+		string packetBuf;
 
 		TCPsocket socket;
+		SDLNet_SocketSet set;
 };
-
-#endif

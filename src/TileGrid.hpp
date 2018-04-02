@@ -1,5 +1,4 @@
-#ifndef H_TILEGRID
-#define H_TILEGRID
+#pragma once
 
 #include <map>
 
@@ -24,4 +23,3 @@ class TileGrid : public Grid {
 		map<int, map<int, Tile*>> tiles;
 };
 
-#endif

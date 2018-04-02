@@ -1,5 +1,4 @@
-#ifndef H_WORLD
-#define H_WORLD
+#pragma once
 
 #include <map>
 #include "TileGrid.hpp"
@@ -14,6 +13,3 @@ class World {
 
 		void addEntity(Entity* e);
 };
-
-
-#endif

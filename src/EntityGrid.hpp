@@ -1,5 +1,4 @@
-#ifndef H_ENTITYGRID
-#define H_ENTITYGRID
+#pragma once
 
 #include <vector>
 
@@ -15,5 +14,3 @@ class EntityGrid : public Grid {
 
 		vector<Entity*> entities;
 };
-
-#endif

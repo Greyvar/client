@@ -1,8 +1,9 @@
-#ifndef H_UI
-#define H_UI
+#pragma once
 
 #include <iostream>
 #include <vector>
+
+#include "common.hpp"
 
 using namespace std;
 
@@ -49,6 +50,8 @@ class UserInterface {
 		void setupMainMenu();
 
 		void executeCurrentMenuItem() {
+			playSound("interface/interface3.wav", UI);
+
 			MenuItem* item = this->currentMenu->at(this->currentlySelectedMenuItem);
 
 			item->action();
@@ -57,18 +60,28 @@ class UserInterface {
 		void selectPrevMenuItem() {
 			if (this->currentlySelectedMenuItem > 0) {
 				this->currentlySelectedMenuItem--;
+
+				playSound("interface/interface1.wav", UI);
+			} else {
+				playSound("interface/interface2.wav", UI);
 			}
 		}
 
 		void selectNextMenuItem() {
 			if (this->currentlySelectedMenuItem < this->currentMenu->size() - 1) {
 				this->currentlySelectedMenuItem++;
+
+				playSound("interface/interface1.wav", UI);
+			} else {
+				playSound("interface/interface2.wav", UI);
 			}
 		}
 
 		void toggleConsole();
 
 		void toggleMenu() {
+			playSound("interface/interface3.wav", UI);
+
 			if (this->state == MENU) {
 				this->state = PLAY;
 			} else {
@@ -81,6 +94,3 @@ enum TextAlignment {
 	LEFT,
 	CENTER
 };
-
-
-#endif

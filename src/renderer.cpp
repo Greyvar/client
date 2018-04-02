@@ -2,10 +2,13 @@
 #include "Renderer.hpp"
 #include "Ui.hpp"
 
+#include <chrono>
+
 #include <SDL2/SDL_image.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
 
 SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* ren, const FT_Bitmap& bitmap, const SDL_Color& color);
 
@@ -141,10 +144,13 @@ void renderMenu() {
 
 		renderTextShadow(itemText, 20, 160 + (i * 60), LEFT, 24);
 	}
-	
+
+	using namespace std::chrono;
+	milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+
 	SDL_Rect pos;
 	pos.w = pos.h = 64;
-	pos.x = Renderer::get().window_w - pos.w - 20;
+	pos.x = (Renderer::get().window_w / 2) + (sin(ms.count() * .0005) * 250);
 	pos.y = Renderer::get().window_h - pos.h + 4;
 
 	SDL_RenderCopy(Renderer::get().sdlRen, Renderer::get().resCache->loadEntity("playerRed.png"), NULL, &pos);

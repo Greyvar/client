@@ -1,5 +1,4 @@
-#ifndef RENDERER
-#define RENDERER
+#pragma once
 
 #include <SDL2/SDL.h>
 #include "ResCache.hpp"
@@ -41,5 +40,3 @@ class Renderer {
 		SDL_Window* win;
 
 };
-
-#endif

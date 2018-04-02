@@ -1,6 +1,4 @@
-#ifndef H_GRID
-#define H_GRID
-
+#pragma once
 
 class Grid {
 	public: 
@@ -11,4 +9,3 @@ class Grid {
 		int h;
 };
 
-#endif

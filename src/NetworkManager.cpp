@@ -23,6 +23,16 @@ void NetworkManager::connectToServer() {
 	if (!(this->socket = SDLNet_TCP_Open(&ip))) {
 		cout << "Failed to open socket: " << SDLNet_GetError() << endl;
 	}
+
+	SDLNet_TCP_AddSocket(this->set, this->socket);
+
+	SDLNet_TCP_Send(this->socket, ETB, sizeof(ETB));
+}
+
+void handlePacket(string packet) {
+	cout << ">>>" << endl;
+	cout << packet << endl;
+	cout << ">>>" << endl;
 }
 
 void NetworkManager::recvAll() {
@@ -31,14 +41,30 @@ void NetworkManager::recvAll() {
 		return;
 	}
 
-
-	char buffer[512];
-	int result = SDLNet_TCP_Recv(this->socket, buffer, sizeof(buffer));
+	char recvBuffer[1024];
+	int result = SDLNet_TCP_Recv(this->socket, recvBuffer, sizeof(recvBuffer));
 
 	if (!result) {
 		cout << "Failed to recv: " << SDLNet_GetError() << endl;
 	} else {
-		cout << "recv: " << buffer << endl;
+		cout << "recv: " << recvBuffer << endl;
+
+		this->packetBuf.append(recvBuffer);
+		memset(&recvBuffer, 0, sizeof(recvBuffer));
+
+		while (true) {
+			uint32_t dividerPos = this->packetBuf.find(ETB);
+
+			if (dividerPos == string::npos) {
+				break; 
+			} else {
+				string packet = this->packetBuf.substr(0, dividerPos);
+			
+				this->packetBuf = this->packetBuf.substr(dividerPos + 4);
+
+				handlePacket(packet);
+			}
+		}
 	}
 }
 
@@ -56,9 +82,9 @@ void NetworkManager::send(YamlNode* node, string command) {
 	node->attr("command", command);
 
 	std::string message = node->toString();
-	message.push_back(ETB);
+	message += ETB;
 
-	SDLNet_TCP_Send(this->socket, message.c_str(), sizeof(message));
+	SDLNet_TCP_Send(this->socket, message.c_str(), message.size());
 }
 
 void NetworkManager::disconnect() {
@@ -66,5 +92,7 @@ void NetworkManager::disconnect() {
 }
 
 bool NetworkManager::isConnected() {
+	SDLNet_CheckSockets(this->set, 10);
+
 	return SDLNet_SocketReady(this->socket);
 }

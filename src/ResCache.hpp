@@ -1,5 +1,4 @@
-#ifndef TEXTURE_CACHE
-#define TEXTURE_CACHE
+#pragma once
 
 #include <map>
 #include <SDL2/SDL.h>
@@ -24,5 +23,3 @@ class ResCache {
 
 		map<string, FT_Face*> fontCache;
 };
-
-#endif

@@ -56,6 +56,9 @@ void handleKeypress(SDL_KeyboardEvent key) {
 			NetworkManager::get().connectToServer();
 			NetworkManager::get().sendHelo();
 			break;
+		case SDLK_F9:
+			NetworkManager::get().sendHelo();
+			break;
 		case SDLK_BACKQUOTE:
 			ui->toggleConsole();
 

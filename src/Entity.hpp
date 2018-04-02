@@ -1,5 +1,4 @@
-#ifndef H_ENTITY
-#define H_ENTITY
+#pragma once
 
 class Entity {
 	public:
@@ -8,4 +7,3 @@ class Entity {
 		SDL_Rect* pos = new SDL_Rect;
 };
 
-#endif

@@ -1,7 +1,7 @@
-#ifndef H_YAML
-#define H_YAML
+#pragma once
 
 #include <string>
+#include <sstream>
 #include <map>
 #include <vector>
 
@@ -14,15 +14,18 @@ class YamlNode {
 		vector<YamlNode*> items;
 
 	public:
-		YamlNode* child(string name);
-		void attr(string name, string value);
-		void attr(string name, int value);
-		string attr(string name);
-		YamlNode* item();
+		YamlNode* parent = NULL;
 
-		static YamlNode* fromString(string input);
+		YamlNode* child(string name);
+		YamlNode* attr(string name, string value);
+		YamlNode* attr(string name, int value);
+		string attr(string name);
+		YamlNode* list(string title);
+		YamlNode* listitem();
+
+		static YamlNode* fromString(stringstream input);
 		string toString();
 		string toString(int level);
+		string toString(int level, bool skipLeading);
 };
 
-#endif

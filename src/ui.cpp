@@ -1,6 +1,7 @@
 #include <string>
 
 #include "Ui.hpp"
+#include "common.hpp"
 
 using namespace std;
 
@@ -27,6 +28,8 @@ void UserInterface::setupMainMenu() {
 }
 
 void UserInterface::toggleConsole() {
+	playSound("interface/interface3.wav", UI);
+
 	if (this->state == CONSOLE) {
 		this->state = PLAY;
 	} else {

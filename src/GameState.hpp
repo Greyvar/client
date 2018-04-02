@@ -1,3 +1,5 @@
+#pragma once
+
 #include "World.hpp"
 #include "Ui.hpp"
 

@@ -1,5 +1,4 @@
-#ifndef H_TILE
-#define H_TILE
+#pragma once
 
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -18,5 +17,3 @@ class Tile {
 		bool traversable;
 
 };
-
-#endif
