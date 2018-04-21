@@ -1,10 +1,11 @@
 #pragma once
 
 #include <SDL2/SDL_net.h>
+#include <queue>
 
 #include "YamlNode.hpp"
 
-#define ETB "---\n"
+const string ETB = "---\n";
 
 class NetworkManager {
 	public:
@@ -17,13 +18,15 @@ class NetworkManager {
 		NetworkManager(NetworkManager const&) = delete;
 		void operator=(NetworkManager const&) = delete;
 
-		void connectToServer();
+		void connectToServer(string server);
 
 		void sendHelo();
 
 		void send(YamlNode* node, string command);
 
 		void recvAll();
+		
+		void handlePacketQueue();
 
 		void disconnect();
 
@@ -34,8 +37,10 @@ class NetworkManager {
 			this->set = SDLNet_AllocSocketSet(1);	
 		}
 
-		string packetBuf;
+		string packetBuf = "";
 
 		TCPsocket socket;
 		SDLNet_SocketSet set;
+
+		std::queue<YamlNode*> packetQueue; 
 };

@@ -7,7 +7,7 @@
 
 class TileGrid : public Grid {
 	public:
-		TileGrid() : Grid(10, 8) {
+		TileGrid() : Grid(GRID_SIZE, GRID_SIZE) {
 			for (int col = 0; col < this->w; col++) {
 				for (int row = 0; row < this->h; row++) {
 					this->tiles[row][col] = new Tile(string("grass.png"), false);

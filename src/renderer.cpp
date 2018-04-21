@@ -1,7 +1,3 @@
-#include "GameState.hpp"
-#include "Renderer.hpp"
-#include "Ui.hpp"
-
 #include <chrono>
 
 #include <SDL2/SDL_image.h>
@@ -9,13 +5,15 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include "GameState.hpp"
+#include "Renderer.hpp"
+#include "Ui.hpp"
+#include "cvars.hpp"
 
 SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* ren, const FT_Bitmap& bitmap, const SDL_Color& color);
 
 
 void renderWorldTiles(World* world) {
-	const int TILE_SIZE = 64;
-
 	int w = world->tileGrid->w * TILE_SIZE;
 	int h = world->tileGrid->h * TILE_SIZE;
 
@@ -34,7 +32,20 @@ void renderWorldTiles(World* world) {
 			pos.w = TILE_SIZE;
 			pos.h = TILE_SIZE;
 
-			SDL_RenderCopy(Renderer::get().sdlRen, Renderer::get().resCache->loadTile(tile->textureName), NULL, &pos);
+			int rot = tile->texRot;
+			switch (rot) {
+			}
+
+			int flip = SDL_FLIP_NONE;
+			if (tile->texVFlip && tile->texHFlip) {
+				flip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
+			} else if (tile->texVFlip) {
+				flip = SDL_FLIP_VERTICAL;
+			} else if (tile->texHFlip) {
+				flip = SDL_FLIP_HORIZONTAL;
+			}
+
+			SDL_RenderCopyEx(Renderer::get().sdlRen, Renderer::get().resCache->loadTile(tile->textureName), NULL, &pos, rot, NULL, (SDL_RendererFlip)flip);
 		}
 	}
 }
@@ -166,6 +177,21 @@ void renderConsole() {
 	}
 }
 
+void renderUiMessages() {
+	uint32_t index = 0;
+
+	for (auto it : GameState::get().ui->messages) {
+		renderTextShadow(it.second, 50, (Renderer::get().window_h - 50) - (index * 50), 24);
+		index++;
+
+	}
+}
+
+void renderFps() {
+	if (cvarGetb("r_fps")) {
+		renderText("FPS: " + to_string(Renderer::get().averageFps), Renderer::get().window_w - 0, 20, {230, 230, 230}, false, CENTER, 16);
+	}
+}
 
 void Renderer::renderFrame() {
 	//std::cout << "render frame ----------------------" << std::endl;
@@ -175,7 +201,7 @@ void Renderer::renderFrame() {
 
 	World* world = GameState::get().world;
 
-	switch (GameState::get().ui->state) {
+	switch (GameState::get().ui->scene) {
 		case MENU:
 			renderMenu();
 			break;
@@ -185,10 +211,11 @@ void Renderer::renderFrame() {
 		case PLAY:
 			renderWorldTiles(world);
 			renderEntities(world);
-			renderTextShadow("Connected to ^8" + GameState::get().serverName, 20, 440, 24);
-			renderTextShadow("^1James ^7joined the game", 20, 480, 24);
 			break;
 	}
+
+	renderFps();	
+	renderUiMessages();
 
 	SDL_RenderPresent(ren);
 }

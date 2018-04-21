@@ -26,7 +26,6 @@ SDL_Texture* ResCache::loadTexture(string filename) {
 	return this->textureCache[filename];
 }
 
-
 SDL_Texture* ResCache::loadEntity(string filename) {
 	return this->loadTexture(string("entities/" + filename));
 }

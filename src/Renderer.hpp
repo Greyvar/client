@@ -4,6 +4,8 @@
 #include "ResCache.hpp"
 #include "World.hpp"
 
+#define TILE_SIZE 64
+
 class Renderer {	
 	public: 
 		static Renderer& get() {
@@ -34,6 +36,7 @@ class Renderer {
 
 		FT_Library* freetypeLib = new FT_Library;
 
+		int averageFps = 0;
 	private:
 		Renderer() {}
 

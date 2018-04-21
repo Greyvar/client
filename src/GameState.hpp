@@ -1,7 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "World.hpp"
 #include "Ui.hpp"
+#include "LocalPlayer.hpp"
 
 class GameState {
 	public:
@@ -18,15 +21,28 @@ class GameState {
 			return GameState::get().world->entityGrid->entities.at(p);
 		}
 
+		LocalPlayer* getFirstLocalPlayer() {
+			return this->localPlayers.at(0);
+		}
+
 		void loadWorld(string worldName);
 		World* world;
 
 		std::string serverName = "the construct";
 
-		UserInterface* ui = new UserInterface();
-
+		UserInterface* ui;
 	private:
-		GameState() {}
+		std::vector<LocalPlayer*> localPlayers;
+
+		GameState() {
+			// Initializing the UI here means it is delayed until the first 
+			// get() istead of at startup. This allows us more flexibility to 
+			// set cvars before startup.
+
+			this->ui = new UserInterface();
+
+			this->localPlayers.push_back(new LocalPlayer());
+		}
 };
 
 

@@ -6,7 +6,7 @@
 
 class EntityGrid : public Grid {
 	public: 
-		EntityGrid() : Grid(10, 8) {}
+		EntityGrid() : Grid(GRID_SIZE, GRID_SIZE) {}
 
 		void add(Entity* e) {
 			this->entities.push_back(e);

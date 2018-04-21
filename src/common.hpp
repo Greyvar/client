@@ -4,6 +4,8 @@
 
 std::stringstream readFile(std::string filename);
 
+void parseArguments(int argc, char* argv[]);
+
 // BEGIN https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 
 #include <algorithm>

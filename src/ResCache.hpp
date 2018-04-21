@@ -14,6 +14,7 @@ class ResCache {
 		SDL_Texture* loadEntity(string filename);
 		SDL_Texture* loadTile(string filename);
 
+
 		FT_Face* loadFont(string filename, int size);
 
 		void loadStartup();

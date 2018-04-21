@@ -27,6 +27,29 @@ string YamlNode::attr(string name) {
 	return this->attributes[name];
 }
 
+uint32_t YamlNode::attri(string key) {
+	string s = this->attributes[key];
+
+	try {
+		return stoi(s.c_str());
+	} catch (...) {
+		cout << "Yaml, number expected, got >" << s << "<" << endl;
+
+		return 0;
+	}
+}
+
+bool YamlNode::attrb(string key) {
+	if (this->attributes[key] == "true") {
+		return true;
+	} else if (this->attributes[key] == "false") {
+		return false;
+	} else {
+		cout << "wtf" << key << endl;
+		return false;
+	}
+}
+
 YamlNode* YamlNode::child(string name) {
 	if (this->items.size() > 0) {
 		throw std::invalid_argument("Cannot add child, as this node is already a list");
@@ -148,13 +171,13 @@ YamlParsedLine* parseLine(string line) {
 	return ret;
 }
 
-YamlNode* YamlNode::fromString(stringstream content) {
+YamlNode* YamlNode::fromStringstream(stringstream content) {
 	string line;
 
 	content.clear();
 	content.seekg(0, ios::beg);
 
-	cout << "parse" << endl;
+	//cout << "parse" << endl;
 
 	YamlNode* root = new YamlNode;
 	auto current = root;
@@ -167,7 +190,7 @@ YamlNode* YamlNode::fromString(stringstream content) {
 	while (getline(content, line)) {
 		pline = parseLine(line);
 
-		cout << "parsed. indentation: " << pline->indentation << "  k: " << pline->key << " v: " << pline->val << endl;
+		//cout << "parsed. indentation: " << pline->indentation << "  k: " << pline->key << " v: " << pline->val << endl;
 
 		if (pline->indentation != currentIndentation) {
 			inList = false;
@@ -181,7 +204,7 @@ YamlNode* YamlNode::fromString(stringstream content) {
 		} else if (pline->indentation < currentIndentation) {
 			for (int i = 0; i < (currentIndentation - pline->indentation); i++) {
 				current = current->parent;	
-				cout << "back" << endl;
+				//cout << "back" << endl;
 			}
 		}
 
@@ -204,9 +227,12 @@ YamlNode* YamlNode::fromString(stringstream content) {
 		currentIndentation = pline->indentation;
 	}
 
-	cout << "Finished parsing." << endl << "----------" << endl;
+	//cout << "Finished parsing." << endl << "----------" << endl;
 
 	return root;
 }
 
+YamlNode* YamlNode::fromString(string content) {
+	return nullptr;
+}
 

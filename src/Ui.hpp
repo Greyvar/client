@@ -2,16 +2,13 @@
 
 #include <iostream>
 #include <vector>
+#include <chrono>
+#include <map>
 
+#include "Scene.hpp"
 #include "common.hpp"
 
 using namespace std;
-
-enum UserInterfaceState {
-	PLAY,
-	MENU,
-	CONSOLE
-};
 
 typedef void (*MenuItemAction)(void);
 
@@ -31,6 +28,8 @@ class MenuItem {
 
 class UserInterface {
 	public:
+		chrono::system_clock::time_point lastAnimationTime = chrono::system_clock::now();
+
 		UserInterface() {
 			this->setupMainMenu();
 		}
@@ -45,7 +44,7 @@ class UserInterface {
 
 		std::string subtitle; 
 
-		UserInterfaceState state = MENU;
+		Scene scene = MENU;
 
 		void setupMainMenu();
 
@@ -82,12 +81,19 @@ class UserInterface {
 		void toggleMenu() {
 			playSound("interface/interface3.wav", UI);
 
-			if (this->state == MENU) {
-				this->state = PLAY;
+			if (this->scene == MENU) {
+				this->scene = PLAY;
 			} else {
-				this->state = MENU;
+				this->scene = MENU;
 			}
 		}
+
+		void addMessage(string message) {
+			this->messages[std::chrono::system_clock::now()] = message;
+		}
+
+		std::map<std::chrono::_V2::system_clock::time_point, string> messages;
+	private:
 };
 
 enum TextAlignment {

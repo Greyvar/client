@@ -2,10 +2,17 @@
 
 #include "Ui.hpp"
 #include "common.hpp"
+#include "cvars.hpp"
 
 using namespace std;
 
 std::string getRandomSubtitle() {
+	cout << cvarIsset("motd") << endl;
+
+	if (cvarIsset("motd")) {
+		return cvarGet("motd");
+	}
+
 	std::vector<string> subtitles;
 	subtitles.push_back("Hello there!");
 	subtitles.push_back("No Java here, buddy.");
@@ -30,9 +37,9 @@ void UserInterface::setupMainMenu() {
 void UserInterface::toggleConsole() {
 	playSound("interface/interface3.wav", UI);
 
-	if (this->state == CONSOLE) {
-		this->state = PLAY;
+	if (this->scene == CONSOLE) {
+		this->scene = PLAY;
 	} else {
-		this->state = CONSOLE;
+		this->scene = CONSOLE;
 	}
 }

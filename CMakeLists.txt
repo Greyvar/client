@@ -8,7 +8,7 @@ find_package(PkgConfig)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
-file(GLOB SOURCE_FILES src/*.cpp src/*.hpp)
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.hpp)
 add_executable(greyvar ${SOURCE_FILES})
 
 message("Source: ${SOURCE_FILES}")
@@ -29,11 +29,8 @@ if (WINDOWS)
     SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dll" ".dll.a" ".a" ".lib")
 
 	find_library(LIBSDL2NET SDL2_net HINTS lib/SDL2_net-2.0.1/x86_64-w64-mingw32/lib/)
-	find_library(LIBYAML yaml-cpp HINTS /usr/lib64/)
 
-	message("yaml: ${LIBYAML}")
-
-	target_link_libraries(greyvar mingw32 SDL2main SDL2 SDL2_image ${LIBSDL2NET} freetype m user32 gdi32 winmm ${LIBYAML})
+	target_link_libraries(greyvar mingw32 SDL2main SDL2 SDL2_image ${LIBSDL2NET} freetype m user32 gdi32 winmm)
 
 	set_target_properties(greyvar PROPERTIES LINK_SEARCH_END_STATIC 1)
 else()

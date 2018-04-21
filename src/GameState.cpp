@@ -1,3 +1,4 @@
+#include "Renderer.hpp"
 #include "GameState.hpp"
 
 void GameState::loadWorld(string worldName) {
@@ -7,8 +8,8 @@ void GameState::loadWorld(string worldName) {
 	bob->textureName = "playerRed.png";
 	bob->pos->x = 32;
 	bob->pos->y = 32;
-	bob->pos->w = 64;
-	bob->pos->h = 64;
+	bob->pos->w = TILE_SIZE;
+	bob->pos->h = TILE_SIZE;
 
 	world->addEntity(bob);
 }

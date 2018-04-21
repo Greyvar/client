@@ -19,11 +19,16 @@ class YamlNode {
 		YamlNode* child(string name);
 		YamlNode* attr(string name, string value);
 		YamlNode* attr(string name, int value);
+
 		string attr(string name);
+		uint32_t attri(string name);
+		bool attrb(string name);
+
 		YamlNode* list(string title);
 		YamlNode* listitem();
 
-		static YamlNode* fromString(stringstream input);
+		static YamlNode* fromStringstream(stringstream input);
+		static YamlNode* fromString(string input);
 		string toString();
 		string toString(int level);
 		string toString(int level, bool skipLeading);

@@ -13,6 +13,9 @@ class Tile {
 
 		string textureName;
 
+		bool texHFlip = false;
+		bool texVFlip = false;
+		int texRot = 0;
 	private:
 		bool traversable;
 
