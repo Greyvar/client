@@ -56,6 +56,10 @@ void handleTile(YamlNode* ytile) {
 	tile->texRot = ytile->attri("rot");
 }
 
+void handleMove(YamlNode* ypacket) {
+	NetworkManager::get().waitingForMove = false;
+}
+
 void handlePacket(YamlNode* ypacket) {
 	string command = ypacket->attr("command");
 
@@ -65,6 +69,16 @@ void handlePacket(YamlNode* ypacket) {
 		handlePlrj(ypacket);
 	} else if (command == "TILE") {
 		handleTile(ypacket);
+	} else if (command == "MOVE") {
+		handleMove(ypacket);
+	} else if (command == "BLKD") {
+		NetworkManager::get().waitingForMove = false;
+	} else if (command == "SPWN") {
+		auto rp = new RemotePlayer();
+		rp->ent->pos->x = ypacket->attri("x");
+		rp->ent->pos->y = ypacket->attri("y");
+
+		GameState::get().onPlayerSpawn(rp);
 	} else {
 		cout << "Unhandled server command: " << command << endl;
 	}
@@ -131,6 +145,15 @@ void NetworkManager::send(YamlNode* node, string command) {
 	message += ETB;
 
 	SDLNet_TCP_Send(this->socket, message.c_str(), message.size());
+}
+
+void NetworkManager::sendMovr(int x, int y) {
+	YamlNode* movr = new YamlNode();
+	movr->attr("x", x);
+	movr->attr("y", y);
+
+	this->waitingForMove = true;
+	this->send(movr, "MOVR");
 }
 
 void NetworkManager::disconnect() {

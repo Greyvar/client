@@ -1,0 +1,5 @@
+#if GREYVAR_PLATFORM == WIN
+#endif
+
+#if GREYVAR_PLATFORM == LINUX
+#endif

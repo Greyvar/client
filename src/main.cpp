@@ -23,19 +23,42 @@ void eventHandler() {
 	SDL_Event e;
 
 	while (SDL_PollEvent(&e) != 0) {
-		
 		switch (e.type) {
 			case SDL_TEXTINPUT:
 			case SDL_TEXTEDITING:
 			case SDL_MOUSEMOTION:
 			case SDL_MOUSEWHEEL:
-			case SDL_JOYDEVICEADDED: // we use the controller api
+			case SDL_JOYBUTTONDOWN: // we use the controller api
+			case SDL_JOYBUTTONUP:
+			case SDL_JOYDEVICEADDED: 
 			case SDL_JOYAXISMOTION: // ^^
 				break;
 
+			case SDL_CONTROLLERBUTTONDOWN:
+				recvGamepadButtonDown(e);
+				break;
+			case SDL_CONTROLLERBUTTONUP:
+				recvGamepadButtonUp(e);
+				break;
+
 			case SDL_WINDOWEVENT:
-				SDL_GetWindowSize(Renderer::get().getWindow(), &Renderer::get().window_w, &Renderer::get().window_h);
-				cout << "window changed" << endl;
+				switch (e.window.event) {
+					case SDL_WINDOWEVENT_SHOWN:
+						cout << "Main window shown" << endl;
+						// no-break
+					case SDL_WINDOWEVENT_RESIZED:
+					case SDL_WINDOWEVENT_SIZE_CHANGED:
+						SDL_GetWindowSize(Renderer::get().getWindow(), &Renderer::get().window_w, &Renderer::get().window_h);
+						break;
+					case SDL_WINDOWEVENT_MINIMIZED:
+						cout << "min" << e.window.type << endl;
+					case SDL_WINDOWEVENT_ENTER:
+					case SDL_WINDOWEVENT_LEAVE:
+						break;
+					default: 
+						break;
+				}
+
 				break;
 			case SDL_QUIT:
 				doTheLoopyLoop = false;
@@ -50,7 +73,7 @@ void eventHandler() {
 				recvKeyupInput(e);
 				break;
 			case SDL_AUDIODEVICEADDED:
-				std::cout << "Audio device found" << std::endl;
+				std::cout << "Audio device found: " << SDL_GetAudioDeviceName(e.adevice.which, e.adevice.iscapture) << std::endl;
 				break;
 			case SDL_CONTROLLERDEVICEADDED:
 				reinitGamepads();
@@ -75,7 +98,7 @@ void mainLoopRecvInput() {
 void mainLoopProcess() {
 	NetworkManager::get().handlePacketQueue();
 
-	bindPlayerInput();
+	lookupActionBindingForPlayerInput();
 	executeActionInputs();
 }
 
@@ -145,7 +168,11 @@ void quitLibraries() {
 }
 
 int main(int argc, char* argv[]) {
+	cout << "Greyvar " << endl << "-------" << endl;
+
 	cvarInit();
+	loadHomedirConfigurationFile();
+
 	parseArguments(argc, argv);
 
 	initLibraries();

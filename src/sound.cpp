@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 
+#include "cvars.hpp"
 #include "common.hpp"
 
 using namespace std;
@@ -27,7 +28,7 @@ Mix_Chunk* loadSound(string filename) {
 		soundCache[filename] = snd;
 	}
 
-	Mix_Volume(SoundChannel::UI, MIX_MAX_VOLUME / 10);
+	Mix_Volume(SoundChannel::UI, cvarGeti("snd_channel_ui_volume"));
 
 	return soundCache[filename];
 }

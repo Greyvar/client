@@ -9,18 +9,24 @@
 #include "common.hpp"
 #include "cvars.hpp"
 #include "GameState.hpp"
+#include "NetworkManager.hpp"
 
 using namespace std;
 using namespace std::chrono;
 
 queue<PlayerInput*> boundPlayerInputQueue;
 
-class InputState {
+/**
+This class implements;
+
+- input rate limiting
+- input semaphores
+
+*/
+class InputFirewall {
 	public:
 	bool canDo(ActionInput ai) {
 		ActionInputType ait = this->getActionInputType(ai);
-
-		cout << "canDo" << endl;
 
 		switch (ait) {
 			case USE_MENU: return this->canUseMenu();
@@ -28,7 +34,7 @@ class InputState {
 			case OTHER: return true;
 		}
 
-		cout << "ait not checked: " << ait << endl;
+		cout << "canDo() - ait not checked: " << ait << endl;
 
 		return false;
 	}
@@ -47,29 +53,32 @@ class InputState {
 	}
 
 	bool canWalk() {
-		cout << "walk" << endl;
-		return false;
+		if (NetworkManager::get().waitingForMove) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	system_clock::time_point nextMenuAction = system_clock::now();
 
 	bool canUseMenu() {
 		if (system_clock::now() > nextMenuAction) {
-			nextMenuAction = system_clock::now() + milliseconds(500);
+			nextMenuAction = system_clock::now() + milliseconds(350);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-} inputState;
+} inputFirewall;
 
 void executeSinglePlayerInput(PlayerInput* pi) {
 	if (cvarGetb("debug_playerinput")) {
 		cout << "pi executeAction " << pi << endl;
 	}
 
-	if (inputState.canDo(pi->actionInput)) {
+	if (inputFirewall.canDo(pi->actionInput)) {
 		switch (pi->actionInput) {
 			case MENU_DOWN:
 				GameState::get().ui->selectNextMenuItem();
@@ -82,6 +91,18 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 				break;
 			case MENU_SHOW:
 				GameState::get().ui->scene = MENU;
+				break;
+			case WALK_UP:
+				NetworkManager::get().sendMovr(0, 1);
+				break;
+			case WALK_DOWN:
+				NetworkManager::get().sendMovr(0, -1);
+				break;
+			case WALK_LEFT:
+				NetworkManager::get().sendMovr(-1, 0);
+				break;
+			case WALK_RIGHT:
+				NetworkManager::get().sendMovr(1, 0);
 				break;
 			case QUIT:
 				SDL_Event e;
@@ -99,8 +120,10 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 void executeActionInputs() {
 	while (!boundPlayerInputQueue.empty()) {
 		PlayerInput* pi = boundPlayerInputQueue.front();
-
+	
 		executeSinglePlayerInput(pi);
+
+		//actionExecutables(pi->actionInput)();
 
 		boundPlayerInputQueue.pop();
 	}

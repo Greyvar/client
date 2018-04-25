@@ -233,6 +233,6 @@ YamlNode* YamlNode::fromStringstream(stringstream content) {
 }
 
 YamlNode* YamlNode::fromString(string content) {
-	return nullptr;
+	return YamlNode::fromStringstream(stringstream(content));
 }
 

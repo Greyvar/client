@@ -6,3 +6,5 @@ void initSound();
 void quitGame();
 
 void quitSound();
+
+void loadHomedirConfigurationFile();

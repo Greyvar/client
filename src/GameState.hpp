@@ -5,6 +5,7 @@
 #include "World.hpp"
 #include "Ui.hpp"
 #include "LocalPlayer.hpp"
+#include "RemotePlayer.hpp"
 
 class GameState {
 	public:
@@ -16,6 +17,8 @@ class GameState {
 
 			return instance;
 		}
+
+		void onPlayerSpawn(RemotePlayer* rp);
 
 		Entity* getPlayer(int p) {
 			return GameState::get().world->entityGrid->entities.at(p);
@@ -33,6 +36,7 @@ class GameState {
 		UserInterface* ui;
 	private:
 		std::vector<LocalPlayer*> localPlayers;
+		std::vector<RemotePlayer*> remotePlayers;
 
 		GameState() {
 			// Initializing the UI here means it is delayed until the first 

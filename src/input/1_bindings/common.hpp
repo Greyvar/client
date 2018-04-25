@@ -12,4 +12,4 @@ extern queue<PlayerInput*> unboundPlayerInputQueue;
 void inputBind(Scene scene, HidInput hidInput, ActionInput ai);
 void defaultInputBindings();
 
-void bindPlayerInput();
+void lookupActionBindingForPlayerInput();

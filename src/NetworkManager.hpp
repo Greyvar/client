@@ -22,6 +22,10 @@ class NetworkManager {
 
 		void sendHelo();
 
+		void sendMovr(int x, int y);
+
+		bool waitingForMove = false;
+
 		void send(YamlNode* node, string command);
 
 		void recvAll();

@@ -1,4 +1,5 @@
 #include <queue>
+#include <iostream>
 
 #include "PlayerInput.hpp"
 #include "input/1_bindings/common.hpp"
@@ -32,3 +33,4 @@ void PlayerInput::queue() {
 
 	unboundPlayerInputQueue.push(this);
 }
+

@@ -2,13 +2,19 @@
 
 #include <map>
 
+using namespace std;
+
 void cvarInit();
 
-void cvarSet(std::string key, std::string val);
-void cvarSetb(std::string key, bool val);
+void cvarSet(string key, string val, string source);
+void cvarSet(string key, string val);
+void cvarSetb(string key, bool val);
+void cvarSeti(string key, int val);
+void cvarSeti(string key, int val, string from);
 
-std::string cvarGet(std::string key);
-bool cvarGetb(std::string key);
+string cvarGet(string key);
+bool cvarGetb(string key);
+int cvarGeti(string key);
 
-bool cvarIsset(std::string key);
+bool cvarIsset(string key);
 

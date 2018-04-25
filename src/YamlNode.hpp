@@ -8,13 +8,12 @@
 using namespace std;
 
 class YamlNode {
-	private: 
+	public: 
+		YamlNode* parent = NULL;
+
 		map<string, string> attributes;
 		map<string, YamlNode*> children;
 		vector<YamlNode*> items;
-
-	public:
-		YamlNode* parent = NULL;
 
 		YamlNode* child(string name);
 		YamlNode* attr(string name, string value);

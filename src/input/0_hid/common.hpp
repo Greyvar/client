@@ -8,5 +8,7 @@ void recvKeydownInput(SDL_Event e);
 void recvKeyupInput(SDL_Event e);
 void recvKeyboardInput();
 void recvGamepadInputs();
+void recvGamepadButtonUp(SDL_Event e);
+void recvGamepadButtonDown(SDL_Event e);
 void reinitGamepads();
 void resetKeyboard();

@@ -28,8 +28,6 @@ class MenuItem {
 
 class UserInterface {
 	public:
-		chrono::system_clock::time_point lastAnimationTime = chrono::system_clock::now();
-
 		UserInterface() {
 			this->setupMainMenu();
 		}

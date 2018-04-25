@@ -1,5 +1,7 @@
 #pragma once
 
+#include "build.hpp"
+
 #include <sstream>
 
 std::stringstream readFile(std::string filename);

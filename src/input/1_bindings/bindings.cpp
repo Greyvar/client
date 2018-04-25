@@ -26,16 +26,16 @@ void defaultInputBindings() {
 	inputBind(MENU, KEY_RETURN, MENU_ITEM_SELECT);
 
 	inputBind(PLAY, KEY_ESCAPE, QUIT);
-	inputBind(PLAY, KEY_ARROW_UP, WALK_UP);
-	inputBind(PLAY, KEY_ARROW_DOWN, WALK_DOWN);
-	inputBind(PLAY, KEY_ARROW_LEFT, WALK_LEFT);
-	inputBind(PLAY, KEY_ARROW_RIGHT, WALK_RIGHT);
+	inputBind(PLAY, KEY_W, WALK_UP);
+	inputBind(PLAY, KEY_S, WALK_DOWN);
+	inputBind(PLAY, KEY_A, WALK_LEFT);
+	inputBind(PLAY, KEY_D, WALK_RIGHT);
 	inputBind(PLAY, KEY_TAB, MENU_SHOW);
 
 	inputBind(CONSOLE, KEY_RETURN, MENU_UP);
 }
 
-void bindPlayerInput() {
+void lookupActionBindingForPlayerInput() {
 	while (!unboundPlayerInputQueue.empty()) {
 		PlayerInput* pi = unboundPlayerInputQueue.front();
 
@@ -44,7 +44,7 @@ void bindPlayerInput() {
 		unboundPlayerInputQueue.pop();
 
 		if (pi->actionInput == AI_NOOP) {
-			cout << "unbound input: " << pi->hidInput << endl;
+			cout << "unbound input: " << pi << endl;
 		} else { 
 			cout << "bound input: " << pi->hidInput << " to " << pi->actionInput << endl;
 			boundPlayerInputQueue.push(pi);

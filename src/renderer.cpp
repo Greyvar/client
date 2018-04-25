@@ -212,6 +212,8 @@ void Renderer::renderFrame() {
 			renderWorldTiles(world);
 			renderEntities(world);
 			break;
+		case NONE:
+			renderBackgroundSolidColor({30, 30, 30});
 	}
 
 	renderFps();	

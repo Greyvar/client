@@ -33,7 +33,7 @@ if (WINDOWS)
 	target_link_libraries(greyvar mingw32 SDL2main SDL2 SDL2_image ${LIBSDL2NET} freetype m user32 gdi32 winmm)
 
 	set_target_properties(greyvar PROPERTIES LINK_SEARCH_END_STATIC 1)
-else()
+elseif(UNIX)
 	message("Linux Build")
 
 	target_include_directories(greyvar PUBLIC /usr/include/freetype2)
@@ -42,5 +42,5 @@ else()
 	target_link_libraries(greyvar SDL2 SDL2_image freetype SDL2_net SDL2_mixer yaml)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++14")
 

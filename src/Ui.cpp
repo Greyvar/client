@@ -29,7 +29,8 @@ void UserInterface::setupMainMenu() {
 
 	this->mainMenu.push_back(new MenuItem("Play", &startGame));
 	this->mainMenu.push_back(new MenuItem("Settings", &quitGame));
-	this->mainMenu.push_back(new MenuItem("Quit", &quitGame));
+	this->mainMenu.push_back(new MenuItem("About", &quitGame));
+	this->mainMenu.push_back(new MenuItem("Quit", []{ quitGame(); }));
 
 	this->currentMenu = &(this->mainMenu);	
 }
