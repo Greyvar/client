@@ -39,8 +39,8 @@ elseif(UNIX)
 	target_include_directories(greyvar PUBLIC /usr/include/freetype2)
 
 	set_target_properties(greyvar PROPERTIES OUTPUT_NAME "greyvar_linux")
-	target_link_libraries(greyvar SDL2 SDL2_image freetype SDL2_net SDL2_mixer yaml)
+	target_link_libraries(greyvar SDL2 SDL2_image freetype SDL2_net SDL2_mixer)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++14 -fsanitize=address")
 
