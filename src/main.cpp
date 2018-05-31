@@ -136,8 +136,8 @@ void startGame() {
 	GameState::get().ui->scene = PLAY;
 }
 
-void quitGame() {
-	std::cout << "quitGame()" << endl;
+void pushSdlQuit() {
+	std::cout << "pushSdlQuit()" << endl;
 
 	SDL_Event e;
 	e.type = SDL_QUIT;
@@ -161,6 +161,10 @@ void processInitialCvars() {
 	if (cvarIsset("server")) {
 		NetworkManager::get().connectToServer(cvarGet("server"));
 	}
+}
+
+void quitGame() {
+	GameState::get().clear();
 }
 
 void quitLibraries() {
@@ -188,6 +192,9 @@ int main(int argc, char* argv[]) {
 
 	mainLoop();
 
+	SDL_DestroyWindow(win);
+
+	quitGame();
 	quitLibraries();
 	SDL_Quit();
 

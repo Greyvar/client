@@ -12,16 +12,19 @@ class GameState {
 		GameState(GameState const&) = delete;
 		void operator=(GameState const&) = delete;
 
+		void clear();
+
 		static GameState& get() {
 			static GameState instance;
 
 			return instance;
 		}
 
-		void onPlayerSpawn(RemotePlayer* rp);
+		void onPlayerJoin(RemotePlayer* rp);
 
-		Entity* getPlayer(int p) {
-			return GameState::get().world->entityGrid->entities.at(p);
+
+		RemotePlayer* getRemotePlayerById(int p) {
+			return GameState::get().remotePlayers[p];
 		}
 
 		LocalPlayer* getFirstLocalPlayer() {
@@ -36,7 +39,7 @@ class GameState {
 		UserInterface* ui;
 	private:
 		std::vector<LocalPlayer*> localPlayers;
-		std::vector<RemotePlayer*> remotePlayers;
+		std::map<int, RemotePlayer*> remotePlayers;
 
 		GameState() {
 			// Initializing the UI here means it is delayed until the first 
@@ -45,7 +48,11 @@ class GameState {
 
 			this->ui = new UserInterface();
 
-			this->localPlayers.push_back(new LocalPlayer());
+			auto lp = new LocalPlayer();
+			lp->inputDevice.type = KEYBOARD;
+			lp->inputDevice.device.keyboard = 1;
+
+			this->localPlayers.push_back(lp);
 		}
 };
 

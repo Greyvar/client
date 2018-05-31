@@ -17,17 +17,17 @@ void handleGamepadAxis(SDL_GameController* controller, LocalPlayer* lp) {
 
 	if (abs(axisX) > DEAD_ZONE) {
 		if (axisX > 0) {
-			new PlayerInput(lp, GAMEPAD_JOYSTICK_UP);
+			new PlayerInput(lp, GAMEPAD_JOYSTICK_RIGHT);
 		} else {
-			new PlayerInput(lp, GAMEPAD_JOYSTICK_DOWN);
+			new PlayerInput(lp, GAMEPAD_JOYSTICK_LEFT);
 		}
 	} 
 
 	if (abs(axisY) > DEAD_ZONE) {
 		if (axisY > 0) {
-			new PlayerInput(lp, GAMEPAD_JOYSTICK_RIGHT);
+			new PlayerInput(lp, GAMEPAD_JOYSTICK_DOWN);
 		} else {
-			new PlayerInput(lp, GAMEPAD_JOYSTICK_LEFT);
+			new PlayerInput(lp, GAMEPAD_JOYSTICK_UP);
 		}
 	} 
 }
@@ -69,7 +69,12 @@ void reinitGamepads() {
 			} else {
 				cout << "Found gamepad " << i << ": " << SDL_GameControllerName(controller) << endl;
 
-				gamepadsForLocalPlayers[controller] = new LocalPlayer();
+				auto lp = new LocalPlayer();
+				lp->inputDevice.type = GAMEPAD;
+				lp->inputDevice.device.gamepad = controller;
+
+				gamepadsForLocalPlayers[controller] = lp;
+
 			}
 		}
 	}

@@ -30,7 +30,16 @@ void defaultInputBindings() {
 	inputBind(PLAY, KEY_S, WALK_DOWN);
 	inputBind(PLAY, KEY_A, WALK_LEFT);
 	inputBind(PLAY, KEY_D, WALK_RIGHT);
+	inputBind(PLAY, KEY_ARROW_LEFT, WALK_LEFT);
+	inputBind(PLAY, KEY_ARROW_RIGHT, WALK_RIGHT);
+	inputBind(PLAY, KEY_ARROW_UP, WALK_UP);
+	inputBind(PLAY, KEY_ARROW_DOWN, WALK_DOWN);
 	inputBind(PLAY, KEY_TAB, MENU_SHOW);
+
+	inputBind(PLAY, GAMEPAD_JOYSTICK_LEFT, WALK_LEFT);
+	inputBind(PLAY, GAMEPAD_JOYSTICK_RIGHT, WALK_RIGHT);
+	inputBind(PLAY, GAMEPAD_JOYSTICK_UP, WALK_UP);
+	inputBind(PLAY, GAMEPAD_JOYSTICK_DOWN, WALK_DOWN);
 
 	inputBind(CONSOLE, KEY_RETURN, MENU_UP);
 }
@@ -45,6 +54,7 @@ void lookupActionBindingForPlayerInput() {
 
 		if (pi->actionInput == AI_NOOP) {
 			cout << "unbound input: " << pi << endl;
+			delete(pi);
 		} else { 
 			cout << "bound input: " << pi->hidInput << " to " << pi->actionInput << endl;
 			boundPlayerInputQueue.push(pi);

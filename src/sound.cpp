@@ -48,6 +48,12 @@ void initSound() {
 void quitSound() {
 	cout << "quit sound" << endl;
 
+	for (auto it : soundCache) {
+//		delete(it.second);
+	}
+
+	soundCache.clear();
+
 	Mix_Quit();
 }
 

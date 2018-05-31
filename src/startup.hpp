@@ -3,7 +3,7 @@
 void initCvars();
 void initFreetype();
 void initSound();
-void quitGame();
+void pushSdlQuit();
 
 void quitSound();
 

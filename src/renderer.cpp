@@ -13,12 +13,18 @@
 SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* ren, const FT_Bitmap& bitmap, const SDL_Color& color);
 
 
-void renderWorldTiles(World* world) {
-	int w = world->tileGrid->w * TILE_SIZE;
-	int h = world->tileGrid->h * TILE_SIZE;
+void renderGridTiles(World* world) {
+	int windowWidth = 2 * floor(Renderer::get().window_w / 2);
+	int windowHeight = 2 * floor(Renderer::get().window_h / 2);
 
-	int padx = (Renderer::get().window_w - w) / 2;
-	int pady = (Renderer::get().window_h - h) / 2;
+//	int tileRenderLength = std::min(windowWidth, windowHeight) / 16;
+	int tileRenderLength = TILE_SIZE;
+
+	int gridTilesWidth = world->tileGrid->w * tileRenderLength;
+	int gridTilesHeight = world->tileGrid->h * tileRenderLength;
+
+	int padx = (windowWidth - gridTilesWidth) / 2;
+	int pady = (windowHeight - gridTilesHeight) / 2;
 
 	for (int row = 0; row < world->tileGrid->h; row++) {
 		for (int col = 0; col < world->tileGrid->w; col++) {
@@ -27,14 +33,12 @@ void renderWorldTiles(World* world) {
 			SDL_Rect pos;
 
 
-			pos.x = padx + (col * TILE_SIZE);
-			pos.y = pady + (row * TILE_SIZE);
-			pos.w = TILE_SIZE;
-			pos.h = TILE_SIZE;
+			pos.x = padx + (col * tileRenderLength);
+			pos.y = pady + (row * tileRenderLength);
+			pos.w = tileRenderLength;
+			pos.h = tileRenderLength;
 
 			int rot = tile->texRot;
-			switch (rot) {
-			}
 
 			int flip = SDL_FLIP_NONE;
 			if (tile->texVFlip && tile->texHFlip) {
@@ -50,7 +54,7 @@ void renderWorldTiles(World* world) {
 	}
 }
 
-void renderEntities(World* world) {
+void renderGridEntities(World* world) {
 	for (auto e : world->entityGrid->entities) {
 		SDL_RenderCopy(Renderer::get().sdlRen, Renderer::get().resCache->loadEntity(e->textureName), NULL, e->pos);
 	}
@@ -164,7 +168,13 @@ void renderMenu() {
 	pos.x = (Renderer::get().window_w / 2) + (sin(ms.count() * .0005) * 250);
 	pos.y = Renderer::get().window_h - pos.h + 4;
 
-	SDL_RenderCopy(Renderer::get().sdlRen, Renderer::get().resCache->loadEntity("playerRed.png"), NULL, &pos);
+	SDL_Texture* texPlayer = Renderer::get().resCache->loadEntity("playerBob.png");
+
+	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, NULL, &pos);
+
+//	SDL_SetTextureColorMod(texPlayer, 255, 90, 90);
+
+//	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, NULL, &pos);
 }
 
 void renderConsole() {
@@ -209,8 +219,8 @@ void Renderer::renderFrame() {
 			renderConsole();
 			break;
 		case PLAY:
-			renderWorldTiles(world);
-			renderEntities(world);
+			renderGridTiles(world);
+			renderGridEntities(world);
 			break;
 		case NONE:
 			renderBackgroundSolidColor({30, 30, 30});

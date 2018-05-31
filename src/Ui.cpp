@@ -3,11 +3,12 @@
 #include "Ui.hpp"
 #include "common.hpp"
 #include "cvars.hpp"
+#include "startup.hpp"
 
 using namespace std;
 
 std::string getRandomSubtitle() {
-	cout << cvarIsset("motd") << endl;
+	cout << "is motd set? " << cvarIsset("motd") << endl;
 
 	if (cvarIsset("motd")) {
 		return cvarGet("motd");
@@ -28,9 +29,9 @@ void UserInterface::setupMainMenu() {
 	this->subtitle = getRandomSubtitle();
 
 	this->mainMenu.push_back(new MenuItem("Play", &startGame));
-	this->mainMenu.push_back(new MenuItem("Settings", &quitGame));
-	this->mainMenu.push_back(new MenuItem("About", &quitGame));
-	this->mainMenu.push_back(new MenuItem("Quit", []{ quitGame(); }));
+	this->mainMenu.push_back(new MenuItem("Settings", &pushSdlQuit));
+	this->mainMenu.push_back(new MenuItem("About", &pushSdlQuit));
+	this->mainMenu.push_back(new MenuItem("Quit", []{ pushSdlQuit(); }));
 
 	this->currentMenu = &(this->mainMenu);	
 }

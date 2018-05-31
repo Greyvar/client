@@ -22,4 +22,6 @@ void loadHomedirConfigurationFile() {
 	for (auto p : config->attributes) {
 		cvarSet(p.first, p.second, "config file");
 	}
+
+	delete(config);
 }

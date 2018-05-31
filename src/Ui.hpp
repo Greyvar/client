@@ -12,7 +12,6 @@ using namespace std;
 
 typedef void (*MenuItemAction)(void);
 
-void quitGame();
 void startGame();
 
 class MenuItem {

@@ -96,7 +96,7 @@ string YamlNode::toString(int level, bool skipLeading) {
 	bool outputStarted = false;
 
 	for (auto pair : this->attributes) {
-		if (outputStarted || (!outputStarted && !skipLeading)) {
+		if (outputStarted || !skipLeading) {
 			out << string(level * 2, ' ');
 		}
 		
@@ -225,7 +225,10 @@ YamlNode* YamlNode::fromStringstream(stringstream content) {
 		}
 
 		currentIndentation = pline->indentation;
+	
+		delete(pline);
 	}
+
 
 	//cout << "Finished parsing." << endl << "----------" << endl;
 

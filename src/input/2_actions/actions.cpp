@@ -93,10 +93,10 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 				GameState::get().ui->scene = MENU;
 				break;
 			case WALK_UP:
-				NetworkManager::get().sendMovr(0, 1);
+				NetworkManager::get().sendMovr(0, -1);
 				break;
 			case WALK_DOWN:
-				NetworkManager::get().sendMovr(0, -1);
+				NetworkManager::get().sendMovr(0, 1);
 				break;
 			case WALK_LEFT:
 				NetworkManager::get().sendMovr(-1, 0);
@@ -126,6 +126,8 @@ void executeActionInputs() {
 		//actionExecutables(pi->actionInput)();
 
 		boundPlayerInputQueue.pop();
+
+		delete(pi);
 	}
 
 }

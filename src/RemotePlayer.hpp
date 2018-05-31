@@ -10,6 +10,7 @@ class RemotePlayer {
 	public:
 		RemotePlayer();
 
+		int id;
 		string username;
 		Entity* ent = new Entity();
 };

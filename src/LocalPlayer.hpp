@@ -1,8 +1,10 @@
 #pragma once
 
 #include "RemotePlayer.hpp"
+#include "input/InputDevice.hpp"
 
 class LocalPlayer {
 	public: 
-		RemotePlayer* player;
+		RemotePlayer* remote;
+		InputDevice inputDevice;
 };

@@ -8,7 +8,7 @@
 
 class PlayerInput {
 	public:
-		PlayerInput(LocalPlayer* localPlayer);
+		explicit PlayerInput(LocalPlayer* localPlayer);
 		PlayerInput(LocalPlayer* localPlayer, HidInput hidInput);
 
 		void hidInputQueue(HidInput hidInput);

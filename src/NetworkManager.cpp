@@ -28,9 +28,11 @@ void NetworkManager::connectToServer(string server) {
 
 	SDLNet_TCP_AddSocket(this->set, this->socket);
 
-	SDLNet_TCP_Send(this->socket, ETB.c_str(), ETB.size());
+	if (this->isConnected()) {
+		SDLNet_TCP_Send(this->socket, ETB.c_str(), ETB.size());
 
-	this->sendHelo();
+		this->sendHelo();
+	}
 }
 
 void handleWelc(YamlNode* welc) {
@@ -41,6 +43,12 @@ void handleWelc(YamlNode* welc) {
 
 void handlePlrj(YamlNode* plrj) {
 	GameState::get().ui->addMessage("^1" + plrj->attr("nickname") + " ^7joined the server");
+
+	auto rp = new RemotePlayer();
+	rp->id = plrj->attri("id");
+	rp->username = plrj->attr("username");
+
+	GameState::get().onPlayerJoin(rp);
 }
 
 void handleTile(YamlNode* ytile) {
@@ -58,6 +66,13 @@ void handleTile(YamlNode* ytile) {
 
 void handleMove(YamlNode* ypacket) {
 	NetworkManager::get().waitingForMove = false;
+
+	auto ent = GameState::get().getRemotePlayerById(ypacket->attri("playerId"))->ent;
+
+	ent->pos->x = ypacket->attri("posX");
+	ent->pos->y = ypacket->attri("posY");
+	
+	cout << "player pos: " << ent->pos->x << ":" << ent->pos->y << endl;
 }
 
 void handlePacket(YamlNode* ypacket) {
@@ -74,11 +89,10 @@ void handlePacket(YamlNode* ypacket) {
 	} else if (command == "BLKD") {
 		NetworkManager::get().waitingForMove = false;
 	} else if (command == "SPWN") {
-		auto rp = new RemotePlayer();
+		auto rp = GameState::get().getRemotePlayerById(ypacket->attri("id"));
+
 		rp->ent->pos->x = ypacket->attri("x");
 		rp->ent->pos->y = ypacket->attri("y");
-
-		GameState::get().onPlayerSpawn(rp);
 	} else {
 		cout << "Unhandled server command: " << command << endl;
 	}
@@ -91,6 +105,8 @@ void NetworkManager::handlePacketQueue() {
 		handlePacket(packet);
 
 		this->packetQueue.pop();
+
+		delete(packet);
 	}
 }
 
@@ -105,7 +121,7 @@ void NetworkManager::recvAll() {
 			cout << "Failed to recv: " << SDLNet_GetError() << endl;
 			return;
 		} else {
-			this->packetBuf.append(recvBuffer);
+			this->packetBuf.append(recvBuffer, sizeof(recvBuffer));
 
 			while (true) {
 				string::size_type dividerPos = this->packetBuf.find(ETB);
@@ -134,8 +150,6 @@ void NetworkManager::sendHelo() {
 	helo->attr("username", cvarGet("username"));
 
 	this->send(helo, "HELO");
-
-	delete helo;
 }
 
 void NetworkManager::send(YamlNode* node, string command) {
@@ -145,6 +159,8 @@ void NetworkManager::send(YamlNode* node, string command) {
 	message += ETB;
 
 	SDLNet_TCP_Send(this->socket, message.c_str(), message.size());
+
+	delete(node);
 }
 
 void NetworkManager::sendMovr(int x, int y) {
