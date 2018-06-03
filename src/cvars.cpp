@@ -61,7 +61,17 @@ bool cvarGetb(string key) {
 }
 
 int cvarGeti(string key) {
-	return stoi(cvarGet(key));
+	return cvarGeti(key, 0);
+}
+
+int cvarGeti(string key, int def) {
+	string i = cvarGet(key);
+
+	if (i == "") {
+		return def;
+	} else {
+		return stoi(cvarGet(key));
+	}
 }
 
 void cvarSeti(string key, int val) {

@@ -10,5 +10,6 @@ void recvKeyboardInput();
 void recvGamepadInputs();
 void recvGamepadButtonUp(SDL_Event e);
 void recvGamepadButtonDown(SDL_Event e);
-void reinitGamepads();
+void initGamepad(Sint32 which);
+void removeGamepad(Sint32 which);
 void resetKeyboard();

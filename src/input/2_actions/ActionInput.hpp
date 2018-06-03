@@ -15,6 +15,9 @@ enum ActionInput {
 	MENU_ITEM_SELECT,
 	MENU_SHOW,
 
+	JOIN_GAME,
+	LEAVE_GAME,
+
 	QUIT
 };
 

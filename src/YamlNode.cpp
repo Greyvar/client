@@ -31,7 +31,7 @@ uint32_t YamlNode::attri(string key) {
 	string s = this->attributes[key];
 
 	try {
-		return stoi(s.c_str());
+		return stoul(s.c_str());
 	} catch (...) {
 		cout << "Yaml, number expected, got >" << s << "<" << endl;
 

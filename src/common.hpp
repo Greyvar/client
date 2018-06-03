@@ -35,10 +35,3 @@ static inline void trim(std::string &s) {
 
 // END https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 
-enum SoundChannel {
-	UI = 1,
-	PLAYER = 2,
-};
-
-
-void playSound(std::string filename, SoundChannel ch);

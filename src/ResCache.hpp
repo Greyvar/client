@@ -11,7 +11,10 @@ using namespace std;
 class ResCache {
 	public:
 		SDL_Texture* loadTexture(string filename);
+		SDL_Texture* loadTexture(string filename, uint32_t primaryColor);
 		SDL_Texture* loadEntity(string filename);
+		SDL_Texture* loadEntity(string filename, uint32_t primaryColor);
+		SDL_Texture* loadHud(string filename);
 		SDL_Texture* loadTile(string filename);
 
 

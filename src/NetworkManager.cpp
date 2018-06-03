@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <SDL2/SDL_net.h>
+#include <byteswap.h>
 
 #include "YamlNode.hpp"
 #include "NetworkManager.hpp"
@@ -31,24 +32,14 @@ void NetworkManager::connectToServer(string server) {
 	if (this->isConnected()) {
 		SDLNet_TCP_Send(this->socket, ETB.c_str(), ETB.size());
 
-		this->sendHelo();
+		this->sendInit();
 	}
 }
 
 void handleWelc(YamlNode* welc) {
 	cout << "Server version is: " << welc->attr("serverVersion") << endl;
-	GameState::get().ui->scene = PLAY;
-	GameState::get().ui->addMessage("Connected to " + welc->attr("name"));
-}
-
-void handlePlrj(YamlNode* plrj) {
-	GameState::get().ui->addMessage("^1" + plrj->attr("nickname") + " ^7joined the server");
-
-	auto rp = new RemotePlayer();
-	rp->id = plrj->attri("id");
-	rp->username = plrj->attr("username");
-
-	GameState::get().onPlayerJoin(rp);
+	GameState::get().gui->scene = PLAY;
+	GameState::get().gui->addMessage("Connected to " + welc->attr("name"));
 }
 
 void handleTile(YamlNode* ytile) {
@@ -75,11 +66,39 @@ void handleMove(YamlNode* ypacket) {
 	cout << "player pos: " << ent->pos->x << ":" << ent->pos->y << endl;
 }
 
+void handlePlayerQuit(YamlNode* ypacket) {
+	GameState::get().removePlayerById(ypacket->attri("id")); 
+}
+
+void handlePlayerAlreadyHere(YamlNode* ypacket) {
+	auto rp = new RemotePlayer();
+	rp->id = ypacket->attri("id");
+	rp->username = ypacket->attr("username");
+	rp->ent->primaryColor = __bswap_32(ypacket->attri("color"));
+
+	GameState::get().onPlayerJoin(rp);
+}
+
+void handlePlrj(YamlNode* plrj) {
+	GameState::get().gui->addMessage(plrj->attr("username") + " joined the server");
+
+	handlePlayerAlreadyHere(plrj);
+}
+
+void handlePlayerYou(YamlNode* ypacket) {
+	auto rp = GameState::get().getRemotePlayerById(ypacket->attri("id"));
+
+	NetworkManager::get().lastLocalPlayerToJoin->remote = rp;
+	NetworkManager::get().lastLocalPlayerToJoin = NULL;
+}
+
 void handlePacket(YamlNode* ypacket) {
 	string command = ypacket->attr("command");
 
 	if (command == "WELC") {
 		handleWelc(ypacket);
+	} else if (command == "PLRU") { 
+		handlePlayerYou(ypacket);
 	} else if (command == "PLRJ") { 
 		handlePlrj(ypacket);
 	} else if (command == "TILE") {
@@ -88,11 +107,15 @@ void handlePacket(YamlNode* ypacket) {
 		handleMove(ypacket);
 	} else if (command == "BLKD") {
 		NetworkManager::get().waitingForMove = false;
+	} else if (command == "PLRQ") {
+		handlePlayerQuit(ypacket);
+	} else if (command == "PLRH") {
+		handlePlayerAlreadyHere(ypacket);
 	} else if (command == "SPWN") {
 		auto rp = GameState::get().getRemotePlayerById(ypacket->attri("id"));
 
-		rp->ent->pos->x = ypacket->attri("x");
-		rp->ent->pos->y = ypacket->attri("y");
+		rp->ent->pos->x = ypacket->attri("posX");
+		rp->ent->pos->y = ypacket->attri("posY");
 	} else {
 		cout << "Unhandled server command: " << command << endl;
 	}
@@ -101,6 +124,10 @@ void handlePacket(YamlNode* ypacket) {
 void NetworkManager::handlePacketQueue() {
 	while (!this->packetQueue.empty()) {
 		auto packet = this->packetQueue.front();
+
+		if (cvarGetb("debug_recv_packets")) {
+			cout << "recv " << packet->toString() << endl;
+		}
 
 		handlePacket(packet);
 
@@ -144,10 +171,18 @@ void NetworkManager::recvAll() {
 	}
 }
 
-void NetworkManager::sendHelo() {
+void NetworkManager::sendInit() {
+	YamlNode* init = new YamlNode();
+
+	this->send(init, "INIT");
+}
+
+void NetworkManager::sendHelo(LocalPlayer* lp) {
+	this->lastLocalPlayerToJoin = lp;
+
 	YamlNode* helo = new YamlNode();
 
-	helo->attr("username", cvarGet("username"));
+	helo->attr("username", lp->username);
 
 	this->send(helo, "HELO");
 }
@@ -163,8 +198,9 @@ void NetworkManager::send(YamlNode* node, string command) {
 	delete(node);
 }
 
-void NetworkManager::sendMovr(int x, int y) {
+void NetworkManager::sendMovr(int x, int y, string username) {
 	YamlNode* movr = new YamlNode();
+	movr->attr("username", username);
 	movr->attr("x", x);
 	movr->attr("y", y);
 

@@ -1,10 +1,12 @@
 #pragma once
 
 #include "RemotePlayer.hpp"
-#include "input/InputDevice.hpp"
+#include "input/0_hid/HidInputDevice.hpp"
 
 class LocalPlayer {
 	public: 
+		string username;
+
 		RemotePlayer* remote;
-		InputDevice inputDevice;
+		HidInputDevice inputDevice;
 };

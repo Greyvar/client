@@ -7,11 +7,8 @@
 
 #include "GameState.hpp"
 #include "Renderer.hpp"
-#include "Ui.hpp"
+#include "gui/Gui.hpp"
 #include "cvars.hpp"
-
-SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* ren, const FT_Bitmap& bitmap, const SDL_Color& color);
-
 
 void renderGridTiles(World* world) {
 	int windowWidth = 2 * floor(Renderer::get().window_w / 2);
@@ -55,110 +52,47 @@ void renderGridTiles(World* world) {
 }
 
 void renderGridEntities(World* world) {
+	int windowWidth = 2 * floor(Renderer::get().window_w / 2);
+	int windowHeight = 2 * floor(Renderer::get().window_h / 2);
+
+	int tileRenderLength = TILE_SIZE;
+
+	int gridTilesWidth = world->tileGrid->w * tileRenderLength;
+	int gridTilesHeight = world->tileGrid->h * tileRenderLength;
+
+	int padx = (windowWidth - gridTilesWidth) / 2;
+	int pady = (windowHeight - gridTilesHeight) / 2;
+
 	for (auto e : world->entityGrid->entities) {
-		SDL_RenderCopy(Renderer::get().sdlRen, Renderer::get().resCache->loadEntity(e->textureName), NULL, e->pos);
-	}
-}
+		SDL_Rect r; 
+		r.x = padx + (e->pos->x * 4);
+		r.y = pady + (e->pos->y * 4);
+		r.w = e->pos->w;
+		r.h = e->pos->h;
 
-void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize) {
-	const FT_Face face = *Renderer::get().resCache->loadFont("DejaVuSansMono.ttf", fontSize);
-	bool changeColor = false;
-
-	if (align == CENTER) { // lazy center alignment with monospace text for now
-		x -= (text.length() * 30) / 2;
-	}
-
-	for (char currentCharacter : text) {
-		if (changeColor) {
-			if (canChangeColor) {
-				switch (currentCharacter) {
-					case '0': color = {000, 000, 000}; break; // black
-					case '1': color = {255, 000, 000}; break; // red
-					case '2': color = {000, 255, 000}; break; // green
-					case '3': color = {255, 255, 000}; break; // yellow
-					case '4': color = {000, 000, 255}; break; // blue
-					case '5': color = {000, 255, 255}; break; // cyan
-					case '6': color = {255, 000, 255}; break; // magenta
-					case '7': color = {255, 255, 255}; break; // white
-					case '8': color = {255, 150, 000}; break; // orange
-					case '9': color = {100, 100, 100}; break; // darkgrey
-				}
-			}
-
-			changeColor = false;
-
-			continue;
-		} else if (currentCharacter == '^') {
-			changeColor = true;
-			continue;
-		}
-
-		FT_Load_Char(face, currentCharacter, FT_LOAD_RENDER);
-
-		SDL_Texture* tex_glyph = CreateTextureFromFT_Bitmap(Renderer::get().sdlRen, face->glyph->bitmap, color);
-
-		SDL_Rect dest;
-		dest.x = x + (face->glyph->metrics.horiBearingX >> 6);
-		dest.y = y - (face->glyph->metrics.horiBearingY >> 6);
-
-		SDL_QueryTexture(tex_glyph, NULL, NULL, &dest.w, &dest.h);
-
-		SDL_SetTextureBlendMode(tex_glyph, SDL_BLENDMODE_BLEND);
-		SDL_RenderCopy(Renderer::get().sdlRen, tex_glyph, NULL, &dest);
-		SDL_DestroyTexture(tex_glyph);
-
-		x += (face->glyph->metrics.horiAdvance >> 6);
+		SDL_Texture* tex = Renderer::get().resCache->loadEntity(e->textureName, e->primaryColor);
+		
+		SDL_RenderCopy(Renderer::get().sdlRen, tex, NULL, &r);
 
 	}
-}
-
-void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, int size) {
-	renderText(text, x, y, color, LEFT, size);
-}
-
-void renderTextShadow(std::string text, int x, int y, TextAlignment alignment, int size) {
-	int shadowOffset;
-
-	if (size < 25) {
-		shadowOffset = 1;
-	} else {
-		shadowOffset = 2;
-	}
-
-	renderText(text, x + shadowOffset, y + shadowOffset, {0, 0, 0}, false, alignment, size);
-	renderText(text, x, y, {255, 255, 255}, true, alignment, size);
-}
-
-void renderTextShadow(std::string text, int x, int y, int size) {
-	renderTextShadow(text, x, y, LEFT, size);
-}
-
-void renderBackgroundSolidColor(SDL_Color color) {
-	SDL_SetRenderDrawColor(Renderer::get().sdlRen, color.r, color.g, color.b, color.a);
-
-	SDL_Rect bg;
-	bg.x = 0;
-	bg.y = 0;
-	bg.w = Renderer::get().window_w;
-	bg.h = Renderer::get().window_h;
-
-	SDL_RenderFillRect(Renderer::get().sdlRen, &bg);
 }
 
 void renderMenu() {
 	renderBackgroundSolidColor({130, 130, 130});
 	renderTextShadow("^9Greyvar 2.0", 15, 50, 36);
-	renderTextShadow("^7" + GameState::get().ui->subtitle, 20, 80, 16);
+//	renderTextShadow("^7" + GameState::get().gui->subtitle, 20, 80, 16);
 
-	for (unsigned int i = 0; i < GameState::get().ui->currentMenu->size(); i++) {
-		std::string itemText = GameState::get().ui->currentMenu->at(i)->text;
+/**
+	for (unsigned int i = 0; i < GameState::get().gui->currentMenu->size(); i++) {
+		std::string itemText = GameState::get().gui->currentMenu->at(i)->text;
 
-		if (i == GameState::get().ui->currentlySelectedMenuItem) {
+		if (i == GameState::get().gui->currentlySelectedMenuItem) {
 			itemText.insert(0, "^5");
 		}
 
 		renderTextShadow(itemText, 20, 160 + (i * 60), LEFT, 24);
 	}
+*/
 
 	using namespace std::chrono;
 	milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
@@ -182,18 +116,19 @@ void renderConsole() {
 	renderTextShadow("^9Greyvar console", 15, 50, 36);
 	renderTextShadow("This is the console.", 15, 80, 16);
 
-	for (unsigned int i = 0; i < GameState::get().ui->consoleHistory.size(); i++) {
-		renderTextShadow(GameState::get().ui->consoleHistory.at(i), 50, 50 + (i * 20), 24);
+/**
+	for (unsigned int i = 0; i < GameState::get().gui->consoleHistory.size(); i++) {
+		renderTextShadow(GameState::get().gui->consoleHistory.at(i), 50, 50 + (i * 20), 24);
 	}
+*/
 }
 
 void renderUiMessages() {
 	uint32_t index = 0;
 
-	for (auto it : GameState::get().ui->messages) {
-		renderTextShadow(it.second, 50, (Renderer::get().window_h - 50) - (index * 50), 24);
+	for (auto it : GameState::get().gui->messages) {
+		renderTextShadow(it.second, 50, (Renderer::get().window_h - 80) - (index * 50), 24);
 		index++;
-
 	}
 }
 
@@ -211,7 +146,7 @@ void Renderer::renderFrame() {
 
 	World* world = GameState::get().world;
 
-	switch (GameState::get().ui->scene) {
+	switch (GameState::get().gui->scene) {
 		case MENU:
 			renderMenu();
 			break;
@@ -221,6 +156,7 @@ void Renderer::renderFrame() {
 		case PLAY:
 			renderGridTiles(world);
 			renderGridEntities(world);
+			renderHud();
 			break;
 		case NONE:
 			renderBackgroundSolidColor({30, 30, 30});

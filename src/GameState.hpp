@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "World.hpp"
-#include "Ui.hpp"
+#include "gui/Gui.hpp"
 #include "LocalPlayer.hpp"
 #include "RemotePlayer.hpp"
 
@@ -22,6 +22,18 @@ class GameState {
 
 		void onPlayerJoin(RemotePlayer* rp);
 
+		void removePlayerById(int id) {
+			RemotePlayer* rp = this->getRemotePlayerById(id);
+
+			this->world->entityGrid->remove(rp->ent);
+
+			delete rp->ent;
+
+			this->remotePlayers.erase(id);
+
+			delete rp;
+		}
+
 
 		RemotePlayer* getRemotePlayerById(int p) {
 			return GameState::get().remotePlayers[p];
@@ -31,12 +43,23 @@ class GameState {
 			return this->localPlayers.at(0);
 		}
 
+		std::vector<LocalPlayer*> getLocalPlayers() {
+			return this->localPlayers;
+		}
+
+		int getRemotePlayerCount() {
+			return this->remotePlayers.size();
+		}
+
+		void onNewLocalPlayer(LocalPlayer* lp);
+		void onRemoveLocalPlayer(LocalPlayer* lp);
+
 		void loadWorld(string worldName);
 		World* world;
 
 		std::string serverName = "the construct";
 
-		UserInterface* ui;
+		Gui* gui;
 	private:
 		std::vector<LocalPlayer*> localPlayers;
 		std::map<int, RemotePlayer*> remotePlayers;
@@ -46,13 +69,7 @@ class GameState {
 			// get() istead of at startup. This allows us more flexibility to 
 			// set cvars before startup.
 
-			this->ui = new UserInterface();
-
-			auto lp = new LocalPlayer();
-			lp->inputDevice.type = KEYBOARD;
-			lp->inputDevice.device.keyboard = 1;
-
-			this->localPlayers.push_back(lp);
+			this->gui = new Gui();
 		}
 };
 

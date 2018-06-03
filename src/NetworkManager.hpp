@@ -3,12 +3,15 @@
 #include <SDL2/SDL_net.h>
 #include <queue>
 
+#include "LocalPlayer.hpp"
 #include "YamlNode.hpp"
 
 const string ETB = "---\n";
 
 class NetworkManager {
 	public:
+		LocalPlayer* lastLocalPlayerToJoin; 
+		
 		static NetworkManager& get() {
 			static NetworkManager instance;
 
@@ -20,9 +23,10 @@ class NetworkManager {
 
 		void connectToServer(string server);
 
-		void sendHelo();
+		void sendHelo(LocalPlayer* lp);
+		void sendInit();
 
-		void sendMovr(int x, int y);
+		void sendMovr(int x, int y, string username);
 
 		bool waitingForMove = false;
 
@@ -47,4 +51,5 @@ class NetworkManager {
 		SDLNet_SocketSet set;
 
 		std::queue<YamlNode*> packetQueue; 
+
 };

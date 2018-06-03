@@ -26,3 +26,12 @@ void GameState::onPlayerJoin(RemotePlayer* rp) {
 
 	this->world->addEntity(bob);
 }
+
+void GameState::onNewLocalPlayer(LocalPlayer* lp) {
+	lp->username = "plr " + to_string(this->localPlayers.size());
+	this->localPlayers.push_back(lp);
+}
+
+void GameState::onRemoveLocalPlayer(LocalPlayer* lp) {
+	this->localPlayers.erase(std::remove(this->localPlayers.begin(), this->localPlayers.end(), lp), this->localPlayers.end());
+}

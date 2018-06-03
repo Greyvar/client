@@ -1,5 +1,5 @@
-#include "Renderer.hpp"
 #include "RemotePlayer.hpp"
+#include "Renderer.hpp" // TILE_SIZE
 
 RemotePlayer::RemotePlayer() {
 	this->ent->textureName = "playerBob.png";

@@ -7,29 +7,19 @@
 
 using namespace std;
 
-PlayerInput::PlayerInput(LocalPlayer* localPlayer) {
+PlayerInput::PlayerInput(LocalPlayer* localPlayer, HidInputGesture hidInputGesture) {
 	this->localPlayer = localPlayer;
-	this->hidInput = HID_NOOP;
+	this->hidInputGesture = hidInputGesture;
+
+	this->queueForBinding();
 }
 
-PlayerInput::PlayerInput(LocalPlayer* localPlayer, HidInput hidInput) {
-	this->localPlayer = localPlayer;
-	this->hidInput = hidInput;
-
-	this->queue();
-}
-
-void PlayerInput::hidInputQueue(HidInput hidInput) {
-	this->hidInput = hidInput;
-	this->queue();
-}
-
-void PlayerInput::queue() {
-	if (this->queued) {
+void PlayerInput::queueForBinding() {
+	if (this->queuedForBinding) {
 		throw "Already queued.";
 	}
 
-	this->queued = true;
+	this->queuedForBinding = true;
 
 	unboundPlayerInputQueue.push(this);
 }

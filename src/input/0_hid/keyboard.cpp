@@ -10,18 +10,20 @@
 
 using namespace std;
 
-list<HidInput> keysThatArePressed;
+// Gamepad input events can be assigned to arbitary local players (ie: multiple connected gamepads).
+
+list<HidInputGesture> keysThatArePressed;
 
 void resetKeyboard() {
 }
 
 void recvKeyupInput(SDL_Event e) {
-	keysThatArePressed.remove((HidInput) e.key.keysym.scancode);
+	keysThatArePressed.remove((HidInputGesture) e.key.keysym.scancode);
 }
 
 void recvKeydownInput(SDL_Event e) {
-	if (find(keysThatArePressed.begin(), keysThatArePressed.end(), (HidInput) e.key.keysym.scancode) == keysThatArePressed.end()) {
-		keysThatArePressed.push_back((HidInput) e.key.keysym.scancode);
+	if (find(keysThatArePressed.begin(), keysThatArePressed.end(), (HidInputGesture) e.key.keysym.scancode) == keysThatArePressed.end()) {
+		keysThatArePressed.push_back((HidInputGesture) e.key.keysym.scancode);
 	}
 }
 
@@ -39,7 +41,7 @@ void recvKeyboardInput() {
 	LocalPlayer* lp = GameState::get().getFirstLocalPlayer();
 
 	if (cvarGetb("bind_keyboard")) {
-		for (HidInput key : keysThatArePressed) {
+		for (HidInputGesture key : keysThatArePressed) {
 			new PlayerInput(lp, key);
 		}
 	}

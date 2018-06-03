@@ -1,7 +1,8 @@
 #include "GameState.hpp"
 #include "../PlayerInput.hpp"
 
+// Touch input events will always use the first local player.
+
 void toucheytouchey() {
-	PlayerInput* phi = new PlayerInput(GameState::get().getFirstLocalPlayer());
-	phi->hidInputQueue(KEY_TILDE);
+	new PlayerInput(GameState::get().getFirstLocalPlayer(), TOUCH_TAP);
 }

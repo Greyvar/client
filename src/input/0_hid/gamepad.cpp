@@ -4,8 +4,11 @@
 
 #include "../PlayerInput.hpp"
 #include "LocalPlayer.hpp"
+#include "GameState.hpp"
 
 using namespace std;
+
+// Gamepad input events can be assigned to arbitary local players (ie: multiple connected gamepads).
 
 map<SDL_GameController*, LocalPlayer*> gamepadsForLocalPlayers; 
 
@@ -32,7 +35,7 @@ void handleGamepadAxis(SDL_GameController* controller, LocalPlayer* lp) {
 	} 
 }
 
-HidInput sdlButtonToHidInput(uint8_t b) {
+HidInputGesture sdlButtonToHidInputGesture(uint8_t b) {
 	switch (b) {
 		case SDL_CONTROLLER_BUTTON_A: return GAMEPAD_A;
 		case SDL_CONTROLLER_BUTTON_B: return GAMEPAD_B;
@@ -46,6 +49,7 @@ HidInput sdlButtonToHidInput(uint8_t b) {
 		case SDL_CONTROLLER_BUTTON_DPAD_DOWN: return GAMEPAD_DPAD_DOWN;
 		case SDL_CONTROLLER_BUTTON_DPAD_LEFT: return GAMEPAD_DPAD_LEFT;
 		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: return GAMEPAD_DPAD_RIGHT;
+		case SDL_CONTROLLER_BUTTON_GUIDE: return GAMEPAD_GUIDE;
 		default: return GAMEPAD_INVALID;
 	}
 }
@@ -56,26 +60,37 @@ void recvGamepadButtonUp(SDL_Event e) {
 void recvGamepadButtonDown(SDL_Event e) {
 	LocalPlayer* lp = gamepadsForLocalPlayers[SDL_GameControllerFromInstanceID(e.cbutton.which)];
 
-	new PlayerInput(lp, sdlButtonToHidInput(e.cbutton.button));
+	new PlayerInput(lp, sdlButtonToHidInputGesture(e.cbutton.button));
 }
 
-void reinitGamepads() {
-	for (int i = 0; i < SDL_NumJoysticks(); i++) {
-		if (SDL_IsGameController(i)) {
-			SDL_GameController* controller = SDL_GameControllerOpen(i);
+void removeGamepad(Sint32 i) {
+	SDL_GameController* controller = SDL_GameControllerFromInstanceID(i);
 
-			if (!controller) {
-				cout << "Could not open gamepad: " << i << endl;
-			} else {
-				cout << "Found gamepad " << i << ": " << SDL_GameControllerName(controller) << endl;
+	LocalPlayer* lp = gamepadsForLocalPlayers[controller];
 
-				auto lp = new LocalPlayer();
-				lp->inputDevice.type = GAMEPAD;
-				lp->inputDevice.device.gamepad = controller;
+	cout << "Removing local player: " << lp << endl;
 
-				gamepadsForLocalPlayers[controller] = lp;
+	GameState::get().onRemoveLocalPlayer(lp);
+}
 
-			}
+void initGamepad(Sint32 i) {
+	//for (int i = 0; i < SDL_NumJoysticks(); i++) {
+	
+	if (SDL_IsGameController(i)) {
+		SDL_GameController* controller = SDL_GameControllerOpen(i);
+
+		if (!controller) {
+			cout << "Could not open gamepad: " << i << endl;
+		} else {
+			cout << "Found gamepad " << i << ": " << SDL_GameControllerName(controller) << endl;
+
+			auto lp = new LocalPlayer();
+			lp->inputDevice.type = GAMEPAD;
+			lp->inputDevice.device.gamepad = controller;
+
+			gamepadsForLocalPlayers[controller] = lp;
+
+			GameState::get().onNewLocalPlayer(lp);
 		}
 	}
 }

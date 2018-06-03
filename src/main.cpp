@@ -75,8 +75,11 @@ void eventHandler() {
 			case SDL_AUDIODEVICEADDED:
 				std::cout << "Audio device found: " << SDL_GetAudioDeviceName(e.adevice.which, e.adevice.iscapture) << std::endl;
 				break;
+			case SDL_CONTROLLERDEVICEREMOVED:
+				removeGamepad(e.cdevice.which);
+				break;
 			case SDL_CONTROLLERDEVICEADDED:
-				reinitGamepads();
+				initGamepad(e.cdevice.which);
 				break;
 			default: 
 				std::cout << "Unknown event: 0x" << hex << e.type << std::endl;
@@ -133,7 +136,7 @@ void mainLoop() {
 }
 
 void startGame() {
-	GameState::get().ui->scene = PLAY;
+	GameState::get().gui->scene = PLAY;
 }
 
 void pushSdlQuit() {
@@ -181,7 +184,7 @@ int main(int argc, char* argv[]) {
 
 	initLibraries();
 
-	SDL_Window *win = SDL_CreateWindow("Greyvar", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, TILE_SIZE * GRID_SIZE, TILE_SIZE * GRID_SIZE, SDL_WINDOW_SHOWN);
+	SDL_Window *win = SDL_CreateWindow("Greyvar", cvarGeti("win_x", SDL_WINDOWPOS_CENTERED), cvarGeti("win_y", SDL_WINDOWPOS_CENTERED), TILE_SIZE * GRID_SIZE, TILE_SIZE * GRID_SIZE, SDL_WINDOW_SHOWN);
 	SDL_SetWindowResizable(win, SDL_TRUE);
 
 	Renderer::set(win, SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));

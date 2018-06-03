@@ -1,9 +1,8 @@
 #include <map>
 
 #include "Scene.hpp"
-#include "input/common.hpp"
 #include "input/PlayerInput.hpp"
-#include "input/0_hid/HidInput.hpp"
+#include "input/0_hid/HidInputGesture.hpp"
 #include "input/2_actions/common.hpp"
 #include "common.hpp"
 #include "Scene.hpp"
@@ -11,12 +10,12 @@
 
 using namespace std;
 
-map<Scene, map<HidInput, ActionInput>> inputBindings;
+map<Scene, map<HidInputGesture, ActionInput>> inputBindings;
 
 queue<PlayerInput*> unboundPlayerInputQueue;
 
-void inputBind(Scene scene, HidInput hidInput, ActionInput ai ) {
-	inputBindings[scene][hidInput] = ai;
+void inputBind(Scene scene, HidInputGesture hidInputGesture, ActionInput ai ) {
+	inputBindings[scene][hidInputGesture] = ai;
 }
 
 void defaultInputBindings() {
@@ -40,6 +39,7 @@ void defaultInputBindings() {
 	inputBind(PLAY, GAMEPAD_JOYSTICK_RIGHT, WALK_RIGHT);
 	inputBind(PLAY, GAMEPAD_JOYSTICK_UP, WALK_UP);
 	inputBind(PLAY, GAMEPAD_JOYSTICK_DOWN, WALK_DOWN);
+	inputBind(PLAY, GAMEPAD_START, JOIN_GAME);
 
 	inputBind(CONSOLE, KEY_RETURN, MENU_UP);
 }
@@ -48,7 +48,7 @@ void lookupActionBindingForPlayerInput() {
 	while (!unboundPlayerInputQueue.empty()) {
 		PlayerInput* pi = unboundPlayerInputQueue.front();
 
-		pi->actionInput = inputBindings[GameState::get().ui->scene][pi->hidInput];
+		pi->actionInput = inputBindings[GameState::get().gui->scene][pi->hidInputGesture];
 
 		unboundPlayerInputQueue.pop();
 
@@ -56,7 +56,7 @@ void lookupActionBindingForPlayerInput() {
 			cout << "unbound input: " << pi << endl;
 			delete(pi);
 		} else { 
-			cout << "bound input: " << pi->hidInput << " to " << pi->actionInput << endl;
+			cout << "bound input: " << pi->hidInputGesture << " to " << pi->actionInput << endl;
 			boundPlayerInputQueue.push(pi);
 		}
 	}

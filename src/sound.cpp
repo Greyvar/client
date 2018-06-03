@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 
+#include "Sound.hpp"
 #include "cvars.hpp"
 #include "common.hpp"
 

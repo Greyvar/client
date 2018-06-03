@@ -15,6 +15,7 @@ void cvarSeti(string key, int val, string from);
 string cvarGet(string key);
 bool cvarGetb(string key);
 int cvarGeti(string key);
+int cvarGeti(string key, int def);
 
 bool cvarIsset(string key);
 
