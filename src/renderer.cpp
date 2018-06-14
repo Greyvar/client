@@ -63,7 +63,8 @@ void renderGridEntities(World* world) {
 	int padx = (windowWidth - gridTilesWidth) / 2;
 	int pady = (windowHeight - gridTilesHeight) / 2;
 
-	for (auto e : world->entityGrid->entities) {
+	for (auto p : world->entityGrid->entities) {
+		auto e = p.second;
 		SDL_Rect r; 
 		r.x = padx + (e->pos->x * 4);
 		r.y = pady + (e->pos->y * 4);

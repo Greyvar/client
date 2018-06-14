@@ -92,6 +92,17 @@ void handlePlayerYou(YamlNode* ypacket) {
 	NetworkManager::get().lastLocalPlayerToJoin = NULL;
 }
 
+void handleEnt(YamlNode* ypacket) {
+	auto ent = GameState::get().world->entityGrid->get(ypacket->attri("id"));
+
+	ent->pos->w = 16 * 4;
+	ent->pos->h = 16 * 4;
+	ent->pos->x = ypacket->attri("x") * 16;
+	ent->pos->y = ypacket->attri("y") * 16;
+
+	ent->textureName = ypacket->attr("tex");
+}
+
 void handlePacket(YamlNode* ypacket) {
 	string command = ypacket->attr("command");
 
@@ -111,6 +122,8 @@ void handlePacket(YamlNode* ypacket) {
 		handlePlayerQuit(ypacket);
 	} else if (command == "PLRH") {
 		handlePlayerAlreadyHere(ypacket);
+	} else if (command == "ENT") {
+		handleEnt(ypacket);
 	} else if (command == "SPWN") {
 		auto rp = GameState::get().getRemotePlayerById(ypacket->attri("id"));
 
