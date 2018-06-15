@@ -23,7 +23,7 @@ class ResCache {
 		void loadStartup();
 
 	private:
-		map<string, SDL_Texture*> textureCache;
+		map<string, SDL_Texture*> textureCache = {};
 
 		map<string, FT_Face*> fontCache;
 };

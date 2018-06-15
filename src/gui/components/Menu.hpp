@@ -5,6 +5,7 @@
 
 #include "Sound.hpp"
 #include "GuiComponent.hpp"
+#include "MenuItem.hpp"
 
 using namespace std;
 

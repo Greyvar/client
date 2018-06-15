@@ -47,6 +47,7 @@ void handleTile(YamlNode* ytile) {
 
 	if (tile == nullptr) {
 		cout << "could not find tile!" << ytile->toString() << endl;
+		return; 
 	}
 
 	tile->textureName = ytile->attr("tex");

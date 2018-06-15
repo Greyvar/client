@@ -4,16 +4,16 @@
 
 class GuiComponent {
 	public:
+		GuiComponent(); 
 
-	void setConstraints(LayoutConstraints lc) {
-		this->lc = lc;
-	};
+		void setConstraints(LayoutConstraints lc) {
+			this->lc = lc;
+		};
 
-	LayoutConstraints getConstraints() {
-		return this->lc; 
-	}
+		LayoutConstraints getConstraints() {
+			return this->lc; 
+		}
 
 	private: 
-
-	LayoutConstraints lc;
+		LayoutConstraints lc;
 };

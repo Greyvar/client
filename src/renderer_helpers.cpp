@@ -107,9 +107,9 @@ void renderBackgroundSolidColor(SDL_Color color) {
 
 SDL_Color rgbaToSdlColor(int rgba) {
 	return {
-		(rgba & 0x0000ff),
-		(rgba & 0x00ff00) >> 8,
-		(rgba & 0xff0000) >> 16,
+		static_cast<uint8_t>((rgba & 0x0000ff)),
+		static_cast<uint8_t>((rgba & 0x00ff00) >> 8),
+		static_cast<uint8_t>((rgba & 0xff0000) >> 16),
 		255
 	};
 }

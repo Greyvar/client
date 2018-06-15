@@ -1,7 +1,13 @@
 #include "Renderer.hpp"
 #include "GameState.hpp"
 
+GameState::~GameState() {
+	this->clear();
+}
+
 void GameState::clear() {
+	cout << "Clearing the GameState" << endl;
+
 	for (auto rp : this->remotePlayers) {
 		delete(rp.second);
 	}
@@ -13,10 +19,19 @@ void GameState::clear() {
 	}
 
 	this->localPlayers.clear();
+
+	this->unloadWorld();
 }
 
 void GameState::loadWorld(string worldName) {
 	this->world = new World();
+}
+
+void GameState::unloadWorld() {
+	if (this->world != nullptr) {
+		delete(this->world);
+		this->world = nullptr;
+	}
 }
 
 void GameState::onPlayerJoin(RemotePlayer* rp) {

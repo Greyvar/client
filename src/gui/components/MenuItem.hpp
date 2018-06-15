@@ -6,9 +6,7 @@ typedef void (*MenuItemAction)(void);
 
 class MenuItem: public Button {
 	public:
-		MenuItem(std::string text) {
-			MenuItem(text, NULL);
-		}
+		explicit MenuItem(std::string text) : MenuItem(text, nullptr) {}
 
 		MenuItem(std::string text, MenuItemAction action) {
 			this->text = text;

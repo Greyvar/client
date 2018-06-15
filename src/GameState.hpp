@@ -9,6 +9,13 @@
 
 class GameState {
 	public:
+		World* world = nullptr;
+
+		std::string serverName = "the construct";
+
+		Gui* gui;
+
+		~GameState();
 		GameState(GameState const&) = delete;
 		void operator=(GameState const&) = delete;
 
@@ -55,19 +62,21 @@ class GameState {
 		void onRemoveLocalPlayer(LocalPlayer* lp);
 
 		void loadWorld(string worldName);
-		World* world;
+		void unloadWorld();
 
-		std::string serverName = "the construct";
-
-		Gui* gui;
 	private:
-		std::vector<LocalPlayer*> localPlayers;
-		std::map<int, RemotePlayer*> remotePlayers;
+		std::vector<LocalPlayer*> localPlayers = {};
+		std::map<int, RemotePlayer*> remotePlayers = {};
 
 		GameState() {
 			// Initializing the UI here means it is delayed until the first 
 			// get() istead of at startup. This allows us more flexibility to 
 			// set cvars before startup.
+			
+			auto keyboardPlayer = new LocalPlayer();
+			keyboardPlayer->inputDevice.type = KEYBOARD;
+
+			this->localPlayers.push_back(keyboardPlayer);
 
 			this->gui = new Gui();
 		}

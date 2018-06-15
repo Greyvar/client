@@ -9,7 +9,7 @@ class Tile {
 	public:
 		Tile(string texture, bool traversable);
 
-		SDL_Texture *tex; 
+		SDL_Texture* tex; 
 
 		string textureName;
 

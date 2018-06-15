@@ -22,25 +22,7 @@ class ScreenMainMenu: public Screen {
 			this->menu->add("Quit");
 		}
 
-		std::string getRandomSubtitle() {
-			cout << "is motd set? " << cvarIsset("motd") << endl;
-
-			if (cvarIsset("motd")) {
-				return cvarGet("motd");
-			}
-
-			std::vector<string> subtitles;
-			subtitles.push_back("Hello there!");
-			subtitles.push_back("No Java here, buddy.");
-			subtitles.push_back("I like to code it code it");
-			subtitles.push_back("mooorawr");
-
-			int c = rand() % subtitles.size();
-
-			return subtitles.at(c);
-		}
-
-
+		string getRandomSubtitle();
 	private:
 		Menu* menu = new Menu();
 		string subtitle; 
