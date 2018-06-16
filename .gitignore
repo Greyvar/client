@@ -9,3 +9,4 @@ cmake_install.cmake
 **/*.swo
 **/*.directory
 **/*.out
+doc/doxygen

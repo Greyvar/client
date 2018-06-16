@@ -15,5 +15,5 @@ class GuiComponent {
 		}
 
 	private: 
-		LayoutConstraints lc;
+		LayoutConstraints lc{};
 };
