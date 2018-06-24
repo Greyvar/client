@@ -33,7 +33,7 @@ if (WINDOWS)
 
 	set_target_properties(greyvar PROPERTIES LINK_SEARCH_END_STATIC 1)
 
-	set(PLATFORM_CXX_FLAGS "")
+	set(PLATFORM_CXX_FLAGS "-s")
 elseif(UNIX)
 	message("Linux Build")
 
