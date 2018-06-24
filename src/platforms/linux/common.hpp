@@ -1,8 +1,10 @@
 #pragma once
 
+#pragma message("xxx using linux")
+
 #include <iostream>
 
-#pragma message("xxx using linux")
+#include <byteswap.h>
 
 using namespace std;
 

@@ -1,12 +1,13 @@
 #include <iostream>
 #include <stdio.h>
 #include <SDL2/SDL_net.h>
-#include <byteswap.h>
 
 #include "YamlNode.hpp"
 #include "NetworkManager.hpp"
 #include "GameState.hpp"
 #include "cvars.hpp"
+
+#include "platforms/platform.hpp"
 
 using namespace std;
 
@@ -75,7 +76,7 @@ void handlePlayerAlreadyHere(YamlNode* ypacket) {
 	auto rp = new RemotePlayer();
 	rp->id = ypacket->attri("id");
 	rp->username = ypacket->attr("username");
-	rp->ent->primaryColor = __bswap_32(ypacket->attri("color"));
+	rp->ent->primaryColor = __builtin_bswap32(ypacket->attri("color"));
 
 	GameState::get().onPlayerJoin(rp);
 }

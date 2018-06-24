@@ -1,5 +1,8 @@
-#if GREYVAR_PLATFORM == WIN
+#if WINDOWS
+#include "windows/common.hpp"
 #endif
 
-#if GREYVAR_PLATFORM == LINUX
+#if UNIX
+#include "linux/common.hpp"
 #endif
+
