@@ -1,24 +1,28 @@
 cmake_minimum_required(VERSION 3.10)
 project(Greyvar)
 
+set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY bin)
 set(BUILD_SHARED_LIBS off)
 
 find_package(PkgConfig)
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src/core/)
 
-file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.hpp)
-add_executable(greyvar ${SOURCE_FILES})
+file(GLOB_RECURSE CORE_SOURCE_FILES src/core/*.cpp src/core/*.hpp)
+add_library(greyvar_core ${CORE_SOURCE_FILES})
 
-message("Source: ${SOURCE_FILES}")
+file(GLOB_RECURSE VESSEL_SOURCE_FILES src/vessel/*.cpp src/vessel/*.hpp)
+add_executable(greyvar_vessel ${VESSEL_SOURCE_FILES})
 
-set(CMAKE_VERBOSE_MAKEFILE on)
+message("Core source: ${CORE_SOURCE_FILES}")
 
 if (WINDOWS)
-	message("Windows Build")
+	add_definitions(-DGREYVAR_PLATFORM_WINDOWS)
+	set(PLATFORM_CXX_FLAGS "-s")
 
-	target_include_directories(greyvar PUBLIC 
+	target_include_directories(greyvar_core PUBLIC 
 		/usr/x86_64-w64-mingw32/sys-root/mingw/include/freetype2
 		/usr/x86_64-w64-mingw32/sys-root/mingw/include/SDL2
 		./lib/SDL2_net-2.0.1/x86_64-w64-mingw32/include/
@@ -29,21 +33,35 @@ if (WINDOWS)
 
 	find_library(LIBSDL2NET SDL2_net HINTS lib/SDL2_net-2.0.1/x86_64-w64-mingw32/lib/)
 
-	target_link_libraries(greyvar mingw32 SDL2main SDL2 SDL2_image SDL2_mixer ${LIBSDL2NET} freetype m user32 gdi32 winmm)
+	target_link_libraries(greyvar_core mingw32 SDL2main SDL2 SDL2_image SDL2_mixer ${LIBSDL2NET} freetype m user32 gdi32 winmm)
 
-	set_target_properties(greyvar PROPERTIES LINK_SEARCH_END_STATIC 1)
+	set_target_properties(greyvar_core PROPERTIES LINK_SEARCH_END_STATIC 1)
 
-	set(PLATFORM_CXX_FLAGS "-s")
+	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar_windows")
+	target_link_libraries(greyvar_vessel greyvar_core)
 elseif(UNIX)
-	message("Linux Build")
+	add_definitions(-DGREYVAR_PLATFORM_LINUX)
 
-	target_include_directories(greyvar PUBLIC /usr/include/freetype2)
+	if (CMAKE_BUILD_TYPE MATCHES Debug) 
+		set(PLATFORM_CXX_FLAGS "-fsanitize=address  ")
+	else()
+		set(PLATFORM_CXX_FLAGS "-s ")
+	endif()
 
-	set_target_properties(greyvar PROPERTIES OUTPUT_NAME "greyvar_linux")
-	target_link_libraries(greyvar SDL2 SDL2_image freetype SDL2_net SDL2_mixer)
+	target_include_directories(greyvar_core PUBLIC /usr/include/freetype2)
 
-	set(PLATFORM_CXX_FLAGS "-fsanitize=address")
+	target_link_libraries(greyvar_core SDL2 SDL2_image freetype SDL2_net SDL2_mixer)
+
+	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar_linux")
+	target_link_libraries(greyvar_vessel greyvar_core)
+	
+	file(GLOB_RECURSE TST_SOURCE_FILES tst/*.cpp tst/*.hpp)
+	add_executable(greyvar_test ${TST_SOURCE_FILES})
+	target_include_directories(greyvar_test PUBLIC
+		src/core/
+	)
+	target_link_libraries(greyvar_test gtest greyvar_core)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++14 ${PLATFORM_CXX_FLAGS}") # -Weffc++
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++14 ${PLATFORM_CXX_FLAGS}") # -Weffc++
 

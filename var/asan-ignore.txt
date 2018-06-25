@@ -1,0 +1,5 @@
+fun:add_charset
+fun:*add_charset*
+fun:load_generic
+fun:*load_generic*
+src:/usr/src/debug/libX11-1.6.5/src/xlibi18n/lcGeneric.c

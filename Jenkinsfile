@@ -16,6 +16,11 @@ node("fedora") {
 		sh "buildid -n"
 	}
 
+	stage("Code Analysis") {
+		sh "flawfinder src/* > rpt/flawfinder.txt"
+		sh "cppcheck src/* > rpt/cppcheck.txt"
+	}
+
 	stage("Build-lin") {
 		sh "rm -rf build CMakeFiles CMakeCache.txt "
 		sh 'cmake .'
