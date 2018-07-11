@@ -55,6 +55,10 @@ class GameState {
 			return this->remotePlayers.size();
 		}
 
+		bool isFirstLocalPlayerConnected() {
+			return this->getFirstLocalPlayer()->remote != nullptr;
+		}
+
 		void onNewLocalPlayer(LocalPlayer* lp);
 		void onRemoveLocalPlayer(LocalPlayer* lp);
 
@@ -71,7 +75,7 @@ class GameState {
 			// set cvars before startup.
 			
 			auto keyboardPlayer = new LocalPlayer();
-			keyboardPlayer->inputDevice.type = KEYBOARD;
+			keyboardPlayer->inputDevice.type = KEYBOARD_AND_POINTER;
 
 			this->localPlayers.push_back(keyboardPlayer);
 

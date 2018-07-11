@@ -7,6 +7,10 @@
 
 using namespace std;
 
+Gui::Gui() {
+	this->layoutManager->onChanged(this->currentScreen);
+}
+
 void Gui::toggleConsole() {
 	playSound("interface/interface3.wav", UI);
 

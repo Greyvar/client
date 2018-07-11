@@ -55,3 +55,4 @@ void renderBackgroundSolidColor(SDL_Color color);
 SDL_Color rgbaToSdlColor(int rgba);
 
 void renderHud();
+void renderPanel();

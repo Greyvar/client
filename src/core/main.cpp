@@ -28,12 +28,16 @@ void eventHandler() {
 			case SDL_TEXTEDITING:
 			case SDL_MOUSEMOTION:
 			case SDL_MOUSEWHEEL:
+			case SDL_MOUSEBUTTONDOWN:
 			case SDL_JOYBUTTONDOWN: // we use the controller api
 			case SDL_JOYBUTTONUP:
 			case SDL_JOYDEVICEADDED: 
 			case SDL_JOYAXISMOTION: // ^^
 				break;
 
+			case SDL_MOUSEBUTTONUP:
+				recvMouseButtonClicked(e);
+				break;
 			case SDL_CONTROLLERBUTTONDOWN:
 				recvGamepadButtonDown(e);
 				break;
@@ -46,6 +50,9 @@ void eventHandler() {
 					case SDL_WINDOWEVENT_RESIZED:
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
 						SDL_GetWindowSize(Renderer::get().getWindow(), &Renderer::get().window_w, &Renderer::get().window_h);
+
+						GameState::get().gui->onWindowResized();
+
 						break;
 					case SDL_WINDOWEVENT_MINIMIZED:
 						cout << "min" << e.window.type << endl;

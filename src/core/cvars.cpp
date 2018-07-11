@@ -88,4 +88,5 @@ void cvarInit() {
 	cvarSet("nickname", "unamed.player", def);
 	cvarSetb("bind_keyboard", true, def);
 	cvarSeti("snd_channel_ui_volume", 100, def);
+	cvarSet("lp_1_username", "Player 1");
 }

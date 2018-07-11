@@ -4,5 +4,10 @@
 
 #include <string>
 
-auto grid = new Grid(3, 3);
+auto grid = new Grid(3, 4);
+
+TEST(Grid, ConstructorArgumentSizes) {
+	ASSERT_EQ(grid->w, 3);
+	ASSERT_EQ(grid->h, 4);
+}
 

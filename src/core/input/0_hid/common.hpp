@@ -12,3 +12,4 @@ void recvGamepadButtonDown(SDL_Event e);
 void initGamepad(Sint32 which);
 void removeGamepad(Sint32 which);
 void resetKeyboard();
+void recvMouseButtonClicked(SDL_Event e);

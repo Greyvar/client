@@ -7,6 +7,8 @@
 
 #include "components/MenuItem.hpp"
 
+#include "layout/LayoutManager.hpp"
+
 #include "screens/ScreenMainMenu.hpp"
 #include "screens/ScreenServerBrowser.hpp"
 #include "screens/ScreenConsole.hpp"
@@ -20,10 +22,12 @@ void startGame();
 
 class Gui {
 	public:
+		Gui();
+
 		ScreenMainMenu* screenMainMenu = new ScreenMainMenu();
 		ScreenConsole* screenConsole = new ScreenConsole();
 
-		Screen* currentScreen;
+		Screen* currentScreen = screenMainMenu;
 
 		Scene scene = MENU;
 
@@ -43,7 +47,12 @@ class Gui {
 			this->messages[std::chrono::system_clock::now()] = message;
 		}
 
+		void onWindowResized() {
+			this->layoutManager->doLayout(this->currentScreen);
+		}
+
 		std::map<std::chrono::_V2::system_clock::time_point, string> messages;
 	private:
+		LayoutManager* layoutManager = new LayoutManager();
 };
 

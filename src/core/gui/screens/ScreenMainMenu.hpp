@@ -13,14 +13,7 @@ class ScreenMainMenu: public Screen {
 			setupComponents();
 		}
 
-		void setupComponents() {
-			this->subtitle = this->getRandomSubtitle();
-
-			this->menu->add("Play");
-			this->menu->add("Settings");
-			this->menu->add("About");
-			this->menu->add("Quit");
-		}
+		void setupComponents();
 
 		string getRandomSubtitle();
 	private:

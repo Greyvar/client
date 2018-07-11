@@ -2,8 +2,13 @@
 #include "Renderer.hpp"
 #include "LocalPlayer.hpp"
 
+#define JOIN_TXT_KEYBOARD 1
+#define JOIN_TXT_GAMEPAD_KEYBOARD 2
+#define JOIN_TXT_GAMEPAD 3
+
 void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlayer) {
-	string text = lp->username;
+	string statusText = "";
+	string usernameText = "";
 
 	SDL_Color playerColor;
 	uint8_t backgroundIntensity;
@@ -11,14 +16,15 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 	if (lp->remote == nullptr) {
 		playerColor = {255, 255, 255, 200};
 		backgroundIntensity = 100;
+		usernameText = "nobody";
 	} else {
 		playerColor = rgbaToSdlColor(lp->remote->ent->primaryColor);
 		backgroundIntensity = 200;
+		usernameText = lp->username;
 	}
 	
 	renderRect(playerColor, x - (fontSize * .5), y - (fontSize * 1), fontSize / 2, fontSize + (5 * 2) + (fontSize / 2));
 	renderRect({100, 100, 100, backgroundIntensity}, x, y - (fontSize * 1), 172, 48);
-	renderTextShadow(text, x + 40, y, fontSize);
 
 	SDL_Rect inputDeviceIconPos;
 	inputDeviceIconPos.x = x + 5;
@@ -29,22 +35,24 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 	SDL_Texture* texInputDeviceIcon;
 
 	int smallTextOffset = 20;
+
+	int statusTextType = 0;
 	
 	switch (lp->inputDevice.type) {
 		case GAMEPAD:
 			if (firstPlayer) {
 				texInputDeviceIcon = Renderer::get().resCache->loadHud("gamepadKeyboard.png");
 
-				renderTextShadow("Press Start/Enter", x + 40, y + smallTextOffset, fontSize / 2);
+				statusTextType = JOIN_TXT_GAMEPAD_KEYBOARD;
 			} else {
 				texInputDeviceIcon = Renderer::get().resCache->loadHud("gamepad.png");
-				renderTextShadow("Press Start", x + 40, y + smallTextOffset, fontSize / 2);
+				statusTextType = JOIN_TXT_GAMEPAD;
 			}
 
 			break;
-		case KEYBOARD:
+		case KEYBOARD_AND_POINTER:
 			texInputDeviceIcon = Renderer::get().resCache->loadHud("keyboard.png");
-			renderTextShadow("Press Enter", x + 40 , y + smallTextOffset, fontSize / 2);
+			statusTextType = JOIN_TXT_KEYBOARD;
 			break;
 		default:
 			texInputDeviceIcon = Renderer::get().resCache->loadHud("question.png");
@@ -52,6 +60,21 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 	}
 	
 	SDL_RenderCopy(Renderer::get().sdlRen, texInputDeviceIcon, NULL, &inputDeviceIconPos);
+
+	switch (statusTextType) {
+		case JOIN_TXT_KEYBOARD:
+			statusText = "Press Enter";
+			break;
+		case JOIN_TXT_GAMEPAD_KEYBOARD:
+			statusText = "Press Start/Enter";
+			break;
+		case JOIN_TXT_GAMEPAD:
+			statusText = "Press Start";
+			break;
+	}
+	
+	renderTextShadow(usernameText, x + 40, y, fontSize);
+	renderTextShadow(statusText, x + 40 , y + smallTextOffset, fontSize / 2);
 }
 
 void renderHud() {

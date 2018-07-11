@@ -1,19 +1,18 @@
 #pragma once
 
+#include <string>
+
 #include "../layout/LayoutConstraints.hpp"
+#include "../layout/ResolvedPanelPosition.hpp"
 
 class GuiComponent {
 	public:
 		GuiComponent(); 
 
-		void setConstraints(LayoutConstraints lc) {
-			this->lc = lc;
-		};
+		void setConstraints(LayoutConstraints* lc);
+	
+		ResolvedPanelPosition pos{};
+		LayoutConstraints layoutConstraints{};
 
-		LayoutConstraints getConstraints() {
-			return this->lc; 
-		}
-
-	private: 
-		LayoutConstraints lc{};
+		std::string rendererFunc;
 };

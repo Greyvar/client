@@ -41,7 +41,8 @@ void GameState::onPlayerJoin(RemotePlayer* rp) {
 }
 
 void GameState::onNewLocalPlayer(LocalPlayer* lp) {
-	lp->username = "plr " + to_string(this->localPlayers.size());
+	lp->username = "lp_" + to_string(this->localPlayers.size()) + "_username";
+	cout << lp->username << endl;
 	this->localPlayers.push_back(lp);
 }
 

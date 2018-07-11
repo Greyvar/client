@@ -26,7 +26,8 @@ class PlayerInput {
 		// Layer 2 - Action
 		ActionInput actionInput;
 
-		PlayerInput(LocalPlayer* localPlayer, HidInputGesture hidInputGesture);
+		PlayerInput(LocalPlayer* localPlayer, HidInputGesture hidInputGesture, bool queue);
+		PlayerInput(LocalPlayer* localPlayer, HidInputGesture hidInputGesture) : PlayerInput(localPlayer, hidInputGesture, true) {}
 
 		void queueForBinding();
 
@@ -34,6 +35,8 @@ class PlayerInput {
 			return out << "PI {hid: " << pi.hidInputGesture << ", action: " << pi.actionInput << " }" << endl;
 		}
 
+		int pointerX = 0;
+		int pointerY = 0;
 	private:
 		bool queuedForBinding = false;
 };

@@ -1,15 +1,11 @@
 enum HidInputDeviceType {
-	KEYBOARD,
-	GAMEPAD,
-	TOUCH,
-	MOUSE
+	KEYBOARD_AND_POINTER,
+	GAMEPAD
 };
 
 union HidInputDevicePointer {
 	SDL_GameController* gamepad;
 	size_t keyboard;
-	size_t touchme;
-	size_t mouse;
 };
 
 class HidInputDevice {

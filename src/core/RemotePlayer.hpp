@@ -13,5 +13,5 @@ class RemotePlayer {
 		int id = -9999;
 		string username = "unnamed player";
 
-		Entity* ent;
+		Entity* ent = new Entity();
 };

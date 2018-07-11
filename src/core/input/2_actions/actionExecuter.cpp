@@ -20,8 +20,13 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 		cout << "pi executeAction " << pi << endl;
 	}
 
-	if (actionInputFirewall.canDo(pi->actionInput)) {
+	if (ActionInputFirewall::canDo(pi->actionInput)) {
 		switch (pi->actionInput) {
+			case ACTION:
+				if (GameState::get().getRemotePlayerCount() == 0) {
+					NetworkManager::get().sendHelo(pi->localPlayer);
+				}
+				break;
 			case MENU_DOWN:
 //				GameState::get().gui->selectNextMenuItem();
 				break;
@@ -49,13 +54,16 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 			case JOIN_GAME:
 				NetworkManager::get().sendHelo(pi->localPlayer);
 				break;
+			case POINT:
+				cout << dec << pi->pointerX << ":" << pi->pointerY << endl;
+				break;
 			case QUIT:
 				SDL_Event e;
 				e.type = SDL_QUIT;
 				SDL_PushEvent(&e);
 				break;
 			default:
-				cout << "Unhandled input action: " << pi << endl;
+				cout << "No execution for input action: " << pi << endl;
 		}
 	} else {
 		cout << "can't do action " << pi->actionInput << endl;

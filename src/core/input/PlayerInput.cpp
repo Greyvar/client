@@ -7,11 +7,13 @@
 
 using namespace std;
 
-PlayerInput::PlayerInput(LocalPlayer* localPlayer, HidInputGesture hidInputGesture) {
+PlayerInput::PlayerInput(LocalPlayer* localPlayer, HidInputGesture hidInputGesture, bool queue) {
 	this->localPlayer = localPlayer;
 	this->hidInputGesture = hidInputGesture;
 
-	this->queueForBinding();
+	if (queue) {
+		this->queueForBinding();
+	}
 }
 
 void PlayerInput::queueForBinding() {

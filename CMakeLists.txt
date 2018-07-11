@@ -35,6 +35,8 @@ if (WINDOWS)
 
 	target_link_libraries(greyvar_core mingw32 SDL2main SDL2 SDL2_image SDL2_mixer ${LIBSDL2NET} freetype m user32 gdi32 winmm)
 
+	set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+
 	set_target_properties(greyvar_core PROPERTIES LINK_SEARCH_END_STATIC 1)
 
 	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar_windows")
@@ -43,7 +45,7 @@ elseif(UNIX)
 	add_definitions(-DGREYVAR_PLATFORM_LINUX)
 
 	if (CMAKE_BUILD_TYPE MATCHES Debug) 
-		set(PLATFORM_CXX_FLAGS "-fsanitize=address  ")
+		set(PLATFORM_CXX_FLAGS "-fsanitize=address ")
 	else()
 		set(PLATFORM_CXX_FLAGS "-s ")
 	endif()
@@ -61,7 +63,8 @@ elseif(UNIX)
 		src/core/
 	)
 	target_link_libraries(greyvar_test gtest greyvar_core)
+	set_target_properties(greyvar_test PROPERTIES OUTPUT_NAME "greyvar_linux_test")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++14 ${PLATFORM_CXX_FLAGS}") # -Weffc++
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wshadow-compatible-local -Wextra -pedantic -std=c++14 ${PLATFORM_CXX_FLAGS}") # -Weffc++
 
