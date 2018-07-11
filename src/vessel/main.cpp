@@ -1,15 +1,16 @@
-#include <sys/stat.h>
 #include <iostream>
+#include <sys/stat.h>
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 int mainGreyvarCore(int argc, char* argv[]);
 
 bool directoryExists(const char* path) {
 	bool exists = false;
-	struct stat statResult;
+	struct stat statResult{};
 
-	if (path != NULL) {
+	if (path != nullptr) {
 		if (stat(path, &statResult) == 0 && S_ISDIR(statResult.st_mode)) {
 			exists = true;
 		}

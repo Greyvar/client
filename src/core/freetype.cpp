@@ -22,7 +22,7 @@ SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* renderer, const FT_Bitmap&
 
 	void *buffer;
 	int pitch;
-	SDL_LockTexture(output, NULL, &buffer, &pitch);
+	SDL_LockTexture(output, nullptr, &buffer, &pitch);
 
 	unsigned char *src_pixels = bitmap.buffer;
 	unsigned int *target_pixels = reinterpret_cast<unsigned int*>(buffer);

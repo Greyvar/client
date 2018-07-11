@@ -15,19 +15,19 @@ class YamlNode {
 		map<string, YamlNode*> children;
 		vector<YamlNode*> items;
 
-		YamlNode* child(string name);
-		YamlNode* attr(string name, string value);
-		YamlNode* attr(string name, int value);
+		YamlNode* child(const string& name);
+		YamlNode* attr(const string& name, const string& value);
+		YamlNode* attr(const string& name, int value);
 
-		string attr(string name);
-		uint32_t attri(string name);
-		bool attrb(string name);
+		string attr(const string& name);
+		uint32_t attri(const string& name);
+		bool attrb(const string& name);
 
-		YamlNode* list(string title);
+		YamlNode* list(const string& title);
 		YamlNode* listitem();
 
-		static YamlNode* fromStringstream(stringstream input);
-		static YamlNode* fromString(string input);
+		static YamlNode* fromStringstream(stringstream content);
+		static YamlNode* fromString(const string& content);
 		string toString();
 		string toString(int level);
 		string toString(int level, bool skipLeading);

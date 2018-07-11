@@ -5,15 +5,15 @@
 
 #include "common.hpp"
 
-using namespace std;
+using std::string;
 
-YamlNode* YamlNode::attr(string name, int value) {
+YamlNode* YamlNode::attr(const string& name, const int value) {
 	this->attributes[name] = to_string(value);
 
 	return this;
 }
 
-YamlNode* YamlNode::attr(string name, string value) {
+YamlNode* YamlNode::attr(const string& name, const string& value) {
 	if (this->items.size() > 0) {
 		throw std::invalid_argument("Cannot add attributes, as this node is already a list");
 	}
@@ -23,11 +23,11 @@ YamlNode* YamlNode::attr(string name, string value) {
 	return this;
 }
 
-string YamlNode::attr(string name) {
+string YamlNode::attr(const string& name) {
 	return this->attributes[name];
 }
 
-uint32_t YamlNode::attri(string key) {
+uint32_t YamlNode::attri(const string& key) {
 	string s = this->attributes[key];
 
 	try {
@@ -39,7 +39,7 @@ uint32_t YamlNode::attri(string key) {
 	}
 }
 
-bool YamlNode::attrb(string key) {
+bool YamlNode::attrb(const string& key) {
 	if (this->attributes[key] == "true") {
 		return true;
 	} else if (this->attributes[key] == "false") {
@@ -50,7 +50,7 @@ bool YamlNode::attrb(string key) {
 	}
 }
 
-YamlNode* YamlNode::child(string name) {
+YamlNode* YamlNode::child(const string& name) {
 	if (this->items.size() > 0) {
 		throw std::invalid_argument("Cannot add child, as this node is already a list");
 	}
@@ -67,7 +67,7 @@ string YamlNode::toString() {
 	return this->toString(0);
 }
 
-YamlNode* YamlNode::list(string title) {
+YamlNode* YamlNode::list(const string& title) {
 	auto i = new YamlNode();
 
 	this->children[title] = i;
@@ -87,11 +87,11 @@ YamlNode* YamlNode::listitem() {
 	return i;
 }
 
-string YamlNode::toString(int level) {
+string YamlNode::toString(const int level) {
 	return this->toString(level, false);
 }
 
-string YamlNode::toString(int level, bool skipLeading) {
+string YamlNode::toString(const int level, const bool skipLeading) {
 	stringstream out;
 	bool outputStarted = false;
 
@@ -235,7 +235,7 @@ YamlNode* YamlNode::fromStringstream(stringstream content) {
 	return root;
 }
 
-YamlNode* YamlNode::fromString(string content) {
+YamlNode* YamlNode::fromString(const string& content) {
 	return YamlNode::fromStringstream(stringstream(content));
 }
 

@@ -45,12 +45,14 @@ class Renderer {
 
 };
 
-void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize);
-void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, int size);
+using std::string;
+
+void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize);
+void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, int size);
 void renderRect(SDL_Color color, int x, int y, int w, int h);
-void renderTextShadow(std::string text, int x, int y, TextAlignment alignment, int size);
-void renderTextShadow(std::string text, int x, int y, int size);
-void renderTextShadowWithBackground(std::string text, int x, int y, int size, SDL_Color bgColor, int offsetX);
+void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size);
+void renderTextShadow(const string& text, int x, int y, int size);
+void renderTextShadowWithBackground(const string& text, int x, int y, int size, SDL_Color bgColor, int offsetX);
 void renderBackgroundSolidColor(SDL_Color color);
 SDL_Color rgbaToSdlColor(int rgba);
 

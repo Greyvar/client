@@ -46,7 +46,7 @@ void renderGridTiles(World* world) {
 				flip = SDL_FLIP_HORIZONTAL;
 			}
 
-			SDL_RenderCopyEx(Renderer::get().sdlRen, Renderer::get().resCache->loadTile(tile->textureName), NULL, &pos, rot, NULL, (SDL_RendererFlip)flip);
+			SDL_RenderCopyEx(Renderer::get().sdlRen, Renderer::get().resCache->loadTile(tile->textureName), nullptr, &pos, rot, nullptr, (SDL_RendererFlip)flip);
 		}
 	}
 }
@@ -73,9 +73,43 @@ void renderGridEntities(World* world) {
 
 		SDL_Texture* tex = Renderer::get().resCache->loadEntity(e->textureName, e->primaryColor);
 		
-		SDL_RenderCopy(Renderer::get().sdlRen, tex, NULL, &r);
+		SDL_RenderCopy(Renderer::get().sdlRen, tex, nullptr, &r);
 
 	}
+}
+
+void renderPanel() {
+	renderBackgroundSolidColor({130, 130, 130, 255});
+	renderTextShadow("^9Greyvar 2.0", 15, 50, 36);
+//	renderTextShadow("^7" + GameState::get().gui->subtitle, 20, 80, 16);
+
+/**
+	for (unsigned int i = 0; i < GameState::get().gui->currentMenu->size(); i++) {
+		std::string itemText = GameState::get().gui->currentMenu->at(i)->text;
+
+		if (i == GameState::get().gui->currentlySelectedMenuItem) {
+			itemText.insert(0, "^5");
+		}
+
+		renderTextShadow(itemText, 20, 160 + (i * 60), LEFT, 24);
+	}
+*/
+
+	using namespace std::chrono;
+	milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+
+	SDL_Rect pos;
+	pos.w = pos.h = 64;
+	pos.x = (Renderer::get().window_w / 2) + (sin(ms.count() * .0005) * 250);
+	pos.y = Renderer::get().window_h - pos.h + 4;
+
+	SDL_Texture* texPlayer = Renderer::get().resCache->loadEntity("playerBob.png");
+
+	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, nullptr, &pos);
+
+//	SDL_SetTextureColorMod(texPlayer, 255, 90, 90);
+
+//	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, NULL, &pos);
 }
 
 void renderConsole() {

@@ -3,16 +3,14 @@
 
 #include "cvars.hpp"
 
-using namespace std;
-
 map<string, string> cvars;
 
-bool cvarIsset(string key) {
+bool cvarIsset(const string& key) {
 	return ::cvars.count(key) == 1;
 }
 
-void cvarSet(string key, string val, string source) {
-	if (source.size() > 0) {
+void cvarSet(const string& key, const string& val, string source) {
+	if (!source.empty()) {
 		source = "(from " + source + ") ";
 	}
 
@@ -21,11 +19,11 @@ void cvarSet(string key, string val, string source) {
 	::cvars[key] = val;
 }
 
-void cvarSet(string key, string val) {
+void cvarSet(const string& key, const string& val) {
 	cvarSet(key, val, "");
 }
 
-void cvarSetb(string key, bool val, string source) {
+void cvarSetb(const string& key, const bool& val, const string& source) {
 	if (val) {
 		cvarSet(key, "1", source);
 	} else {
@@ -33,11 +31,11 @@ void cvarSetb(string key, bool val, string source) {
 	}
 }
 
-void cvarSetb(string key, bool val) {
+void cvarSetb(const string& key, const bool& val) {
 	cvarSetb(key, val, "");
 }
 
-string cvarGet(string key) {
+string cvarGet(const string& key) {
 	if (cvarIsset(key)) {
 		return ::cvars[key];
 	} else {
@@ -45,26 +43,26 @@ string cvarGet(string key) {
 	}
 }
 
-bool cvarGetb(string key) {
+bool cvarGetb(const string& key) {
 	string s = cvarGet(key);
 
-	if (s == "") {
-		return 0;
+	if (s.empty()) {
+		return false;
 	}
 
 	try {
 		return stoi(s.c_str());
 	} catch (...) {
 		cout << "cvar, number expected, got >" << s << "<" << endl;
-		return 0;
+		return false;
 	}
 }
 
-int cvarGeti(string key) {
+int cvarGeti(const string& key) {
 	return cvarGeti(key, 0);
 }
 
-int cvarGeti(string key, int def) {
+int cvarGeti(const string& key, const int& def) {
 	string i = cvarGet(key);
 
 	if (i == "") {
@@ -74,11 +72,11 @@ int cvarGeti(string key, int def) {
 	}
 }
 
-void cvarSeti(string key, int val) {
+void cvarSeti(const string& key, const int& val) {
 	cvarSeti(key, val, "");
 }
 
-void cvarSeti(string key, int val, string from) {
+void cvarSeti(const string& key, const int& val, const string& from) {
 	cvarSet(key, to_string(val), from);
 }
 

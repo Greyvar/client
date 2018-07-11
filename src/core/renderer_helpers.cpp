@@ -5,9 +5,9 @@
 
 SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* ren, const FT_Bitmap& bitmap, const SDL_Color& color);
 
-using namespace std;
+using std::string;
 
-void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize) {
+void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize) {
 	const FT_Face face = *Renderer::get().resCache->loadFont("DejaVuSansMono.ttf", fontSize);
 	bool changeColor = false;
 
@@ -44,14 +44,14 @@ void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeC
 
 		SDL_Texture* tex_glyph = CreateTextureFromFT_Bitmap(Renderer::get().sdlRen, face->glyph->bitmap, color);
 
-		SDL_Rect dest;
+		SDL_Rect dest{};
 		dest.x = x + (face->glyph->metrics.horiBearingX >> 6);
 		dest.y = y - (face->glyph->metrics.horiBearingY >> 6);
 
-		SDL_QueryTexture(tex_glyph, NULL, NULL, &dest.w, &dest.h);
+		SDL_QueryTexture(tex_glyph, nullptr, nullptr, &dest.w, &dest.h);
 
 		SDL_SetTextureBlendMode(tex_glyph, SDL_BLENDMODE_BLEND);
-		SDL_RenderCopy(Renderer::get().sdlRen, tex_glyph, NULL, &dest);
+		SDL_RenderCopy(Renderer::get().sdlRen, tex_glyph, nullptr, &dest);
 		SDL_DestroyTexture(tex_glyph);
 
 		x += (face->glyph->metrics.horiAdvance >> 6);
@@ -59,7 +59,7 @@ void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeC
 	}
 }
 
-void renderText(std::string text, int x, int y, SDL_Color color, bool canChangeColor, int size) {
+void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, int size) {
 	renderText(text, x, y, color, canChangeColor, LEFT, size);
 }
 
@@ -67,7 +67,7 @@ void renderRect(SDL_Color color, int x, int y, int w, int h) {
 	SDL_SetRenderDrawBlendMode(Renderer::get().sdlRen, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(Renderer::get().sdlRen, color.r, color.g, color.b, color.a);
 
-	SDL_Rect pos;
+	SDL_Rect pos{};
 	pos.x = x;
 	pos.y = y;
 	pos.w = w;
@@ -76,7 +76,7 @@ void renderRect(SDL_Color color, int x, int y, int w, int h) {
 	SDL_RenderFillRect(Renderer::get().sdlRen, &pos);
 }
 
-void renderTextShadow(std::string text, int x, int y, TextAlignment alignment, int size) {
+void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size) {
 	int shadowOffset;
 
 	if (size < 25) {
@@ -89,11 +89,11 @@ void renderTextShadow(std::string text, int x, int y, TextAlignment alignment, i
 	renderText(text, x, y, {255, 255, 255, 255}, true, alignment, size);
 }
 
-void renderTextShadow(std::string text, int x, int y, int size) {
+void renderTextShadow(const string& text, int x, int y, int size) {
 	renderTextShadow(text, x, y, LEFT, size);
 }
 
-void renderTextShadowWithBackground(std::string text, int x, int y, int size, SDL_Color bgColor, int offsetX) {
+void renderTextShadowWithBackground(const string& text, int x, int y, int size, SDL_Color bgColor, int offsetX) {
 	int pad = 5;
 
 	renderRect(bgColor, x, y - ((size / 4) * 3), (offsetX * 2) + (text.length() * (size * .75)), size + (pad * 2));

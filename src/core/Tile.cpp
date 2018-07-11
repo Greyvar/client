@@ -1,6 +1,6 @@
 #include "Tile.hpp"
 
-Tile::Tile(string textureName, bool traversable) {
+Tile::Tile(const string& textureName, bool traversable) {
 	this->tex = nullptr;
 	this->textureName = textureName;
 	this->traversable = traversable;

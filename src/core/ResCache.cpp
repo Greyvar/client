@@ -62,10 +62,11 @@ Uint32 getpixel(SDL_Surface *surface, int x, int y)
         return *(Uint16 *)p;
 
     case 3:
-        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
             return p[0] << 16 | p[1] << 8 | p[2];
-        else
+        } else {
             return p[0] | p[1] << 8 | p[2] << 16;
+		}
 
     case 4:
         return *(Uint32 *)p;
@@ -91,11 +92,11 @@ void replaceColors(SDL_Surface* img, uint32_t primaryColor) {
 	SDL_UnlockSurface(img);
 }
 
-SDL_Texture* ResCache::loadTexture(string filename) {
+SDL_Texture* ResCache::loadTexture(const string& filename) {
 	return this->loadTexture(filename, 0);
 }
 
-SDL_Texture* ResCache::loadTexture(string filename, uint32_t primaryColor) {
+SDL_Texture* ResCache::loadTexture(const string& filename, uint32_t primaryColor) {
 	string textureNameKey = filename + ":" + to_string(primaryColor);
 
 	if (this->textureCache.count(textureNameKey) == 0) {
@@ -124,24 +125,23 @@ SDL_Texture* ResCache::loadTexture(string filename, uint32_t primaryColor) {
 	return this->textureCache[textureNameKey];
 }
 
-SDL_Texture* ResCache::loadEntity(string filename) {
+SDL_Texture* ResCache::loadEntity(const string& filename) {
 	return this->loadEntity(filename, 0);
 }
 
-SDL_Texture* ResCache::loadEntity(string filename, uint32_t primaryColor) {
+SDL_Texture* ResCache::loadEntity(const string& filename, uint32_t primaryColor) {
 	return this->loadTexture(string("entities/" + filename), primaryColor);
 }
 
-SDL_Texture* ResCache::loadHud(string filename) {
+SDL_Texture* ResCache::loadHud(const string& filename) {
 	return this->loadTexture(string("hud/" + filename), 0);
 }
 
-SDL_Texture* ResCache::loadTile(string filename) {
+SDL_Texture* ResCache::loadTile(const string& filename) {
 	return this->loadTexture(string("tiles/" + filename));
 }
 
-FT_Face* ResCache::loadFont(string filename, int size) {
-	filename = "res/ttf/" + filename;
+FT_Face* ResCache::loadFont(const string& filename, int size) {
 	std::string tag = filename + ":" + std::to_string(size);
 
 	if (this->fontCache.count(tag) == 0) {
@@ -149,7 +149,7 @@ FT_Face* ResCache::loadFont(string filename, int size) {
 
 		cout << "Loading font " << filename << endl;
 
-		auto loadFontResult = FT_New_Face(*Renderer::get().freetypeLib, filename.c_str(), 0, this->fontCache[tag]);
+		auto loadFontResult = FT_New_Face(*Renderer::get().freetypeLib, string("res/ttf/").append(filename).c_str(), 0, this->fontCache[tag]);
 
 		cout << "Load font result: " << loadFontResult << endl;
 

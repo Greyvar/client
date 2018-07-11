@@ -21,7 +21,7 @@ class NetworkManager {
 		NetworkManager(NetworkManager const&) = delete;
 		void operator=(NetworkManager const&) = delete;
 
-		void connectToServer(string server);
+		void connectToServer(const string& server);
 
 		void sendHelo(LocalPlayer* lp);
 		void sendInit();

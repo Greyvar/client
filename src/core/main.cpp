@@ -1,5 +1,5 @@
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 #include "common.hpp"
@@ -15,12 +15,12 @@
 #include "LTimer.hpp"
 
 #define MAX_FPS 30
-#define TICKS_PER_FRAME 1000 / MAX_FPS
+#define TICKS_PER_FRAME (1000 / MAX_FPS)
 
 bool doTheLoopyLoop = true;
 
 void eventHandler() {
-	SDL_Event e;
+	SDL_Event e{};
 
 	while (SDL_PollEvent(&e) != 0) {
 		switch (e.type) {
@@ -45,8 +45,6 @@ void eventHandler() {
 			case SDL_WINDOWEVENT:
 				switch (e.window.event) {
 					case SDL_WINDOWEVENT_SHOWN:
-						cout << "Main window shown" << endl;
-						// no-break
 					case SDL_WINDOWEVENT_RESIZED:
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
 						SDL_GetWindowSize(Renderer::get().getWindow(), &Renderer::get().window_w, &Renderer::get().window_h);
@@ -146,14 +144,14 @@ void startGame() {
 void pushSdlQuit() {
 	std::cout << "pushSdlQuit()" << endl;
 
-	SDL_Event e;
+	SDL_Event e{};
 	e.type = SDL_QUIT;
 
 	SDL_PushEvent(&e);
 }
 
 void initLibraries() {
-	srand(time(NULL));
+	srand(time(nullptr));
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 

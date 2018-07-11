@@ -6,7 +6,7 @@
 #include "cvars.hpp"
 #include "common.hpp"
 
-using namespace std;
+using std::string;
 
 map<string, Mix_Chunk*> soundCache;
 
@@ -14,13 +14,11 @@ map<string, Mix_Chunk*> soundCache;
 #define SND_CHANNELS 2
 #define SND_SAMPLE_SIZE 2048
 
-Mix_Chunk* loadSound(string filename) {
-	filename = "res/snd/" + filename;
-
+Mix_Chunk* loadSound(const string& filename) {
 	if (soundCache.count(filename) == 0) {
-		Mix_Chunk* snd = Mix_LoadWAV(filename.c_str());
+		Mix_Chunk* snd = Mix_LoadWAV(string("res/snd/").append(filename).c_str());
 
-		if (snd == NULL) {
+		if (snd == nullptr) {
 			cout << "failed to load sound: " << filename << endl;
 		} else {
 			cout << "loaded sound: " << filename << endl;
@@ -58,7 +56,7 @@ void quitSound() {
 	Mix_Quit();
 }
 
-void playSound(string filename, SoundChannel ch) {
+void playSound(const string& filename, SoundChannel ch) {
 	cout << "play sound: " << filename << endl;
 
 	if (Mix_PlayChannel(ch, loadSound(filename), 0) == -1) {

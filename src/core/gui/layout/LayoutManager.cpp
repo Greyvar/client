@@ -50,11 +50,11 @@ void LayoutManager::doLayout(Screen* screen) {
 
 	cout << "Layout finished" << endl;
 
-	for (int row = 0; row < this->rowProperties.size(); row++) {
+	for (size_t row = 0; row < this->rowProperties.size(); row++) {
 		cout << "row " << row << " " << this->rowProperties[row].str() << endl;
 	}
 
-	for (int col = 0; col < this->colProperties.size(); col++) {
+	for (size_t col = 0; col < this->colProperties.size(); col++) {
 		cout << "col " << col << " " << this->colProperties[col].str() << endl;
 	}
 		

@@ -4,5 +4,4 @@ namespace server_interface {
 
 void refresh();
 
-
 }

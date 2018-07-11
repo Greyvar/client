@@ -1,3 +1,7 @@
 #include "ServerBrowser.hpp"
 
-void server_interface::refresh();
+namespace server_interface {
+
+void refresh() {}
+
+}

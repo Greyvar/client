@@ -10,7 +10,7 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 	string statusText = "";
 	string usernameText = "";
 
-	SDL_Color playerColor;
+	SDL_Color playerColor{};
 	uint8_t backgroundIntensity;
 
 	if (lp->remote == nullptr) {
@@ -26,7 +26,7 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 	renderRect(playerColor, x - (fontSize * .5), y - (fontSize * 1), fontSize / 2, fontSize + (5 * 2) + (fontSize / 2));
 	renderRect({100, 100, 100, backgroundIntensity}, x, y - (fontSize * 1), 172, 48);
 
-	SDL_Rect inputDeviceIconPos;
+	SDL_Rect inputDeviceIconPos{};
 	inputDeviceIconPos.x = x + 5;
 	inputDeviceIconPos.y = (y - fontSize) + (5 * 1.5);
 	inputDeviceIconPos.w = 32;
@@ -59,8 +59,6 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 			break;
 	}
 	
-	SDL_RenderCopy(Renderer::get().sdlRen, texInputDeviceIcon, NULL, &inputDeviceIconPos);
-
 	switch (statusTextType) {
 		case JOIN_TXT_KEYBOARD:
 			statusText = "Press Enter";
@@ -75,6 +73,8 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 	
 	renderTextShadow(usernameText, x + 40, y, fontSize);
 	renderTextShadow(statusText, x + 40 , y + smallTextOffset, fontSize / 2);
+	
+	SDL_RenderCopy(Renderer::get().sdlRen, texInputDeviceIcon, nullptr, &inputDeviceIconPos);
 }
 
 void renderHud() {
