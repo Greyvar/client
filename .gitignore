@@ -11,3 +11,4 @@ cmake_install.cmake
 **/*.out
 doc/doxygen
 rpt/**
+compile_commands.json

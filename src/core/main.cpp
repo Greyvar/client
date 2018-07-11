@@ -15,12 +15,12 @@
 #include "LTimer.hpp"
 
 #define MAX_FPS 30
-#define TICKS_PER_FRAME 1000 / MAX_FPS
+#define TICKS_PER_FRAME (1000 / MAX_FPS)
 
 bool doTheLoopyLoop = true;
 
 void eventHandler() {
-	SDL_Event e;
+	SDL_Event e{};
 
 	while (SDL_PollEvent(&e) != 0) {
 		switch (e.type) {
@@ -139,14 +139,14 @@ void startGame() {
 void pushSdlQuit() {
 	std::cout << "pushSdlQuit()" << endl;
 
-	SDL_Event e;
+	SDL_Event e{};
 	e.type = SDL_QUIT;
 
 	SDL_PushEvent(&e);
 }
 
 void initLibraries() {
-	srand(time(NULL));
+	srand(time(nullptr));
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 

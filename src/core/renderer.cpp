@@ -46,7 +46,7 @@ void renderGridTiles(World* world) {
 				flip = SDL_FLIP_HORIZONTAL;
 			}
 
-			SDL_RenderCopyEx(Renderer::get().sdlRen, Renderer::get().resCache->loadTile(tile->textureName), NULL, &pos, rot, NULL, (SDL_RendererFlip)flip);
+			SDL_RenderCopyEx(Renderer::get().sdlRen, Renderer::get().resCache->loadTile(tile->textureName), nullptr, &pos, rot, nullptr, (SDL_RendererFlip)flip);
 		}
 	}
 }
@@ -73,7 +73,7 @@ void renderGridEntities(World* world) {
 
 		SDL_Texture* tex = Renderer::get().resCache->loadEntity(e->textureName, e->primaryColor);
 		
-		SDL_RenderCopy(Renderer::get().sdlRen, tex, NULL, &r);
+		SDL_RenderCopy(Renderer::get().sdlRen, tex, nullptr, &r);
 
 	}
 }
@@ -105,7 +105,7 @@ void renderMenu() {
 
 	SDL_Texture* texPlayer = Renderer::get().resCache->loadEntity("playerBob.png");
 
-	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, NULL, &pos);
+	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, nullptr, &pos);
 
 //	SDL_SetTextureColorMod(texPlayer, 255, 90, 90);
 

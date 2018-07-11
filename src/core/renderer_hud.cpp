@@ -5,7 +5,7 @@
 void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlayer) {
 	string text = lp->username;
 
-	SDL_Color playerColor;
+	SDL_Color playerColor{};
 	uint8_t backgroundIntensity;
 
 	if (lp->remote == nullptr) {
@@ -20,7 +20,7 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 	renderRect({100, 100, 100, backgroundIntensity}, x, y - (fontSize * 1), 172, 48);
 	renderTextShadow(text, x + 40, y, fontSize);
 
-	SDL_Rect inputDeviceIconPos;
+	SDL_Rect inputDeviceIconPos{};
 	inputDeviceIconPos.x = x + 5;
 	inputDeviceIconPos.y = (y - fontSize) + (5 * 1.5);
 	inputDeviceIconPos.w = 32;
@@ -51,7 +51,7 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 			break;
 	}
 	
-	SDL_RenderCopy(Renderer::get().sdlRen, texInputDeviceIcon, NULL, &inputDeviceIconPos);
+	SDL_RenderCopy(Renderer::get().sdlRen, texInputDeviceIcon, nullptr, &inputDeviceIconPos);
 }
 
 void renderHud() {

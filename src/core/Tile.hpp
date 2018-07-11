@@ -7,7 +7,7 @@ using namespace std;
 
 class Tile {
 	public:
-		Tile(string texture, bool traversable);
+		Tile(const string& texture, bool traversable);
 
 		SDL_Texture* tex; 
 

@@ -1,12 +1,12 @@
 #include "platforms/platform.hpp"
 
-#include <fstream>
-#include <iostream>
-
 #include "cvars.hpp"
 #include "YamlNode.hpp"
 
-using namespace std;
+#include <fstream>
+#include <iostream>
+
+using std::string;
 
 string getHomeDirectory() {
 	return getenv("HOME");

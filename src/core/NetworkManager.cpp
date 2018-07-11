@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 #include <SDL2/SDL_net.h>
 
 #include "YamlNode.hpp"
@@ -11,8 +11,8 @@
 
 using namespace std;
 
-void NetworkManager::connectToServer(string server) {
-	IPaddress ip;
+void NetworkManager::connectToServer(const string& server) {
+	IPaddress ip{};
 
 	if (SDLNet_Init() < 0) {
 		cout << "SDL Net init failed: " << SDLNet_GetError() << endl;
@@ -91,7 +91,7 @@ void handlePlayerYou(YamlNode* ypacket) {
 	auto rp = GameState::get().getRemotePlayerById(ypacket->attri("id"));
 
 	NetworkManager::get().lastLocalPlayerToJoin->remote = rp;
-	NetworkManager::get().lastLocalPlayerToJoin = NULL;
+	NetworkManager::get().lastLocalPlayerToJoin = nullptr;
 }
 
 void handleEnt(YamlNode* ypacket) {

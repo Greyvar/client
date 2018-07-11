@@ -5,9 +5,9 @@
 
 #include "cvars.hpp"
 
-using namespace std;
+using std::string;
 
-stringstream readFile(string filename) {
+stringstream readFile(const string& filename) {
 	string line;
 	stringstream out; 	
 	ifstream inFile;
@@ -34,7 +34,7 @@ void parseArguments(int argc, char* argv[]) {
 	std::string last = "";
 
 	for (int i = 0; i < argc; i++) {
-		std::string current = argv[i];
+		string current = argv[i];
 
 		switch (nextArgumentExpected) {
 			case ANY:	

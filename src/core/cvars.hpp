@@ -6,16 +6,16 @@ using namespace std;
 
 void cvarInit();
 
-void cvarSet(string key, string val, string source);
-void cvarSet(string key, string val);
-void cvarSetb(string key, bool val);
-void cvarSeti(string key, int val);
-void cvarSeti(string key, int val, string from);
+void cvarSet(const string& key, const string& val, string source);
+void cvarSet(const string& key, const string& val);
+void cvarSetb(const string& key, const bool& val);
+void cvarSeti(const string& key, const int& val);
+void cvarSeti(const string& key, const int& val, const string& from);
 
-string cvarGet(string key);
-bool cvarGetb(string key);
-int cvarGeti(string key);
-int cvarGeti(string key, int def);
+string cvarGet(const string& key);
+bool cvarGetb(const string& key);
+int cvarGeti(const string& key);
+int cvarGeti(const string& key, const int& def);
 
-bool cvarIsset(string key);
+bool cvarIsset(const string& key);
 
