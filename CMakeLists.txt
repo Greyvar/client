@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 project(Greyvar)
 
+set(CMAKE_CXX_STANDARD 14)
+seT(CMAKE_CXX_EXTENSIONS OFF)
+
 set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY bin)
@@ -63,5 +66,5 @@ elseif(UNIX)
 	target_link_libraries(greyvar_test gtest greyvar_core)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++14 ${PLATFORM_CXX_FLAGS}") # -Weffc++
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic ${PLATFORM_CXX_FLAGS}") # -Weffc++
 
