@@ -2,8 +2,8 @@
 
 #include <vector>
 
+#include "cvars.hpp"
 #include "World.hpp"
-#include "gui/Gui.hpp"
 #include "LocalPlayer.hpp"
 #include "RemotePlayer.hpp"
 
@@ -13,19 +13,17 @@ class GameState {
 
 		std::string serverName = "the construct";
 
-		Gui* gui;
-
 		~GameState();
 		GameState(GameState const&) = delete;
 		void operator=(GameState const&) = delete;
-
-		void clear();
 
 		static GameState& get() {
 			static GameState instance;
 
 			return instance;
 		}
+
+		void clear();
 
 		void onPlayerJoin(RemotePlayer* rp);
 
@@ -66,6 +64,8 @@ class GameState {
 		void destroyWorld();
 
 	private:
+		void addNewLocalPlayer(LocalPlayer* lp);
+
 		std::vector<LocalPlayer*> localPlayers = {};
 		std::map<int, RemotePlayer*> remotePlayers = {};
 
@@ -77,9 +77,7 @@ class GameState {
 			auto keyboardPlayer = new LocalPlayer();
 			keyboardPlayer->inputDevice.type = KEYBOARD_AND_POINTER;
 
-			this->localPlayers.push_back(keyboardPlayer);
-
-			this->gui = new Gui();
+			this->addNewLocalPlayer(keyboardPlayer);
 		}
 };
 

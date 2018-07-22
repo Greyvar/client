@@ -20,3 +20,9 @@ void Gui::toggleConsole() {
 		this->scene = CONSOLE;
 	}
 }
+
+void Gui::refreshPlayers() {
+	this->screenPlayerSetup->setupComponents();
+	this->layoutManager->doLayout(this->screenPlayerSetup);
+}
+

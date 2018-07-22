@@ -2,6 +2,8 @@
 
 #include "ScreenMainMenu.hpp"
 #include "gui/components/Label.hpp"
+#include "startup.hpp"
+#include "gui/Gui.hpp"
 
 using namespace std;
 
@@ -23,33 +25,59 @@ string ScreenMainMenu::getRandomSubtitle() {
 	return subtitles.at(c);
 }
 
+void quitMenuAction() {
+	quitGame();
+}
+
+void aboutMenuAction() {
+	Gui::get().setScreen("about");
+}
+
+void settingsMenuAction() {
+	Gui::get().setScreen("settings");
+}
+
+void serversMenuAction() {
+	Gui::get().setScreen("servers");
+}
+
 void ScreenMainMenu::setupComponents() {
 	auto cons = new LayoutConstraints();
 
 	auto lblTitle = new Label("Greyvar");
 	lblTitle->fontSize = 48;
 
-	cons->weightX = 1;
-	cons->weightY = 0;
+	cons->colWeight = 1;
+	cons->rowWeight = 0;
 	this->add(lblTitle, cons);
 
 
 	auto lblSubtitle = new Label("^3" + this->getRandomSubtitle());
 
-	cons->y++;
-	cons->weightY = 1;
+	cons->row++;
+	cons->rowWeight = 0;
 	this->add(lblSubtitle, cons);
 
-	cons->x++;
-	this->add(new Label("foo"), cons);
+	this->menu->add("Play", &serversMenuAction);
+	this->menu->add("Settings", &settingsMenuAction);
+	this->menu->add("About", &aboutMenuAction);
+	this->menu->add("Quit", &quitMenuAction);
 
-	this->menu->add("Play");
-	this->menu->add("Settings");
-	this->menu->add("About");
-	this->menu->add("Quit");
-
-	cons->y++;
-	cons->x = 0;
-	cons->weightY = 1;
+	cons->row++;
+	cons->rowWeight = 1;
+	cons->col = 0;
+	cons->colWeight = 1;
 	this->add(menu, cons);
+}
+
+void ScreenMainMenu::selectNextItem() {
+	this->menu->selectNextMenuItem();
+}
+
+void ScreenMainMenu::selectPrevItem() {
+	this->menu->selectPrevMenuItem();
+}
+
+void ScreenMainMenu::executeCurrentItem() {
+	this->menu->executeCurrentMenuItem();
 }

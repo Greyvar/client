@@ -5,6 +5,8 @@ void initFreetype();
 void initSound();
 void pushSdlQuit();
 
+void quitGame();
+
 void quitSound();
 
-void loadHomedirConfigurationFile();
+void loadHomedirConfigurationFiles();

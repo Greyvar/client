@@ -1,7 +1,4 @@
-#include <iostream>
-#include <cstdio>
-#include <SDL2/SDL_net.h>
-
+#include "gui/Gui.hpp"
 #include "YamlNode.hpp"
 #include "NetworkManager.hpp"
 #include "GameState.hpp"
@@ -9,7 +6,9 @@
 
 #include "platforms/platform.hpp"
 
-using namespace std;
+#include <iostream>
+#include <cstdio>
+#include <SDL2/SDL_net.h>
 
 void NetworkManager::connectToServer(const string& server) {
 	IPaddress ip{};
@@ -39,8 +38,8 @@ void NetworkManager::connectToServer(const string& server) {
 
 void handleWelc(YamlNode* welc) {
 	cout << "Server version is: " << welc->attr("serverVersion") << endl;
-	GameState::get().gui->scene = PLAY;
-	GameState::get().gui->addMessage("Connected to " + welc->attr("name"));
+	Gui::get().scene = PLAY;
+	Gui::get().addMessage("Connected to " + welc->attr("name"));
 }
 
 void handleTile(YamlNode* ytile) {
@@ -82,7 +81,7 @@ void handlePlayerAlreadyHere(YamlNode* ypacket) {
 }
 
 void handlePlrj(YamlNode* plrj) {
-	GameState::get().gui->addMessage(plrj->attr("username") + " joined the server");
+	Gui::get().addMessage(plrj->attr("username") + " joined the server");
 
 	handlePlayerAlreadyHere(plrj);
 }

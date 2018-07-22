@@ -5,7 +5,9 @@ GuiComponent::GuiComponent() {
 }
 
 void GuiComponent::setConstraints(LayoutConstraints* lc) {
-	this->layoutConstraints.x  = lc->x;
-	this->layoutConstraints.y = lc->y;
+	this->layoutConstraints.row  = lc->row;
+	this->layoutConstraints.col = lc->col;
+	this->layoutConstraints.rowWeight = lc->rowWeight;
+	this->layoutConstraints.colWeight = lc->colWeight;
 }
 

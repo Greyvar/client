@@ -1,14 +1,12 @@
-#include <map>
-
 #include "Scene.hpp"
 #include "input/PlayerInput.hpp"
 #include "input/0_hid/HidInputGesture.hpp"
 #include "input/2_actions/common.hpp"
 #include "common.hpp"
 #include "Scene.hpp"
-#include "GameState.hpp"
+#include "gui/Gui.hpp"
 
-using namespace std;
+#include <map>
 
 map<Scene, map<HidInputGesture, ActionInput>> inputBindings;
 
@@ -52,7 +50,7 @@ void lookupActionBindingForPlayerInput() {
 	while (!unboundPlayerInputQueue.empty()) {
 		PlayerInput* pi = unboundPlayerInputQueue.front();
 
-		pi->actionInput = inputBindings[GameState::get().gui->scene][pi->hidInputGesture];
+		pi->actionInput = inputBindings[Gui::get().scene][pi->hidInputGesture];
 
 		unboundPlayerInputQueue.pop();
 

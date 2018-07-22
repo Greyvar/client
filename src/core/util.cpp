@@ -31,9 +31,9 @@ void parseArguments(int argc, char* argv[]) {
 		CVAR,
 	} nextArgumentExpected = ANY;
 
-	std::string last = "";
+	string last{};
 
-	for (int i = 0; i < argc; i++) {
+	for (uint32_t i = 0; i < argc; i++) {
 		string current = argv[i];
 
 		switch (nextArgumentExpected) {
@@ -42,9 +42,14 @@ void parseArguments(int argc, char* argv[]) {
 					nextArgumentExpected = CVAR;
 				}
 
+				if (current[0] == '+') {
+					cvarSet(current.substr(1), "1", "command line, +1 syntax");
+					nextArgumentExpected = ANY;
+				}
+
 				break;
 			case CVAR:
-				cvarSet(last.substr(1), current);
+				cvarSet(last.substr(1), current, "command line");
 
 				nextArgumentExpected = ANY;
 				break;

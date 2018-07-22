@@ -52,6 +52,7 @@ void renderText(const string& text, int x, int y, SDL_Color color, bool canChang
 void renderRect(SDL_Color color, int x, int y, int w, int h);
 void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size);
 void renderTextShadow(const string& text, int x, int y, int size);
+void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size, SDL_Color color);
 void renderTextShadowWithBackground(const string& text, int x, int y, int size, SDL_Color bgColor, int offsetX);
 void renderBackgroundSolidColor(SDL_Color color);
 SDL_Color rgbaToSdlColor(int rgba);

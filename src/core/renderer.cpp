@@ -78,39 +78,6 @@ void renderGridEntities(World* world) {
 	}
 }
 
-void renderPanel() {
-	renderBackgroundSolidColor({130, 130, 130, 255});
-	renderTextShadow("^9Greyvar 2.0", 15, 50, 36);
-//	renderTextShadow("^7" + GameState::get().gui->subtitle, 20, 80, 16);
-
-/**
-	for (unsigned int i = 0; i < GameState::get().gui->currentMenu->size(); i++) {
-		std::string itemText = GameState::get().gui->currentMenu->at(i)->text;
-
-		if (i == GameState::get().gui->currentlySelectedMenuItem) {
-			itemText.insert(0, "^5");
-		}
-
-		renderTextShadow(itemText, 20, 160 + (i * 60), LEFT, 24);
-	}
-*/
-
-	using namespace std::chrono;
-	milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-
-	SDL_Rect pos;
-	pos.w = pos.h = 64;
-	pos.x = (Renderer::get().window_w / 2) + (sin(ms.count() * .0005) * 250);
-	pos.y = Renderer::get().window_h - pos.h + 4;
-
-	SDL_Texture* texPlayer = Renderer::get().resCache->loadEntity("playerBob.png");
-
-	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, nullptr, &pos);
-
-//	SDL_SetTextureColorMod(texPlayer, 255, 90, 90);
-
-//	SDL_RenderCopy(Renderer::get().sdlRen, texPlayer, NULL, &pos);
-}
 
 void renderConsole() {
 	renderBackgroundSolidColor({66, 66, 66, 255});
@@ -127,7 +94,7 @@ void renderConsole() {
 void renderUiMessages() {
 	uint32_t index = 0;
 
-	for (auto it : GameState::get().gui->messages) {
+	for (auto it : Gui::get().messages) {
 		renderTextShadow(it.second, 50, (Renderer::get().window_h - 80) - (index * 50), 24);
 		index++;
 	}
@@ -147,7 +114,15 @@ void Renderer::renderFrame() {
 
 	World* world = GameState::get().world;
 
-	switch (GameState::get().gui->scene) {
+	if (Renderer::get().window_h < 480 || Renderer::get().window_w < 640) {
+		renderTextShadow("RESOLUTION TOO LOW!", 20, 20, 16);
+		renderTextShadow("Needs to be 640x480 or bigger", 20, 40, 16);
+		renderTextShadow(to_string(Renderer::get().window_w)  + "x" + to_string(Renderer::get().window_h), 20, 60, 16);
+		SDL_RenderPresent(ren);
+		return;
+	}
+
+	switch (Gui::get().scene) {
 		case MENU:
 			renderPanel();
 			break;

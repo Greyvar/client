@@ -51,7 +51,7 @@ bool cvarGetb(const string& key) {
 	}
 
 	try {
-		return stoi(s.c_str());
+		return (bool) stoi(s);
 	} catch (...) {
 		cout << "cvar, number expected, got >" << s << "<" << endl;
 		return false;
@@ -65,7 +65,7 @@ int cvarGeti(const string& key) {
 int cvarGeti(const string& key, const int& def) {
 	string i = cvarGet(key);
 
-	if (i == "") {
+	if (i.empty()) {
 		return def;
 	} else {
 		return stoi(cvarGet(key));
@@ -86,5 +86,5 @@ void cvarInit() {
 	cvarSet("nickname", "unamed.player", def);
 	cvarSetb("bind_keyboard", true, def);
 	cvarSeti("snd_channel_ui_volume", 100, def);
-	cvarSet("lp_1_username", "Player 1");
+	cvarSet("lp_1_username", "Player 1", def);
 }

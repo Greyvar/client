@@ -1,5 +1,6 @@
 #include "Renderer.hpp"
 #include "GameState.hpp"
+#include "gui/Gui.hpp"
 
 GameState::~GameState() {
 	this->clear();
@@ -40,12 +41,20 @@ void GameState::onPlayerJoin(RemotePlayer* rp) {
 	this->world->entityGrid->add(rp->ent);
 }
 
-void GameState::onNewLocalPlayer(LocalPlayer* lp) {
-	lp->username = "lp_" + to_string(this->localPlayers.size()) + "_username";
+void GameState::addNewLocalPlayer(LocalPlayer* lp) {
+	lp->username = cvarGet("lp_" + to_string(this->localPlayers.size()) + "_username");
 	cout << lp->username << endl;
 	this->localPlayers.push_back(lp);
 }
 
+void GameState::onNewLocalPlayer(LocalPlayer* lp) {
+	this->addNewLocalPlayer(lp);
+
+	Gui::get().refreshPlayers();
+}
+
 void GameState::onRemoveLocalPlayer(LocalPlayer* lp) {
 	this->localPlayers.erase(std::remove(this->localPlayers.begin(), this->localPlayers.end(), lp), this->localPlayers.end());
+
+	Gui::get().refreshPlayers();
 }

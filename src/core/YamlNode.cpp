@@ -27,8 +27,8 @@ string YamlNode::attr(const string& name) {
 	return this->attributes[name];
 }
 
-uint32_t YamlNode::attri(const string& key) {
-	string s = this->attributes[key];
+uint32_t YamlNode::attri(const string& name) {
+	string s = this->attributes[name];
 
 	try {
 		return stoul(s.c_str());
@@ -39,13 +39,13 @@ uint32_t YamlNode::attri(const string& key) {
 	}
 }
 
-bool YamlNode::attrb(const string& key) {
-	if (this->attributes[key] == "true") {
+bool YamlNode::attrb(const string& name) {
+	if (this->attributes[name] == "true") {
 		return true;
-	} else if (this->attributes[key] == "false") {
+	} else if (this->attributes[name] == "false") {
 		return false;
 	} else {
-		cout << "wtf" << key << endl;
+		cout << "wtf" << name << endl;
 		return false;
 	}
 }

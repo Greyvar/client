@@ -1,10 +1,7 @@
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-
 #include "common.hpp"
 #include "Renderer.hpp"
 #include "GameState.hpp"
+#include "gui/Gui.hpp"
 #include "startup.hpp"
 #include "YamlNode.hpp"
 #include "NetworkManager.hpp"
@@ -13,6 +10,10 @@
 #include "input/1_bindings/common.hpp"
 #include "input/2_actions/common.hpp"
 #include "LTimer.hpp"
+
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 
 #define MAX_FPS 30
 #define TICKS_PER_FRAME (1000 / MAX_FPS)
@@ -49,7 +50,7 @@ void eventHandler() {
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
 						SDL_GetWindowSize(Renderer::get().getWindow(), &Renderer::get().window_w, &Renderer::get().window_h);
 
-						GameState::get().gui->onWindowResized();
+						Gui::get().onWindowResized();
 
 						break;
 					case SDL_WINDOWEVENT_MINIMIZED:
@@ -138,7 +139,7 @@ void mainLoop() {
 }
 
 void startGame() {
-	GameState::get().gui->scene = PLAY;
+	Gui::get().scene = PLAY;
 }
 
 void pushSdlQuit() {
@@ -180,14 +181,15 @@ int mainGreyvarCore(int argc, char* argv[]) {
 	cout << "Greyvar (core) " << endl << "--------------" << endl;
 
 	cvarInit();
-	loadHomedirConfigurationFile();
+	loadHomedirConfigurationFiles();
 
 	parseArguments(argc, argv);
 
 	initLibraries();
 
-	SDL_Window *win = SDL_CreateWindow("Greyvar", cvarGeti("win_x", SDL_WINDOWPOS_CENTERED), cvarGeti("win_y", SDL_WINDOWPOS_CENTERED), TILE_SIZE * GRID_SIZE, TILE_SIZE * GRID_SIZE, SDL_WINDOW_SHOWN);
+	SDL_Window *win = SDL_CreateWindow("Greyvar", cvarGeti("win_x", SDL_WINDOWPOS_CENTERED), cvarGeti("win_y", SDL_WINDOWPOS_CENTERED), TILE_SIZE * GRID_SIZE, 780, SDL_WINDOW_SHOWN);
 	SDL_SetWindowResizable(win, SDL_TRUE);
+	SDL_SetWindowMinimumSize(win, 640, 480);
 
 	Renderer::set(win, SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
 

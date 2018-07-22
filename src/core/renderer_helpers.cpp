@@ -76,7 +76,7 @@ void renderRect(SDL_Color color, int x, int y, int w, int h) {
 	SDL_RenderFillRect(Renderer::get().sdlRen, &pos);
 }
 
-void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size) {
+void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size, SDL_Color color) {
 	int shadowOffset;
 
 	if (size < 25) {
@@ -86,7 +86,13 @@ void renderTextShadow(const string& text, int x, int y, TextAlignment alignment,
 	}
 
 	renderText(text, x + shadowOffset, y + shadowOffset, {0, 0, 0, 255}, false, alignment, size);
-	renderText(text, x, y, {255, 255, 255, 255}, true, alignment, size);
+	renderText(text, x, y, color, true, alignment, size);
+}
+
+void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size) {
+	SDL_Color color = {255, 255, 255, 255};
+
+	renderTextShadow(text, x, y, alignment, size, color);
 }
 
 void renderTextShadow(const string& text, int x, int y, int size) {

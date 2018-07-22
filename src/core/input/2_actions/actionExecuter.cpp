@@ -1,8 +1,3 @@
-#include <queue>
-
-#include <iostream>
-#include <SDL2/SDL.h>
-
 #include "NetworkManager.hpp"
 #include "../PlayerInput.hpp"
 #include "common.hpp"
@@ -10,6 +5,13 @@
 #include "GameState.hpp"
 #include "NetworkManager.hpp"
 #include "ActionInputFirewall.hpp"
+#include "gui/Gui.hpp"
+
+#include <queue>
+
+#include <iostream>
+#include <SDL2/SDL.h>
+
 
 using namespace std;
 
@@ -28,16 +30,16 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 				}
 				break;
 			case MENU_DOWN:
-//				GameState::get().gui->selectNextMenuItem();
+				Gui::get().currentScreen->selectNextItem();
 				break;
 			case MENU_UP:
-//				GameState::get().gui->selectPrevMenuItem();
+				Gui::get().currentScreen->selectPrevItem();
 				break;
 			case MENU_ITEM_SELECT:
-//				GameState::get().gui->executeCurrentMenuItem();
+				Gui::get().currentScreen->executeCurrentItem();
 				break;
 			case MENU_SHOW:
-				GameState::get().gui->scene = MENU;
+				Gui::get().scene = MENU;
 				break;
 			case WALK_UP:
 				NetworkManager::get().sendMovr(0, -1, pi->localPlayer->username);

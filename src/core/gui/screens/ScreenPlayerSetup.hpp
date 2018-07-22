@@ -1,8 +1,10 @@
+#pragma once
+
 #include "Screen.hpp"
 
-class ScreenServerBrowser: public Screen {
+class ScreenPlayerSetup : public Screen {
 	public:
-		ScreenServerBrowser() {
+		ScreenPlayerSetup() {
 			this->setupComponents();
 		}
 

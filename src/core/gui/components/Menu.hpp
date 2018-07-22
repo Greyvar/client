@@ -11,8 +11,18 @@ using namespace std;
 
 class Menu: public GuiComponent {
 	public:
+		Menu() {
+			this->rendererFunc = "menu";
+		}
+
+		void add(string title, MenuItemAction action) {
+			this->items.push_back(new MenuItem(title, action));
+
+			this->minimumHeight = 30 * (this->items.size() + 1);
+		}
+
 		void add(string title) {
-			this->items.push_back(new MenuItem(title));
+			this->add(title, nullptr);
 		}
 
 		void selectPrevMenuItem() {
@@ -42,6 +52,19 @@ class Menu: public GuiComponent {
 
 			item->action();
 		}
+
+		int getItemCount() {
+			return this->items.size();
+		}
+
+		int getSelectedIndex() {
+			return this->currentlySelectedMenuItem;
+		}
+
+		string getItemName(uint32_t item) {
+			return this->items.at(item)->text;
+		}
+
 	private:
 
 		std::vector<MenuItem*> items;

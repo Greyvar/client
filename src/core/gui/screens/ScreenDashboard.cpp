@@ -1,0 +1,33 @@
+#include "ScreenDashboard.hpp"
+#include "gui/components/Label.hpp"
+#include "gui/components/Button.hpp"
+
+ScreenDashboard::ScreenDashboard() {
+	auto cons = new LayoutConstraints();
+
+	this->add(new Label("Greyvar dashboard test", 42), cons);
+
+	cons->row++;
+	auto menu = new Menu();
+	menu->add("foo");
+	menu->add("bar");
+	menu->add("one");
+	menu->add("two");
+	menu->add("three");
+	menu->add("four");
+	this->add(menu, cons);
+
+
+	cons->row++;
+	cons->rowWeight = 1;
+	this->add(new Button("one", {255, 0, 0, 255}), cons);
+
+	cons->row++;
+	cons->rowWeight = 0;
+	this->add(new Button("two", {0, 255, 0, 255}), cons);
+
+	cons->row++;
+	cons->rowWeight = 1;
+	this->add(new Button("two", {0, 0, 255, 255}), cons);
+
+}
