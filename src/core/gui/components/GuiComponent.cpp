@@ -1,8 +1,8 @@
 #include "GuiComponent.hpp"
 
-GuiComponent::GuiComponent() {
+GuiComponent::GuiComponent() {}
 
-}
+GuiComponent::~GuiComponent() {}
 
 void GuiComponent::setConstraints(LayoutConstraints* lc) {
 	this->layoutConstraints.row  = lc->row;

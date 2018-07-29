@@ -4,11 +4,11 @@
 
 typedef void (*MenuItemAction)(void);
 
-class MenuItem: public Button {
+class MenuItem {
 	public:
 		explicit MenuItem(std::string text) : MenuItem(text, nullptr) {}
 
-		MenuItem(std::string text, MenuItemAction action) : Button(text) {
+		MenuItem(std::string text, MenuItemAction action) {
 			this->text = text;
 			this->action = action;
 		}

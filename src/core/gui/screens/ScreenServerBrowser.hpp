@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Screen.hpp"
 
 class ScreenServerBrowser: public Screen {
@@ -7,4 +9,5 @@ class ScreenServerBrowser: public Screen {
 		}
 
 		void setupComponents();
+		void executeCurrentItem() override;
 };

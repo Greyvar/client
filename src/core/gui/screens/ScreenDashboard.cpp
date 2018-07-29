@@ -2,6 +2,8 @@
 #include "gui/components/Label.hpp"
 #include "gui/components/Button.hpp"
 
+void nullAction() {}
+
 ScreenDashboard::ScreenDashboard() {
 	auto cons = new LayoutConstraints();
 
@@ -20,14 +22,14 @@ ScreenDashboard::ScreenDashboard() {
 
 	cons->row++;
 	cons->rowWeight = 1;
-	this->add(new Button("one", {255, 0, 0, 255}), cons);
+	this->add(new Button("one", {255, 0, 0, 255}, &nullAction), cons);
 
 	cons->row++;
 	cons->rowWeight = 0;
-	this->add(new Button("two", {0, 255, 0, 255}), cons);
+	this->add(new Button("two", {0, 255, 0, 255}, &nullAction), cons);
 
 	cons->row++;
 	cons->rowWeight = 1;
-	this->add(new Button("two", {0, 0, 255, 255}), cons);
+	this->add(new Button("two", {0, 0, 255, 255}, &nullAction), cons);
 
 }

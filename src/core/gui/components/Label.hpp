@@ -8,6 +8,12 @@ class Label: public GuiComponent {
 	public:
 		Label(const string& text) : Label(text, 24) {}
 
+		Label(const string& text, int fontSize, bool bold, bool underlined, bool background) : Label(text, fontSize) {
+			this->bold = bold;
+			this->underlined = underlined;
+			this->background = background;
+		}
+
 		Label(const string& text, int fontSize) {
 			this->rendererFunc = "label";
 			this->text = text;
@@ -22,7 +28,11 @@ class Label: public GuiComponent {
 		}
 
 		int fontSize = 24;
+		bool bold = false;
+		bool underlined = false;
+		bool background = true;
 
 	private: 
 		string text;
+
 };

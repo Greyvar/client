@@ -70,6 +70,8 @@ class Gui {
 			}
 		}
 
+		void onMouseMoved(const int x, const int y) const;
+
 		void setScreen(const string& name) {
 			Screen* changedScreen;
 
@@ -86,7 +88,12 @@ class Gui {
 			if (name == "settings") {
 				changedScreen = this->screenSettings;
 			}
+
+			if (name == "playerSetup") {
+				changedScreen = this->screenPlayerSetup;
+			}
 			
+			this->layoutManager->onChanged(changedScreen);
 			this->layoutManager->doLayout(changedScreen);
 			this->currentScreen = changedScreen;
 		}

@@ -21,7 +21,7 @@ void defaultInputBindings() {
 	inputBind(MENU, KEY_ARROW_UP, MENU_UP);
 	inputBind(MENU, KEY_ARROW_DOWN, MENU_DOWN);
 	inputBind(MENU, KEY_RETURN, MENU_ITEM_SELECT);
-	inputBind(MENU, MOUSE_CLICK_LEFT, POINT);
+	inputBind(MENU, MOUSE_CLICK_LEFT, MENU_CLICK);
 
 	inputBind(PLAY, KEY_ESCAPE, QUIT);
 	inputBind(PLAY, KEY_W, WALK_UP);

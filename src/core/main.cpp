@@ -28,6 +28,11 @@ void eventHandler() {
 			case SDL_TEXTINPUT:
 			case SDL_TEXTEDITING:
 			case SDL_MOUSEMOTION:
+				// Mouse movement is handled outside of the input system, because
+				// there can be a billion events just by dragging the cursor
+				// and it's only relevant for the menuscreens
+				Gui::get().onMouseMoved(e.motion.x, e.motion.y); 
+				break;
 			case SDL_MOUSEWHEEL:
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_JOYBUTTONDOWN: // we use the controller api
@@ -204,6 +209,8 @@ int mainGreyvarCore(int argc, char* argv[]) {
 	quitGame();
 	quitLibraries();
 	SDL_Quit();
+
+	cout << "Everything has quit. Bye! " << endl;
 
 	return 0;
 }

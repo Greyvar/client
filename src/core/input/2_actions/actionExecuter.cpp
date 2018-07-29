@@ -41,6 +41,9 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 			case MENU_SHOW:
 				Gui::get().scene = MENU;
 				break;
+			case MENU_CLICK:
+				Gui::get().currentScreen->onClick(pi->pointerX, pi->pointerY);
+				break;
 			case WALK_UP:
 				NetworkManager::get().sendMovr(0, -1, pi->localPlayer->username);
 				break;
@@ -55,9 +58,6 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 				break;
 			case JOIN_GAME:
 				NetworkManager::get().sendHelo(pi->localPlayer);
-				break;
-			case POINT:
-				cout << dec << pi->pointerX << ":" << pi->pointerY << endl;
 				break;
 			case QUIT:
 				SDL_Event e;

@@ -26,3 +26,8 @@ void Gui::refreshPlayers() {
 	this->layoutManager->doLayout(this->screenPlayerSetup);
 }
 
+void Gui::onMouseMoved(const int x, const int y) const {
+	if (this->scene == MENU) {
+		this->currentScreen->onMouseMoved(x, y);
+	}
+}

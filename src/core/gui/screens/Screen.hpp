@@ -29,5 +29,12 @@ class Screen {
 		virtual void selectPrevItem();
 		virtual void executeCurrentItem();
 
+		void onMouseMoved(const int x, const int y);
+		void onClick(const int x, const int y);
+
+		GuiComponent* getComponentAt(const int x, const int y) const;
+
+		GuiComponent* focussedComponent = nullptr;
+
 		vector<GuiComponent*> components{};
 };

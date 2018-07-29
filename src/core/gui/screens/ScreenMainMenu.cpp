@@ -44,8 +44,7 @@ void serversMenuAction() {
 void ScreenMainMenu::setupComponents() {
 	auto cons = new LayoutConstraints();
 
-	auto lblTitle = new Label("Greyvar");
-	lblTitle->fontSize = 48;
+	auto lblTitle = new Label("Greyvar", 48);
 
 	cons->colWeight = 1;
 	cons->rowWeight = 0;
