@@ -1,19 +1,18 @@
 #include <SDL2/SDL.h>
 
 #include "gui/utils/TextAlignment.hpp"
+#include "gui/layout/ResolvedPanelPosition.hpp"
 #include "Renderer.hpp"
 
 SDL_Texture* CreateTextureFromFT_Bitmap(SDL_Renderer* ren, const FT_Bitmap& bitmap, const SDL_Color& color);
 
 using std::string;
 
-void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize) {
-	const FT_Face face = *Renderer::get().resCache->loadFont("DejaVuSansMono.ttf", fontSize);
+void renderText(const string& text, int x, int y, int w, int h, SDL_Color color, bool canChangeColor, int size, TextAlignment alignment) {
+	const FT_Face face = *Renderer::get().resCache->loadFont("DejaVuSansMono.ttf", size);
 	bool changeColor = false;
 
-	if (align == CENTER) { // lazy center alignment with monospace text for now
-		x -= (text.length() * 30) / 2;
-	}
+	y += (h / 4);
 
 	for (char currentCharacter : text) {
 		if (changeColor) {
@@ -46,7 +45,7 @@ void renderText(const string& text, int x, int y, SDL_Color color, bool canChang
 
 		SDL_Rect dest{};
 		dest.x = x + (face->glyph->metrics.horiBearingX >> 6);
-		dest.y = y - (face->glyph->metrics.horiBearingY >> 6);
+		dest.y = y - ((face->glyph->metrics.horiBearingY >> 6) - size);
 
 		SDL_QueryTexture(tex_glyph, nullptr, nullptr, &dest.w, &dest.h);
 
@@ -55,13 +54,17 @@ void renderText(const string& text, int x, int y, SDL_Color color, bool canChang
 		SDL_DestroyTexture(tex_glyph);
 
 		x += (face->glyph->metrics.horiAdvance >> 6);
-
 	}
 }
 
-void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, int size) {
-	renderText(text, x, y, color, canChangeColor, LEFT, size);
+void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, int size, TextAlignment align) {
+	renderText(text, x, y, 100, 100, color, true, size, align);
 }
+
+void renderText(const string& text, ResolvedPanelPosition& pos, SDL_Color color, bool canChangeColor, int size, TextAlignment align) {
+	renderText(text, pos.x + 10, pos.y, pos.w, pos.h, color, canChangeColor, size, align);
+}
+
 
 void renderRect(SDL_Color color, int x, int y, int w, int h) {
 	SDL_SetRenderDrawBlendMode(Renderer::get().sdlRen, SDL_BLENDMODE_BLEND);
@@ -76,7 +79,7 @@ void renderRect(SDL_Color color, int x, int y, int w, int h) {
 	SDL_RenderFillRect(Renderer::get().sdlRen, &pos);
 }
 
-void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size, SDL_Color color) {
+void renderTextShadow(const string& text, int x, int y, int w, int h, int size, TextAlignment alignment, SDL_Color color) {
 	int shadowOffset;
 
 	if (size < 25) {
@@ -85,24 +88,33 @@ void renderTextShadow(const string& text, int x, int y, TextAlignment alignment,
 		shadowOffset = 2;
 	}
 
-	renderText(text, x + shadowOffset, y + shadowOffset, {0, 0, 0, 255}, false, alignment, size);
-	renderText(text, x, y, color, true, alignment, size);
+	renderText(text, x + shadowOffset, y + shadowOffset, w, h, {0, 0, 0, 255}, false, size, alignment);
+	renderText(text, x, y, w, h, color, true, size, alignment);
 }
 
-void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size) {
-	SDL_Color color = {255, 255, 255, 255};
-
-	renderTextShadow(text, x, y, alignment, size, color);
+void renderTextShadow(const string& text, int x, int y, int size, TextAlignment alignment, SDL_Color color) {
+	renderTextShadow(text, x, y, 100, 100, size, alignment, color);
 }
 
 void renderTextShadow(const string& text, int x, int y, int size) {
-	renderTextShadow(text, x, y, LEFT, size);
+	SDL_Color color = {255, 255, 255, 255};
+	renderTextShadow(text, x, y, 100, 100, size, LEFT_MIDDLE, color);
 }
 
-void renderTextShadowWithBackground(const string& text, int x, int y, int size, SDL_Color bgColor, int offsetX) {
+void renderTextShadow(const string& text, ResolvedPanelPosition& pos, TextAlignment alignment, int size, SDL_Color color) {
+	renderTextShadow(text, pos.x, pos.y, pos.w, pos.h, size, alignment, color);
+}
+
+void renderTextShadow(const string& text, ResolvedPanelPosition& pos, TextAlignment alignment, int size) {
+	SDL_Color color = {255, 255, 255, 255};
+
+	renderTextShadow(text, pos, alignment, size, color);
+}
+
+void renderTextShadowWithBackground(const string& text, int x, int y, int size, TextAlignment alignment, SDL_Color bgColor, SDL_Color textColor, int offsetX) {
 	int pad = 5;
 
-	renderRect(bgColor, x, y - ((size / 4) * 3), (offsetX * 2) + (text.length() * (size * .75)), size + (pad * 2));
+	renderRect(bgColor, x, y, (offsetX * 2) + (text.length() * (size * .75)), size + (pad * 3));
 
 	renderTextShadow(text, x + offsetX + (size / 3), y + (size * .25), size);
 }

@@ -23,6 +23,7 @@ void Gui::toggleConsole() {
 
 void Gui::refreshPlayers() {
 	this->screenPlayerSetup->setupComponents();
+	this->layoutManager->onChanged(this->screenPlayerSetup);
 	this->layoutManager->doLayout(this->screenPlayerSetup);
 }
 

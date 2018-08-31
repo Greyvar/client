@@ -17,6 +17,10 @@ class TextureViewer : public GuiComponent {
 
 		string textureName{};
 
+		string toString() const override {
+			return "TextureViewer {" + this->textureName + "}";
+		}
+
 		uint32_t size;
 	private:
 };

@@ -19,10 +19,6 @@ class ScreenMainMenu: public Screen {
 
 		string getRandomSubtitle();
 		
-		void selectNextItem();
-		void selectPrevItem();
-		void executeCurrentItem();
 	private:
-		Menu* menu = new Menu();
 		string subtitle; 
 };

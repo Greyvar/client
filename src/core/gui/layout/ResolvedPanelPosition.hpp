@@ -1,3 +1,5 @@
+#pragma once
+
 class ResolvedPanelPosition {
 	public: 
 		int x = 0;

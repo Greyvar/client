@@ -54,6 +54,11 @@ void ScreenServerBrowser::setupComponents() {
 		this->add(new Label("...", 24, false, false, false), cons);
 	}
 
+	cons->row++;
+	cons->rowWeight = 1;
+	cons->colWeight = 1;
+	this->add(new Label("Spacer space space space space"), cons);
+
 	auto btnBack = new Button("Back", []() {
 		Gui::get().setScreen("main");
 	});
@@ -68,6 +73,8 @@ void ScreenServerBrowser::setupComponents() {
 	});
 
 	cons->col = 2;
+	cons->rowWeight = 0;
+	cons->colWeight = 0;
 	this->add(button, cons);
 }
 

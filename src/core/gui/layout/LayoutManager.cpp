@@ -5,9 +5,9 @@
 #include <map>
 
 void LayoutManager::onChanged(Screen* screen) {
+	this->lastScreen = screen;
 	this->rowProperties.clear();
 	this->colProperties.clear();
-	this->gridCells.clear();
 
 	int numCols = 1;
 	int numRows = 1;
@@ -22,15 +22,11 @@ void LayoutManager::onChanged(Screen* screen) {
 		}
 	}
 
-	for (int row = 0; row < numRows + 1; row++) {
+	for (int row = 0; row <= numRows; row++) {
 		rowProperties[row].index = row;
-
-		for (int col = 0; col < numCols + 1; col++) {
-			this->gridCells[row][col] = {};
-		}
 	}
 
-	for (int col = 0; col < numCols + 1; col++) {
+	for (int col = 0; col <= numCols; col++) {
 		colProperties[col].index = col;
 	}
 
@@ -107,42 +103,49 @@ void positionOffsetLines(map<int, GridLineProperties>& gridLine) {
 }
 
 void LayoutManager::doLayout(Screen* screen) {
-	int weightedComponentsHeight = 0;
-	int sparePixelHeight = getSparePixels(screen, this->rowProperties, Renderer::get().window_h - (this->windowPadding * 2), weightedComponentsHeight);
+	{
+		int weightedComponentsHeight = 0;
+		int sparePixelHeight = getSparePixels(screen, this->rowProperties, Renderer::get().window_h - (this->windowPadding * 2), weightedComponentsHeight);
 
-	int weightedComponentsWidth = 0;
-	int sparePixelWidth = getSparePixels(screen, this->colProperties, Renderer::get().window_w - (this->windowPadding * 2), weightedComponentsWidth);
+		for (auto& row : this->rowProperties) {
+			const int componentHeight = getBiggestComponentInLine(screen, row.first, true);
 
-	for (auto& row : this->rowProperties) {
-		const int componentHeight = getBiggestComponentInLine(screen, row.first, true);
+			int rowHeight = componentHeight;
 
-		int rowHeight = componentHeight;
+			if (row.second.weight == 1) {
+				float ratio = (float)componentHeight / (float)weightedComponentsHeight;
 
-		if (row.second.weight == 1) {
-			float ratio = (float)componentHeight / (float)weightedComponentsHeight;
+				rowHeight += ratio * sparePixelHeight;
+			}
 
-			rowHeight += ratio * sparePixelHeight;
+			row.second.size = rowHeight;
 		}
 
-		row.second.size = rowHeight;
+		positionOffsetLines(this->rowProperties);
 	}
 
-	for (auto& col : this->colProperties) {
-		const int componentWidth = getBiggestComponentInLine(screen, col.first, false);
+	{
+		int weightedComponentsWidth = 0;
+		int sparePixelWidth = getSparePixels(screen, this->colProperties, Renderer::get().window_w - (this->windowPadding * 2), weightedComponentsWidth);
 
-		int colWidth = componentWidth;
-		
-		if (col.second.weight == 1) {
-			float ratio = (float)componentWidth / (float)weightedComponentsWidth;
+		cout << "spw" << sparePixelWidth << endl;
+
+		for (auto& col : this->colProperties) {
+			const int componentWidth = getBiggestComponentInLine(screen, col.first, false);
+
+			int colWidth = componentWidth;
 			
-			colWidth += ratio * sparePixelWidth;
+			if (col.second.weight == 1) {
+				float ratio = (float)componentWidth / (float)weightedComponentsWidth;
+				
+				colWidth += ratio * sparePixelWidth;
+			}
+
+			col.second.size = colWidth;
 		}
-
-		col.second.size = colWidth;
+		
+		positionOffsetLines(this->colProperties);
 	}
-
-	positionOffsetLines(this->rowProperties);
-	positionOffsetLines(this->colProperties);
 
 	this->applyLayoutToComponents(screen);
 }
@@ -153,7 +156,7 @@ void LayoutManager::applyLayoutToComponents(Screen* screen) {
 	}
 		
 	for (const auto& comp : screen->components) {
-		cout << "getting properties for col " << comp->layoutConstraints.col << " and row " << comp->layoutConstraints.row << " " << endl;
+		cout << "Applying layout to " << comp->toString() << " which is in col " << comp->layoutConstraints.col << " and row " << comp->layoutConstraints.row << " " << endl;
 
 		auto col = this->colProperties.at(comp->layoutConstraints.col);
 		auto row = this->rowProperties.at(comp->layoutConstraints.row);

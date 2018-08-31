@@ -16,6 +16,7 @@
 #include "screens/ScreenPlayerSetup.hpp"
 #include "screens/ScreenAbout.hpp"
 #include "screens/ScreenSettings.hpp"
+#include "screens/ScreenSplash.hpp"
 
 #include "../Scene.hpp"
 #include "../common.hpp"
@@ -35,14 +36,16 @@ class Gui {
 			return instance;
 		}
 
+		ScreenDashboard* screenDashboard = new ScreenDashboard();
 		ScreenMainMenu* screenMainMenu = new ScreenMainMenu();
 		ScreenConsole* screenConsole = new ScreenConsole();
 		ScreenPlayerSetup* screenPlayerSetup = new ScreenPlayerSetup();
 		ScreenAbout* screenAbout = new ScreenAbout();
 		ScreenServerBrowser* screenServerBrowser = new ScreenServerBrowser();
 		ScreenSettings* screenSettings = new ScreenSettings();
+		ScreenSplash* screenSplash = new ScreenSplash();
 
-		Screen* currentScreen = screenMainMenu;
+		Screen* currentScreen = screenSplash;
 
 		Scene scene = MENU;
 
@@ -72,15 +75,19 @@ class Gui {
 
 		void onMouseMoved(const int x, const int y) const;
 
+		void goBack() {
+			this->setScreen(this->currentScreen->getPreviousScreenName());
+		}
+
 		void setScreen(const string& name) {
-			Screen* changedScreen;
+			cout << "Changing screen to " << name << endl;
+
+			Screen* changedScreen = nullptr;
 
 			if (name == "about") {
 				changedScreen = this->screenAbout;
-			} else if (name == "main") {
-				changedScreen = this->screenMainMenu;
 			}
-
+				
 			if (name == "servers") {
 				changedScreen = this->screenServerBrowser;
 			}
@@ -92,6 +99,19 @@ class Gui {
 			if (name == "playerSetup") {
 				changedScreen = this->screenPlayerSetup;
 			}
+
+			if (name == "dashboard") {
+				changedScreen = this->screenDashboard;
+			}
+
+			if (name == "splash") {
+				changedScreen = this->screenSplash;
+			}
+
+			if (changedScreen == nullptr) {
+				// The Chris Houlihan screen. :) 
+				changedScreen = this->screenMainMenu;
+			}
 			
 			this->layoutManager->onChanged(changedScreen);
 			this->layoutManager->doLayout(changedScreen);
@@ -99,9 +119,10 @@ class Gui {
 		}
 
 		std::map<std::chrono::_V2::system_clock::time_point, string> messages;
+		
+		LayoutManager* layoutManager = new LayoutManager();
 	private:
 		Gui();
 
-		LayoutManager* layoutManager = new LayoutManager();
 };
 

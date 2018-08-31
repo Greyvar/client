@@ -11,7 +11,7 @@ struct GridLineProperties {
 
 	string str() const {
 		stringstream ss;
-		ss << "GridLineProperties. index:" << this->index << " size: " << this->size << " offset:" << this->offset;
+		ss << "GridLineProperties. index:" << this->index << " size: " << this->size << " offset:" << this->offset << " size:" << size << " (edge " << (this->offset + this->size) << ")";
 
 		return ss.str();
 	}

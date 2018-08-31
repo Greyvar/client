@@ -12,10 +12,11 @@ class LayoutManager {
 		void debugLayout() const;
 		void applyLayoutToComponents(Screen* screen);
 
-	private:
 		map<int, GridLineProperties> rowProperties;
 		map<int, GridLineProperties> colProperties;
-		map<int, map<int, GridCell*> > gridCells{};
-	
+
+	private:
 		int windowPadding = 32;
+
+		Screen* lastScreen = nullptr;
 };

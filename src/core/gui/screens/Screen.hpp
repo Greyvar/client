@@ -25,6 +25,10 @@ class Screen {
 		}
 
 	public:
+		std::string getPreviousScreenName() {
+			return this->previousScreenName;
+		}
+
 		virtual void selectNextItem();
 		virtual void selectPrevItem();
 		virtual void executeCurrentItem();
@@ -37,4 +41,6 @@ class Screen {
 		GuiComponent* focussedComponent = nullptr;
 
 		vector<GuiComponent*> components{};
+
+		std::string previousScreenName{};
 };

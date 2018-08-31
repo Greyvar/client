@@ -20,7 +20,7 @@ class Button: public GuiComponent {
 			this->action = action;
 
 			this->rendererFunc = "button";
-			this->minimumHeight = 75;
+			this->minimumHeight = 50;
 		}
 
 		string getText() const {
@@ -29,6 +29,10 @@ class Button: public GuiComponent {
 
 		void onClick() override {
 			this->action();
+		}
+
+		string toString() const override {
+			return "Button {" + this->text + "}";
 		}
 
 		ButtonAction action;

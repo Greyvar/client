@@ -172,6 +172,10 @@ void processInitialCvars() {
 	if (cvarIsset("server")) {
 		NetworkManager::get().connectToServer(cvarGet("server"));
 	}
+
+	if (cvarIsset("startupScreen")) {
+		Gui::get().setScreen(cvarGet("startupScreen"));
+	}
 }
 
 void quitGame() {
@@ -181,6 +185,8 @@ void quitGame() {
 void quitLibraries() {
 	quitSound();
 }
+
+void createWindow() {}
 
 int mainGreyvarCore(int argc, char* argv[]) {
 	cout << "Greyvar (core) " << endl << "--------------" << endl;
@@ -192,19 +198,17 @@ int mainGreyvarCore(int argc, char* argv[]) {
 
 	initLibraries();
 
-	SDL_Window *win = SDL_CreateWindow("Greyvar", cvarGeti("win_x", SDL_WINDOWPOS_CENTERED), cvarGeti("win_y", SDL_WINDOWPOS_CENTERED), TILE_SIZE * GRID_SIZE, 780, SDL_WINDOW_SHOWN);
-	SDL_SetWindowResizable(win, SDL_TRUE);
-	SDL_SetWindowMinimumSize(win, 640, 480);
-
-	Renderer::set(win, SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
+	createWindow();
 
 	GameState::get().createWorld();
 
 	processInitialCvars();
 
+	Renderer::get().createWindow();
+
 	mainLoop();
 
-	SDL_DestroyWindow(win);
+	Renderer::get().destroyWindow();
 
 	quitGame();
 	quitLibraries();

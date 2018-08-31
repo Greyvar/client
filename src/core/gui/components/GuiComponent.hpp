@@ -27,6 +27,8 @@ class GuiComponent {
 		virtual void onClick() {
 			cout << "GuiComponent::onClick()" << endl;
 		}
+
+		virtual std::string toString() const;
 	
 		ResolvedPanelPosition pos{};
 		LayoutConstraints layoutConstraints{};

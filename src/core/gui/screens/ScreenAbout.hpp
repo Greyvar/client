@@ -9,6 +9,4 @@ class ScreenAbout : public Screen {
 		}
 
 		void setupComponents();
-
-		void executeCurrentItem() override;
 };

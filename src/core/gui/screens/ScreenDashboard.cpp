@@ -6,6 +6,7 @@ void nullAction() {}
 
 ScreenDashboard::ScreenDashboard() {
 	auto cons = new LayoutConstraints();
+	cons->colWeight = 1;
 
 	this->add(new Label("Greyvar dashboard test", 42), cons);
 
@@ -31,5 +32,15 @@ ScreenDashboard::ScreenDashboard() {
 	cons->row++;
 	cons->rowWeight = 1;
 	this->add(new Button("two", {0, 0, 255, 255}, &nullAction), cons);
+
+	cons->col = 1;
+	cons->row = 1;
+	this->add(new Label("label 1"), cons);
+
+	cons->row++;
+	this->add(new Label("label 2"), cons);
+
+	cons->row++;
+	this->add(new Label("label 3"), cons);
 
 }

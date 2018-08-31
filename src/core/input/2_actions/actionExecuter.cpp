@@ -41,6 +41,9 @@ void executeSinglePlayerInput(PlayerInput* pi) {
 			case MENU_SHOW:
 				Gui::get().scene = MENU;
 				break;
+			case MENU_BACK:
+				Gui::get().goBack();
+				break;
 			case MENU_CLICK:
 				Gui::get().currentScreen->onClick(pi->pointerX, pi->pointerY);
 				break;

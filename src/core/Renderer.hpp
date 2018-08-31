@@ -4,6 +4,8 @@
 #include "ResCache.hpp"
 #include "World.hpp"
 #include "gui/utils/TextAlignment.hpp"
+#include "gui/layout/ResolvedPanelPosition.hpp"
+#include "cvars.hpp"
 
 #define TILE_SIZE 64
 
@@ -18,6 +20,18 @@ class Renderer {
 		static void set(SDL_Window* win, SDL_Renderer* renderer) {
 			get().sdlRen = renderer;
 			get().win = win;
+		}
+
+		void createWindow() {
+			SDL_Window *win = SDL_CreateWindow("Greyvar", cvarGeti("win_x", SDL_WINDOWPOS_CENTERED), cvarGeti("win_y", SDL_WINDOWPOS_CENTERED), TILE_SIZE * GRID_SIZE, 780, SDL_WINDOW_SHOWN);
+			SDL_SetWindowResizable(win, SDL_TRUE);
+			SDL_SetWindowMinimumSize(win, 640, 480);
+
+			Renderer::set(win, SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
+		}
+
+		void destroyWindow() {
+			SDL_DestroyWindow(this->win);
 		}
 
 		SDL_Window* getWindow() {
@@ -47,15 +61,20 @@ class Renderer {
 
 using std::string;
 
-void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, TextAlignment align, int fontSize);
-void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, int size);
 void renderRect(SDL_Color color, int x, int y, int w, int h);
-void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size);
+void renderText(const string& text, int x, int y, SDL_Color color, bool canChangeColor, int size, TextAlignment align);
+void renderText(const string& text, ResolvedPanelPosition& pos, SDL_Color color, bool canChangeColor, int size, TextAlignment alignment);
 void renderTextShadow(const string& text, int x, int y, int size);
-void renderTextShadow(const string& text, int x, int y, TextAlignment alignment, int size, SDL_Color color);
-void renderTextShadowWithBackground(const string& text, int x, int y, int size, SDL_Color bgColor, int offsetX);
+void renderTextShadow(const string& text, int x, int y, int size, TextAlignment alignment, SDL_Color color);
+void renderTextShadow(const string& text, int x, int y, int w, int h, int size, TextAlignment alignment, SDL_Color color);
+void renderTextShadowWithBackground(const string& text, int x, int y, int size, TextAlignment alignment, SDL_Color bgColor, SDL_Color textColor, int offsetX);
 void renderBackgroundSolidColor(SDL_Color color);
 SDL_Color rgbaToSdlColor(int rgba);
 
 void renderHud();
 void renderPanel();
+
+extern SDL_Color colorHighlight;
+extern SDL_Color colorInactive;
+extern SDL_Color colorText;
+extern SDL_Color colorTextSubtle;

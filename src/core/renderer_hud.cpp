@@ -79,7 +79,7 @@ void renderHudPlayer(LocalPlayer* lp, int x, int y, int fontSize, bool firstPlay
 
 void renderHud() {
 	int fontSize = 24;
-	int y = Renderer::get().window_h - 30;
+	int y = Renderer::get().window_h - 60;
 	int x = -150;
 
 	for (auto lp : GameState::get().getLocalPlayers()) {
@@ -90,7 +90,7 @@ void renderHud() {
 		renderHudPlayer(lp, x, y, fontSize, firstPlayer);
 	}
 
-	renderTextShadowWithBackground("Players: ^5" + to_string(GameState::get().getRemotePlayerCount()), Renderer::get().window_w - 200, y, fontSize, {100, 100, 100, 255}, 0);
+	renderTextShadowWithBackground("Players: ^5" + to_string(GameState::get().getRemotePlayerCount()), Renderer::get().window_w - 200, y, fontSize, LEFT_MIDDLE, colorTextSubtle, colorInactive, 0);
 }
 
 

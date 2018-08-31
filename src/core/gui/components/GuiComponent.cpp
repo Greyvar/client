@@ -11,3 +11,6 @@ void GuiComponent::setConstraints(LayoutConstraints* lc) {
 	this->layoutConstraints.colWeight = lc->colWeight;
 }
 
+std::string GuiComponent::toString() const {
+	return "GuiComponent {}";
+}

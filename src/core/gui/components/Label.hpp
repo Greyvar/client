@@ -18,13 +18,17 @@ class Label: public GuiComponent {
 			this->rendererFunc = "label";
 			this->text = text;
 
-			this->minimumHeight = this->fontSize * 1.9;
+			this->minimumHeight = this->fontSize * 2.6;
 			this->minimumWidth = this->text.size() * 18;
 			this->fontSize = fontSize;
 		}
 
 		string getText() {
 			return this->text;
+		}
+
+		string toString() const override {
+			return "Label {" + this->text + "}";
 		}
 
 		int fontSize = 24;

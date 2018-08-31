@@ -15,7 +15,7 @@ namespace ActionInputFirewall {
 ActionInputType getActionInputType(ActionInput ai) {
 	if (ai >= WALK_LEFT && ai <= WALK_DOWN) {
 		return WALK;
-	} else if (ai >= MENU_UP && ai <= MENU_ITEM_SELECT) {
+	} else if (ai >= _MENU_START && ai <= _MENU_END) {
 		return USE_MENU;
 	} else if (ai == POINT) {
 		return OTHER;

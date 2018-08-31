@@ -46,10 +46,9 @@ void ScreenMainMenu::setupComponents() {
 
 	auto lblTitle = new Label("Greyvar", 48);
 
-	cons->colWeight = 1;
+	cons->colWeight = 0;
 	cons->rowWeight = 0;
 	this->add(lblTitle, cons);
-
 
 	auto lblSubtitle = new Label("^3" + this->getRandomSubtitle());
 
@@ -57,26 +56,18 @@ void ScreenMainMenu::setupComponents() {
 	cons->rowWeight = 0;
 	this->add(lblSubtitle, cons);
 
-	this->menu->add("Play", &serversMenuAction);
-	this->menu->add("Settings", &settingsMenuAction);
-	this->menu->add("About", &aboutMenuAction);
-	this->menu->add("Quit", &quitMenuAction);
+	cons->row++;
+	this->add(new Button("Play", &serversMenuAction), cons);
+	
+	cons->row++;
+	this->add(new Button("Settings", &settingsMenuAction), cons);
 
 	cons->row++;
-	cons->rowWeight = 1;
-	cons->col = 0;
-	cons->colWeight = 1;
-	this->add(menu, cons);
+	this->add(new Button("About", &aboutMenuAction), cons);
+
+	cons->row++;
+	this->add(new Button("Quit", &quitMenuAction), cons);
+
 }
 
-void ScreenMainMenu::selectNextItem() {
-	this->menu->selectNextMenuItem();
-}
 
-void ScreenMainMenu::selectPrevItem() {
-	this->menu->selectPrevMenuItem();
-}
-
-void ScreenMainMenu::executeCurrentItem() {
-	this->menu->executeCurrentMenuItem();
-}

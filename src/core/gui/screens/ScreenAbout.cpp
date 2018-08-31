@@ -1,7 +1,5 @@
 #include "ScreenAbout.hpp"
 #include "../components/Label.hpp"
-#include "../components/Menu.hpp"
-#include "../components/MenuItem.hpp"
 #include "gui/Gui.hpp"
 
 void ScreenAbout::setupComponents() {
@@ -18,15 +16,10 @@ void ScreenAbout::setupComponents() {
 	cons->rowWeight = 1;
 	this->add(lblDev, cons);
 
-	auto mnu = new Menu();
-
-	mnu->add("Return");
-
 	cons->row++;
 	cons->rowWeight = 0;
-	this->add(mnu, cons);
+	this->add(new Button("Back", []() {
+		Gui::get().setScreen("main");
+	}), cons);
 }
 
-void ScreenAbout::executeCurrentItem() {
-	Gui::get().setScreen("main");
-}

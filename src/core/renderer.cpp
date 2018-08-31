@@ -10,6 +10,11 @@
 #include "gui/Gui.hpp"
 #include "cvars.hpp"
 
+SDL_Color colorHighlight {100, 255, 255, 255};
+SDL_Color colorInactive {100, 100, 100, 255};
+SDL_Color colorText {255, 255, 255, 255};
+SDL_Color colorTextSubtle {100, 100, 100, 255};
+
 void renderGridTiles(World* world) {
 	int windowWidth = 2 * floor(Renderer::get().window_w / 2);
 	int windowHeight = 2 * floor(Renderer::get().window_h / 2);
@@ -81,8 +86,6 @@ void renderGridEntities(World* world) {
 
 void renderConsole() {
 	renderBackgroundSolidColor({66, 66, 66, 255});
-	renderTextShadow("^9Greyvar console", 15, 50, 36);
-	renderTextShadow("This is the console.", 15, 80, 16);
 
 /**
 	for (unsigned int i = 0; i < GameState::get().gui->consoleHistory.size(); i++) {
@@ -95,14 +98,14 @@ void renderUiMessages() {
 	uint32_t index = 0;
 
 	for (auto it : Gui::get().messages) {
-		renderTextShadow(it.second, 50, (Renderer::get().window_h - 80) - (index * 50), 24);
+		renderTextShadow(it.second, 50, (Renderer::get().window_h - 100) - (index * 50), 100, 100, 24, LEFT_MIDDLE, colorText);
 		index++;
 	}
 }
 
 void renderFps() {
 	if (cvarGetb("r_fps")) {
-		renderText("FPS: " + to_string(Renderer::get().averageFps), Renderer::get().window_w - 0, 20, {230, 230, 230, 255}, false, CENTER, 16);
+		renderText("FPS: " + to_string(Renderer::get().averageFps), Renderer::get().window_w - 0, 20, {230, 230, 230, 255}, false, 16, CENTER);
 	}
 }
 

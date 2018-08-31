@@ -1,6 +1,6 @@
 #pragma once
 
 enum TextAlignment {
-	LEFT,
+	LEFT_MIDDLE,
 	CENTER
 };
