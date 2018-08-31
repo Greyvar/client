@@ -2,4 +2,4 @@
 
 An open source game by James Read.
 
-Built on the [boleas-engine](https://github.com/jamesread/boleas-engine).
+Built on the link:https://github.com/jamesread/boleas-engine[boleas-engine].
