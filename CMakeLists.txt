@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(Greyvar)
 
 set(CMAKE_CXX_STANDARD 17)
-seT(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
@@ -26,17 +26,12 @@ if (WINDOWS)
 	set(PLATFORM_CXX_FLAGS "-s")
 
 	target_include_directories(greyvar_core PUBLIC 
-		/usr/x86_64-w64-mingw32/sys-root/mingw/include/freetype2
-		/usr/x86_64-w64-mingw32/sys-root/mingw/include/SDL2
-		./lib/SDL2_net-2.0.1/x86_64-w64-mingw32/include/
 	)
 
     SET(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
     SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dll" ".dll.a" ".a" ".lib")
 
-	find_library(LIBSDL2NET SDL2_net HINTS lib/SDL2_net-2.0.1/x86_64-w64-mingw32/lib/)
-
-	target_link_libraries(greyvar_core mingw32 SDL2main SDL2 SDL2_image SDL2_mixer ${LIBSDL2NET} freetype m user32 gdi32 winmm)
+	target_link_libraries(greyvar_core boleas m user32 gdi32 winmm)
 
 	set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
@@ -53,9 +48,7 @@ elseif(UNIX)
 		set(PLATFORM_CXX_FLAGS "-s ")
 	endif()
 
-	target_include_directories(greyvar_core PUBLIC /usr/include/freetype2)
-
-	target_link_libraries(greyvar_core SDL2 SDL2_image freetype SDL2_net SDL2_mixer)
+	target_link_libraries(greyvar_core boleas)
 
 	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar_linux")
 	target_link_libraries(greyvar_vessel greyvar_core)
