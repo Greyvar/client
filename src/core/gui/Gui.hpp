@@ -48,7 +48,9 @@ class Gui {
 		}
 
 		void onWindowResized() {
-			this->layoutManager->doLayout(this->currentScreen);
+			if (this->scene == MENU) {
+				this->layoutManager->doLayout(this->currentScreen);
+			}
 		}
 
 		std::map<std::chrono::_V2::system_clock::time_point, string> messages;

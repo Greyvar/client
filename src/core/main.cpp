@@ -29,10 +29,12 @@ void eventHandler() {
 			case SDL_MOUSEMOTION:
 			case SDL_MOUSEWHEEL:
 			case SDL_MOUSEBUTTONDOWN:
+				break;
 			case SDL_JOYBUTTONDOWN: // we use the controller api
 			case SDL_JOYBUTTONUP:
 			case SDL_JOYDEVICEADDED: 
 			case SDL_JOYAXISMOTION: // ^^
+				cout << "found an old school piece of crap" << endl;
 				break;
 
 			case SDL_MOUSEBUTTONUP:

@@ -29,6 +29,22 @@ void LayoutManager::onChanged(Screen* screen) {
 	}
 }
 
+void LayoutManager::debugLayoutFinished() {
+	if (!cvarGetb("debug_gui_layout")) {
+		return;
+	}
+
+	cout << "Layout finished" << endl;
+
+	for (size_t row = 0; row < this->rowProperties.size(); row++) {
+		cout << "row " << row << " " << this->rowProperties[row].str() << endl;
+	}
+
+	for (size_t col = 0; col < this->colProperties.size(); col++) {
+		cout << "col " << col << " " << this->colProperties[col].str() << endl;
+	}
+}
+
 void LayoutManager::doLayout(Screen* screen) {
 	int windowPadding = 32;
 
@@ -46,17 +62,7 @@ void LayoutManager::doLayout(Screen* screen) {
 
 	int sparePixelWidth;
 
-	//  Finish layout	
-
-	cout << "Layout finished" << endl;
-
-	for (size_t row = 0; row < this->rowProperties.size(); row++) {
-		cout << "row " << row << " " << this->rowProperties[row].str() << endl;
-	}
-
-	for (size_t col = 0; col < this->colProperties.size(); col++) {
-		cout << "col " << col << " " << this->colProperties[col].str() << endl;
-	}
+	this->debugLayoutFinished();
 		
 	for (auto comp : screen->components) {
 		comp->pos.x = windowPadding + this->colProperties[comp->pos.x].offset;

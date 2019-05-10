@@ -1,6 +1,7 @@
 #include <map>
 #include <sstream>
 
+#include "cvars.hpp"
 #include "../screens/Screen.hpp"
 
 struct GridLineProperties {
@@ -14,7 +15,6 @@ struct GridLineProperties {
 
 	std::string str() {
 		stringstream ss;
-		ss << "GridLineProperties. index:" << this->index << " size: " << this->size;
 
 		return ss.str();
 	}
@@ -24,6 +24,7 @@ class LayoutManager {
 	public: 
 		void doLayout(Screen* screen);
 		void onChanged(Screen* screen);
+		void debugLayoutFinished();
 
 		map<int, GridLineProperties> rowProperties;
 		map<int, GridLineProperties> colProperties;

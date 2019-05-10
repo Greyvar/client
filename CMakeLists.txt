@@ -69,5 +69,5 @@ elseif(UNIX)
 	set_target_properties(greyvar_test PROPERTIES OUTPUT_NAME "greyvar_linux_test")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wshadow-compatible-local -Wextra -pedantic ${PLATFORM_CXX_FLAGS}") # -Weffc++
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wshadow-uncaptured-local -Wextra -pedantic ${PLATFORM_CXX_FLAGS}") # -Weffc++
 
