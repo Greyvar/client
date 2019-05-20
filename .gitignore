@@ -12,3 +12,4 @@ cmake_install.cmake
 doc/doxygen
 rpt/**
 compile_commands.json
+**/greyvar-qml-launcher_autogen/**
