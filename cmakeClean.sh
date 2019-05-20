@@ -1,3 +1,3 @@
 rm -rf bin
 rm -rf CMakeFiles/
-rm CMakeCache.txt
+rm -f CMakeCache.txt
