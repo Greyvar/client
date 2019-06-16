@@ -1,15 +1,15 @@
 #include "ScreenSettings.hpp"
-#include "../components/Button.hpp"
-#include "../components/Label.hpp"
-#include "../components/Menu.hpp"
-#include "gui/Gui.hpp"
-#include "../components/ComboSpinner.hpp"
+#include <boleas/gui/components/Button.hpp>
+#include <boleas/gui/components/Label.hpp>
+#include <boleas/gui/components/Menu.hpp>
+#include <boleas/gui/components/ComboSpinner.hpp>
+#include <boleas/gui/Gui.hpp>
 
 void ScreenSettings::setupComponents() {
 	auto cons = new LayoutConstraints();
 	cons->rowWeight = 0;
 
-	auto lbl = new Label("Settings", 48);
+	auto lbl = new Label("Greyvar \u00BB Settings", 48);
 	this->add(lbl, cons);
 	
 	auto cboFullscreen = new ComboSpinner("Fullscreen");

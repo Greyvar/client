@@ -1,9 +1,7 @@
 #pragma once 
 
-#include "../components/Menu.hpp"
-
-#include "cvars.hpp"
-#include "Screen.hpp"
+#include <boleas/gui/components/Menu.hpp>
+#include <boleas/gui/screens/Screen.hpp>
 
 #include <iostream>
 

@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "Screen.hpp"
+#include <boleas/gui/screens/Screen.hpp>
 
 class ScreenConsole: public Screen {
 	private:

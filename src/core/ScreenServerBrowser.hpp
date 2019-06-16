@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Screen.hpp"
+#include <boleas/gui/screens/Screen.hpp>
 
 class ScreenServerBrowser: public Screen {
 	public:

@@ -1,5 +1,5 @@
 #include "ScreenSplash.hpp"
-#include "gui/components/SplashyThingy.hpp"
+#include <boleas/gui/components/SplashyThingy.hpp>
 
 void ScreenSplash::setupComponents() {
 	auto cons = new LayoutConstraints();

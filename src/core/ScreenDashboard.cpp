@@ -1,6 +1,7 @@
 #include "ScreenDashboard.hpp"
-#include "gui/components/Label.hpp"
-#include "gui/components/Button.hpp"
+
+#include <boleas/gui/components/Label.hpp>
+#include <boleas/gui/components/Button.hpp>
 
 void nullAction() {}
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Screen.hpp"
-#include "../components/Menu.hpp"
+#include <boleas/gui/screens/Screen.hpp>
+#include <boleas/gui/components/Menu.hpp>
 
 class ScreenSettings : public Screen {
 	public:

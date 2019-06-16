@@ -1,13 +1,15 @@
 #include "ScreenAbout.hpp"
-#include "../components/Label.hpp"
-#include "gui/Gui.hpp"
+
+#include <boleas/gui/components/Label.hpp>
+#include <boleas/gui/components/Button.hpp>
+#include <boleas/gui/Gui.hpp>
 
 void ScreenAbout::setupComponents() {
 	auto cons = new LayoutConstraints();
 	cons->colWeight = 1;
 	cons->rowWeight = 0;
 
-	auto lbl = new Label("About Greyvar");
+	auto lbl = new Label("Greyvar \u00BB About ");
 	lbl->fontSize = 48;
 	this->add(lbl, cons);
 

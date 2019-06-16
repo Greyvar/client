@@ -1,9 +1,9 @@
 #include <iostream>
 
 #include "ScreenMainMenu.hpp"
-#include "gui/components/Label.hpp"
-#include "Startup.hpp"
-#include "gui/Gui.hpp"
+#include <boleas/gui/components/Label.hpp>
+#include <boleas/gui/Gui.hpp>
+#include <boleas/boleas.hpp>
 
 using namespace std;
 
@@ -26,7 +26,7 @@ string ScreenMainMenu::getRandomSubtitle() {
 }
 
 void quitMenuAction() {
-	quitEngine();
+	boleasQuitEngine();
 }
 
 void aboutMenuAction() {

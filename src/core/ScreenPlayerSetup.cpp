@@ -1,11 +1,11 @@
 #include "ScreenPlayerSetup.hpp"
 
-#include "GameState.hpp"
+#include <boleas/GameState.hpp>
 
-#include "../components/Label.hpp"
-#include "../components/Button.hpp"
-#include "../components/TextureViewer.hpp"
-#include "gui/Gui.hpp"
+#include <boleas/gui/components/Label.hpp>
+#include <boleas/gui/components/Button.hpp>
+#include <boleas/gui/components/TextureViewer.hpp>
+#include <boleas/gui/Gui.hpp>
 
 void actionPlay() {
 

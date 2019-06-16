@@ -1,9 +1,10 @@
 #include "ScreenServerBrowser.hpp"
-#include "../components/Label.hpp"
-#include "../components/Button.hpp"
-#include "../components/Menu.hpp"
-#include "NetworkManager.hpp"
-#include "gui/Gui.hpp"
+
+#include <boleas/gui/components/Label.hpp>
+#include <boleas/gui/components/Button.hpp>
+#include <boleas/gui/components/Menu.hpp>
+#include <boleas/gui/Gui.hpp>
+#include <boleas/NetworkManager.hpp>
 
 #include <vector>
 

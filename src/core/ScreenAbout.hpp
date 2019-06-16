@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boleas/Screen.hpp>
+#include <boleas/gui/screens/Screen.hpp>
 
 class ScreenAbout : public Screen {
 	public:

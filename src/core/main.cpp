@@ -1,6 +1,8 @@
-#include <boleas.hpp>
+#include <boleas/boleas.hpp>
 
 #include "Screens.hpp"
+
+#include <boleas/gui/Gui.hpp>
 
 #include <cstdlib>
 #include <ctime>
@@ -13,6 +15,8 @@ int mainGreyvarCore(int argc, char* argv[]) {
 	cout << "Greyvar (core) " << endl << "--------------" << endl;
 
 	setupScreens();
+
+	Gui::get().setScreen("main");
 
 	boleasSayHello();
 
