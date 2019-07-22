@@ -10,6 +10,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY bin)
 set(BUILD_SHARED_LIBS off)
 
 find_package(PkgConfig)
+find_package(Protobuf REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/core/)
 
@@ -18,6 +19,10 @@ add_library(greyvar_core ${CORE_SOURCE_FILES})
 
 file(GLOB_RECURSE VESSEL_SOURCE_FILES src/vessel/*.cpp src/vessel/*.hpp)
 add_executable(greyvar_vessel ${VESSEL_SOURCE_FILES})
+
+file(GLOB_RECURSE NET_SOURCE_FILES src/net/*)
+add_library(greyvar_net ${NET_SOURCE_FILES})
+include_directories(src/net/)
 
 message("Core source: ${CORE_SOURCE_FILES}")
 
@@ -31,7 +36,8 @@ if (WINDOWS)
     SET(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
     SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dll" ".dll.a" ".a" ".lib")
 
-	target_link_libraries(greyvar_core boleas m user32 gdi32 winmm)
+	target_link_libraries(greyvar_net gRPC::grpc++_reflection protobuf::libprotobuf grpc++)
+	target_link_libraries(greyvar_core boleas m user32 gdi32 winmm greyvar_net gRPC::grpc++_reflection protobuf::libprotobuf grpc++)
 
 	set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
@@ -48,7 +54,8 @@ elseif(UNIX)
 		set(PLATFORM_CXX_FLAGS "-s ")
 	endif()
 
-	target_link_libraries(greyvar_core boleas)
+	target_link_libraries(greyvar_net grpc++ protobuf)
+	target_link_libraries(greyvar_core boleas greyvar_net)
 
 	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar_linux")
 	target_link_libraries(greyvar_vessel greyvar_core)

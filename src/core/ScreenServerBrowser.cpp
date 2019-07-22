@@ -4,7 +4,6 @@
 #include <boleas/gui/components/Button.hpp>
 #include <boleas/gui/components/Menu.hpp>
 #include <boleas/gui/Gui.hpp>
-#include <boleas/NetworkManager.hpp>
 
 #include <vector>
 
@@ -28,7 +27,7 @@ void ScreenServerBrowser::setupComponents() {
 	servers.push_back(new Server("other server", 456));
 	servers.push_back(new Server("asdf", 999));
 
-	auto lbl = new Label("Greyvar >> Servers", 48);
+	auto lbl = new Label("Greyvar \u00BB Servers", 48);
 	cons->rowWeight = 0;
 	this->add(lbl, cons);
 
@@ -81,5 +80,5 @@ void ScreenServerBrowser::setupComponents() {
 
 
 void ScreenServerBrowser::executeCurrentItem() {
-	NetworkManager::get().connectToServer("localhost");
+	NetClient::get().connect();
 }

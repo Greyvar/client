@@ -15,7 +15,7 @@ void ScreenAbout::setupComponents() {
 
 	auto lblDev = new Label("Greyvar is developed entirely by James Read. Yay.");
 	cons->row++;
-	cons->rowWeight = 1;
+	cons->rowWeight = 0;
 	this->add(lblDev, cons);
 
 	cons->row++;

@@ -20,7 +20,7 @@ void ScreenPlayerSetup::setupComponents() {
 
 	this->components.clear();
 
-	this->add(new Label("Greyvar >> Player Setup", 48), cons);
+	this->add(new Label("Greyvar \u00BB Servers \u00BB Player Setup", 48), cons);
 
 	auto localPlayers = GameState::get().getLocalPlayers();
 

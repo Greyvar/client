@@ -1,8 +1,10 @@
 #include <boleas/boleas.hpp>
 
 #include "Screens.hpp"
+#include "net/NetClient.hpp"
 
 #include <boleas/gui/Gui.hpp>
+#include <boleas/cvars.hpp>
 
 #include <cstdlib>
 #include <ctime>
@@ -19,7 +21,6 @@ int mainGreyvarCore(int argc, char* argv[]) {
 	Gui::get().setScreen("main");
 
 	boleasSayHello();
-
 	boleasStartEngine();
 
 	cout << "Everything has quit. Bye! " << endl;
