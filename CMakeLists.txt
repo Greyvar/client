@@ -55,7 +55,7 @@ elseif(UNIX)
 	endif()
 
 	target_link_libraries(greyvar_net grpc++ protobuf)
-	target_link_libraries(greyvar_core boleas greyvar_net)
+	target_link_libraries(greyvar_core boleas greyvar_net pthread SDL2 SDL2_mixer)
 
 	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar_linux")
 	target_link_libraries(greyvar_vessel greyvar_core)

@@ -1,6 +1,6 @@
 #include <boleas/boleas.hpp>
 
-#include "Screens.hpp"
+#include "gui/screens/Screens.hpp"
 #include "net/NetClient.hpp"
 
 #include <boleas/gui/Gui.hpp>
@@ -13,15 +13,27 @@
 using std::cout;
 using std::endl;
 
+void hookMainLoop() {
+	NetClient::get().sendRecvFrame();
+
+}
+
+void setupNetworkThread() {
+	NetClient::get().processServerFrames();
+}
+
 int mainGreyvarCore(int argc, char* argv[]) {
 	cout << "Greyvar (core) " << endl << "--------------" << endl;
 
 	setupScreens();
+	setupNetworkThread();
+
+	boleasHookInput = &hookMainLoop;
 
 	Gui::get().setScreen("main");
 
-	boleasSayHello();
-	boleasStartEngine();
+	boleasPrintVersion();
+	boleasStartEngine(argc, argv);
 
 	cout << "Everything has quit. Bye! " << endl;
 
