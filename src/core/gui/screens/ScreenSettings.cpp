@@ -28,13 +28,18 @@ void ScreenSettings::setupComponents() {
 	cboSound->add("9");
 	cboSound->add("10");
 	cons->row++;
+	cons->rowWeight = 1;
 	this->add(cboSound, cons);
 
+	cons->row++; this->add(new Label("foo"), cons);
+	cons->row++; this->add(new Label("foo"), cons);
 
 	auto btnBack = new Button("Back", []() {
 		Gui::get().setScreen("main");	
 	});
+
 	cons->row++;
+	cons->rowWeight = 0;
 	this->add(btnBack, cons);
 }
 

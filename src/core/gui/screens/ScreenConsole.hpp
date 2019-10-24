@@ -1,3 +1,5 @@
+#pragma once 
+ 
 #include <vector>
 
 #include <boleas/gui/screens/Screen.hpp>

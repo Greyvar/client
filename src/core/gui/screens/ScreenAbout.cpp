@@ -15,11 +15,13 @@ void ScreenAbout::setupComponents() {
 
 	auto lblDev = new Label("Greyvar is developed entirely by James Read. Yay.");
 	cons->row++;
-	cons->rowWeight = 0;
+	cons->rowWeight = 1;
+	cons->colWeight = 1;
 	this->add(lblDev, cons);
 
 	cons->row++;
 	cons->rowWeight = 0;
+	cons->colWeight = 0;
 	this->add(new Button("Back", []() {
 		Gui::get().setScreen("main");
 	}), cons);

@@ -4,6 +4,8 @@
 #include <boleas/gui/components/Button.hpp>
 #include <boleas/gui/components/Menu.hpp>
 #include <boleas/gui/Gui.hpp>
+#include <boleas/cvars.hpp>
+#include <boleas/net/NetClient.hpp>
 
 #include <vector>
 
@@ -24,8 +26,6 @@ void ScreenServerBrowser::setupComponents() {
 	auto cons = new LayoutConstraints();
 
 	servers.push_back(new Server("localhost", 123));
-	servers.push_back(new Server("other server", 456));
-	servers.push_back(new Server("asdf", 999));
 
 	auto lbl = new Label("Greyvar \u00BB Servers", 48);
 	cons->rowWeight = 0;
@@ -41,7 +41,6 @@ void ScreenServerBrowser::setupComponents() {
 	cons->col++;
 	this->add(new Label("^3Details"), cons);
 
-
 	for (auto server : servers) {
 		cons->row++;
 		cons->col = 0;
@@ -52,12 +51,14 @@ void ScreenServerBrowser::setupComponents() {
 
 		cons->col++;
 		this->add(new Label("...", 24, false, false, false), cons);
-	}
 
-	cons->row++;
-	cons->rowWeight = 1;
-	cons->colWeight = 1;
-	this->add(new Label("Spacer space space space space"), cons);
+		cons->col++;
+		auto button = new Button("Connect", []() { 
+			//cvarSet("server", server->address);
+			Gui::get().setScreen("playerSetup");
+		});
+		this->add(button, cons);
+	}
 
 	auto btnBack = new Button("Back", []() {
 		Gui::get().setScreen("main");
@@ -67,15 +68,6 @@ void ScreenServerBrowser::setupComponents() {
 	cons->rowWeight = 0;
 	cons->col = 0;
 	this->add(btnBack, cons);
-
-	auto button = new Button("Connect", []() { 
-		Gui::get().setScreen("playerSetup");
-	});
-
-	cons->col = 2;
-	cons->rowWeight = 0;
-	cons->colWeight = 0;
-	this->add(button, cons);
 }
 
 

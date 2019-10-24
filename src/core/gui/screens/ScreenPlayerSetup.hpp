@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boleas/gui/screens/Screen.hpp>
+#include <boleas/LocalPlayer.hpp>
 
 class ScreenPlayerSetup : public Screen {
 	public:
@@ -9,4 +10,5 @@ class ScreenPlayerSetup : public Screen {
 		}
 
 		void setupComponents();
+		void setupPlayerComponents(LocalPlayer* lp, LayoutConstraints* cons);
 };

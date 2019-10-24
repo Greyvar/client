@@ -6,13 +6,51 @@
 #include <boleas/gui/components/Button.hpp>
 #include <boleas/gui/components/TextureViewer.hpp>
 #include <boleas/gui/Gui.hpp>
+#include <boleas/net/NetClient.hpp>
 
 void actionPlay() {
-
+//	NetClient::get().playerSetup();
+	Gui::get().scene = PLAY;
 }
 
 void actionPlayerSetupBack() {
 	Gui::get().setScreen("servers");
+}
+
+const string getInputDeviceIcon(HidInputDeviceType type) {
+	string inputDeviceIcon = "hud/question.png";
+
+	switch (type) {
+		case KEYBOARD_AND_POINTER:
+			inputDeviceIcon = "hud/keyboard.png";
+			break;
+
+		case GAMEPAD:
+			inputDeviceIcon = "hud/gamepad.png";
+			break;
+	}
+
+	return inputDeviceIcon;
+}
+
+void ScreenPlayerSetup::setupPlayerComponents(LocalPlayer* localPlayer, LayoutConstraints* cons) {
+	cons->row = 1;
+	cons->rowWeight = 0;
+	this->add(new Label("Username: " + localPlayer->username), cons);
+
+	cons->row++;
+	this->add(new TextureViewer("entities/playerBob.png", 128), cons);
+
+	cons->row++;
+	cons->rowWeight = 1;
+	this->add(new TextureViewer(getInputDeviceIcon(localPlayer->inputDevice.type)), cons);
+
+	cons->row++;
+	cons->rowWeight = 0;
+	this->add(new Button("Play", &actionPlay), cons);
+
+	cons->col++;
+
 }
 
 void ScreenPlayerSetup::setupComponents() {
@@ -22,37 +60,8 @@ void ScreenPlayerSetup::setupComponents() {
 
 	this->add(new Label("Greyvar \u00BB Servers \u00BB Player Setup", 48), cons);
 
-	auto localPlayers = GameState::get().getLocalPlayers();
-
-	for (uint32_t i = 0; i < localPlayers.size(); i++) {
-		cons->row = 1;
-		cons->rowWeight = 0;
-		this->add(new Label("Username: " + localPlayers.at(i)->username), cons);
-
-		cons->row++;
-		this->add(new TextureViewer("entities/playerBob.png", 128), cons);
-
-		string inputDeviceIcon = "hud/question.png";
-
-		switch (localPlayers.at(i)->inputDevice.type) {
-			case KEYBOARD_AND_POINTER:
-				inputDeviceIcon = "hud/keyboard.png";
-				break;
-
-			case GAMEPAD:
-				inputDeviceIcon = "hud/gamepad.png";
-				break;
-		}
-
-		cons->row++;
-		cons->rowWeight = 1;
-		this->add(new TextureViewer(inputDeviceIcon), cons);
-
-		cons->row++;
-		cons->rowWeight = 0;
-		this->add(new Button("Play", &actionPlay), cons);
-
-		cons->col++;
+	for (auto localPlayer : GameState::get().getLocalPlayers()) {
+		this->setupPlayerComponents(localPlayer, cons);
 	}
 
 	cons->row++;
