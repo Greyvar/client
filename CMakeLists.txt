@@ -44,7 +44,7 @@ elseif(UNIX)
 	add_definitions(-DGREYVAR_PLATFORM_LINUX)
 
 	if (CMAKE_BUILD_TYPE MATCHES Debug) 
-		set(PLATFORM_CXX_FLAGS "-fsanitize=address ")
+		set(PLATFORM_CXX_FLAGS "-fsanitize=address  -static-libasan ")
 	else()
 		set(PLATFORM_CXX_FLAGS "-s ")
 	endif()
