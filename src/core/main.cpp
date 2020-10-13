@@ -35,6 +35,7 @@ void* processServerFrames(void*) {
 		NetClient::get().processServerFrames();
 	}
 
+	boleasQuitEngine();
 	pthread_exit(0);
 }
 
