@@ -45,13 +45,14 @@ elseif(UNIX)
 
 	if (CMAKE_BUILD_TYPE MATCHES Debug) 
 		set(PLATFORM_CXX_FLAGS "-fsanitize=address  -static-libasan ")
+		add_definitions(-D_GLIBCXX_DEBUG)
 	else()
 		set(PLATFORM_CXX_FLAGS "-s ")
 	endif()
 
 	target_link_libraries(greyvar_core boleas pthread SDL2 SDL2_mixer grpc++)
 
-	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar_linux")
+	set_target_properties(greyvar_vessel PROPERTIES OUTPUT_NAME "greyvar-client-linux")
 	target_link_libraries(greyvar_vessel greyvar_core)
 	
 	file(GLOB_RECURSE TST_SOURCE_FILES tst/*.cpp tst/*.hpp)
@@ -60,7 +61,7 @@ elseif(UNIX)
 		src/core/
 	)
 	target_link_libraries(greyvar_test gtest greyvar_core)
-	set_target_properties(greyvar_test PROPERTIES OUTPUT_NAME "greyvar_linux_test")
+	set_target_properties(greyvar_test PROPERTIES OUTPUT_NAME "test-greyvar-client-linux")
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wshadow-compatible-local -Wextra -pedantic ${PLATFORM_CXX_FLAGS}") # -Weffc++
